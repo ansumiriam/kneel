@@ -10,35 +10,28 @@ import { navigateTo } from '../utils/router';
  * Format date for display
  */
 function formatDate(dateStr: string | null): string {
-    if (!dateStr) return 'Not set';
+  if (!dateStr) return 'Not set';
 
-    try {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    } catch {
-        return 'Invalid date';
-    }
-}
-
-/**
- * Get today's date in ISO format
- */
-function getTodayISO(): string {
-    return new Date().toISOString().split('T')[0];
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  } catch {
+    return 'Invalid date';
+  }
 }
 
 export function renderHomeScreen(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'screen screen--home';
+  const container = document.createElement('div');
+  container.className = 'screen screen--home';
 
-    const sins = getSins();
-    const lastDate = getLastConfessionDate();
+  const sins = getSins();
+  const lastDate = getLastConfessionDate();
 
-    container.innerHTML = `
+  container.innerHTML = `
     <header class="home-header">
       <div class="confession-date">
         <span class="confession-label">Last Confession</span>
@@ -52,15 +45,15 @@ export function renderHomeScreen(): HTMLElement {
 
     <main class="home-content">
       ${sins.length === 0
-            ? `<div class="empty-state">
+      ? `<div class="empty-state">
              <p>No entries yet.</p>
            </div>`
-            : `<ul class="sin-list">
+      : `<ul class="sin-list">
              ${sins.map(sin => `
                <li class="sin-item">${escapeHtml(sin.text)}</li>
              `).join('')}
            </ul>`
-        }
+    }
     </main>
 
     <footer class="home-footer">
@@ -71,52 +64,52 @@ export function renderHomeScreen(): HTMLElement {
     </footer>
   `;
 
-    // Edit date functionality
-    const dateDisplay = container.querySelector('#date-display') as HTMLSpanElement;
-    const dateInput = container.querySelector('#date-input') as HTMLInputElement;
-    const editBtn = container.querySelector('#edit-date-btn') as HTMLButtonElement;
+  // Edit date functionality
+  const dateDisplay = container.querySelector('#date-display') as HTMLSpanElement;
+  const dateInput = container.querySelector('#date-input') as HTMLInputElement;
+  const editBtn = container.querySelector('#edit-date-btn') as HTMLButtonElement;
 
-    editBtn.addEventListener('click', () => {
-        dateInput.hidden = false;
-        dateDisplay.hidden = true;
-        editBtn.hidden = true;
-        dateInput.focus();
-    });
+  editBtn.addEventListener('click', () => {
+    dateInput.hidden = false;
+    dateDisplay.hidden = true;
+    editBtn.hidden = true;
+    dateInput.focus();
+  });
 
-    dateInput.addEventListener('change', () => {
-        const newDate = dateInput.value;
-        if (newDate) {
-            setLastConfessionDate(newDate);
-            dateDisplay.textContent = formatDate(newDate);
-        }
-        dateInput.hidden = true;
-        dateDisplay.hidden = false;
-        editBtn.hidden = false;
-    });
+  dateInput.addEventListener('change', () => {
+    const newDate = dateInput.value;
+    if (newDate) {
+      setLastConfessionDate(newDate);
+      dateDisplay.textContent = formatDate(newDate);
+    }
+    dateInput.hidden = true;
+    dateDisplay.hidden = false;
+    editBtn.hidden = false;
+  });
 
-    dateInput.addEventListener('blur', () => {
-        dateInput.hidden = true;
-        dateDisplay.hidden = false;
-        editBtn.hidden = false;
-    });
+  dateInput.addEventListener('blur', () => {
+    dateInput.hidden = true;
+    dateDisplay.hidden = false;
+    editBtn.hidden = false;
+  });
 
-    // Navigation buttons
-    container.querySelector('#add-btn')?.addEventListener('click', () => {
-        navigateTo('add-sin');
-    });
+  // Navigation buttons
+  container.querySelector('#add-btn')?.addEventListener('click', () => {
+    navigateTo('add-sin');
+  });
 
-    container.querySelector('#clear-btn')?.addEventListener('click', () => {
-        navigateTo('confirm-clear');
-    });
+  container.querySelector('#clear-btn')?.addEventListener('click', () => {
+    navigateTo('confirm-clear');
+  });
 
-    return container;
+  return container;
 }
 
 /**
  * Escape HTML to prevent XSS
  */
 function escapeHtml(text: string): string {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
