@@ -1,0 +1,122 @@
+/**
+ * Home Screen
+ * Main screen with confession date, sin list, and actions
+ */
+
+import { getSins, getLastConfessionDate, setLastConfessionDate } from '../services/storage';
+import { navigateTo } from '../utils/router';
+
+/**
+ * Format date for display
+ */
+function formatDate(dateStr: string | null): string {
+    if (!dateStr) return 'Not set';
+
+    try {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    } catch {
+        return 'Invalid date';
+    }
+}
+
+/**
+ * Get today's date in ISO format
+ */
+function getTodayISO(): string {
+    return new Date().toISOString().split('T')[0];
+}
+
+export function renderHomeScreen(): HTMLElement {
+    const container = document.createElement('div');
+    container.className = 'screen screen--home';
+
+    const sins = getSins();
+    const lastDate = getLastConfessionDate();
+
+    container.innerHTML = `
+    <header class="home-header">
+      <div class="confession-date">
+        <span class="confession-label">Last Confession</span>
+        <div class="confession-value">
+          <span id="date-display">${formatDate(lastDate)}</span>
+          <button class="btn-icon" id="edit-date-btn" aria-label="Edit date">✏️</button>
+        </div>
+        <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
+      </div>
+    </header>
+
+    <main class="home-content">
+      ${sins.length === 0
+            ? `<div class="empty-state">
+             <p>No entries yet.</p>
+           </div>`
+            : `<ul class="sin-list">
+             ${sins.map(sin => `
+               <li class="sin-item">${escapeHtml(sin.text)}</li>
+             `).join('')}
+           </ul>`
+        }
+    </main>
+
+    <footer class="home-footer">
+      <button class="btn btn--primary" id="add-btn">+ Add Entry</button>
+      <button class="btn btn--secondary" id="clear-btn" ${sins.length === 0 ? 'disabled' : ''}>
+        After Confession
+      </button>
+    </footer>
+  `;
+
+    // Edit date functionality
+    const dateDisplay = container.querySelector('#date-display') as HTMLSpanElement;
+    const dateInput = container.querySelector('#date-input') as HTMLInputElement;
+    const editBtn = container.querySelector('#edit-date-btn') as HTMLButtonElement;
+
+    editBtn.addEventListener('click', () => {
+        dateInput.hidden = false;
+        dateDisplay.hidden = true;
+        editBtn.hidden = true;
+        dateInput.focus();
+    });
+
+    dateInput.addEventListener('change', () => {
+        const newDate = dateInput.value;
+        if (newDate) {
+            setLastConfessionDate(newDate);
+            dateDisplay.textContent = formatDate(newDate);
+        }
+        dateInput.hidden = true;
+        dateDisplay.hidden = false;
+        editBtn.hidden = false;
+    });
+
+    dateInput.addEventListener('blur', () => {
+        dateInput.hidden = true;
+        dateDisplay.hidden = false;
+        editBtn.hidden = false;
+    });
+
+    // Navigation buttons
+    container.querySelector('#add-btn')?.addEventListener('click', () => {
+        navigateTo('add-sin');
+    });
+
+    container.querySelector('#clear-btn')?.addEventListener('click', () => {
+        navigateTo('confirm-clear');
+    });
+
+    return container;
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
