@@ -402,6 +402,8 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height);
   resize: vertical;
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .add-textarea:focus {
@@ -606,4 +608,53 @@ body {
 .toggle input:focus-visible+.toggle-slider {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
+}
+
+/* === Toast Notifications === */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: auto;
+}
+
+.toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast--undo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.toast-undo-btn {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.toast-undo-btn:hover {
+  opacity: 1;
 }

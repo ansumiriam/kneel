@@ -73,7 +73,7 @@ export function renderHomeScreen(): HTMLElement {
     <main class="home-content">
       ${sins.length === 0
       ? `<div class="empty-state">
-             <p>No entries yet.</p>
+             <p>No entries yet. Take your time.</p>
            </div>`
       : `<ul class="sin-list">
              ${sins.map(sin => `
