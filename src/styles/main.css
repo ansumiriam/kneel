@@ -283,6 +283,50 @@ body {
   font-family: inherit;
 }
 
+/* === Gentle Reminder Indicator === */
+.reminder {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+}
+
+.reminder--calm {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.reminder--gentle {
+  background: rgba(180, 150, 100, 0.15);
+  color: #a08050;
+}
+
+[data-theme="dark"] .reminder--gentle {
+  background: rgba(200, 170, 100, 0.15);
+  color: #d0b080;
+}
+
+.reminder--warm {
+  background: rgba(180, 100, 80, 0.15);
+  color: #b06050;
+}
+
+[data-theme="dark"] .reminder--warm {
+  background: rgba(200, 120, 100, 0.15);
+  color: #d09080;
+}
+
+.reminder-days {
+  font-weight: 500;
+}
+
+.reminder-entries {
+  opacity: 0.8;
+}
+
 .home-content {
   flex: 1;
   overflow-y: auto;

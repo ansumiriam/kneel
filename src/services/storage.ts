@@ -112,3 +112,39 @@ export function getTheme(): 'light' | 'dark' {
 export function setTheme(theme: 'light' | 'dark'): void {
     localStorage.setItem(THEME_KEY, theme);
 }
+
+// === Gentle Reminder ===
+
+const REMINDER_KEY = 'kneel_reminder';
+
+/**
+ * Get reminder preference (enabled by default)
+ */
+export function getShowReminder(): boolean {
+    const stored = localStorage.getItem(REMINDER_KEY);
+    if (stored === 'false') {
+        return false;
+    }
+    return true; // Default to enabled
+}
+
+/**
+ * Set reminder preference
+ */
+export function setShowReminder(show: boolean): void {
+    localStorage.setItem(REMINDER_KEY, show ? 'true' : 'false');
+}
+
+/**
+ * Calculate days since last confession
+ */
+export function getDaysSinceConfession(): number | null {
+    const dateStr = getLastConfessionDate();
+    if (!dateStr) return null;
+
+    const confessionDate = new Date(dateStr);
+    const today = new Date();
+    const diffTime = today.getTime() - confessionDate.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+}

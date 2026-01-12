@@ -3,7 +3,7 @@
  * Main screen with confession date, sin list, and actions
  */
 
-import { getSins, getLastConfessionDate, setLastConfessionDate } from '../services/storage';
+import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder } from '../services/storage';
 import { navigateTo } from '../utils/router';
 
 /**
@@ -24,12 +24,35 @@ function formatDate(dateStr: string | null): string {
   }
 }
 
+/**
+ * Get reminder level based on days (for progressive color)
+ */
+function getReminderLevel(days: number): 'calm' | 'gentle' | 'warm' {
+  if (days <= 7) return 'calm';
+  if (days <= 14) return 'gentle';
+  return 'warm';
+}
+
 export function renderHomeScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--home';
 
   const sins = getSins();
   const lastDate = getLastConfessionDate();
+  const daysSince = getDaysSinceConfession();
+  const showReminder = getShowReminder();
+
+  // Build reminder HTML if enabled
+  let reminderHtml = '';
+  if (showReminder && daysSince !== null && (daysSince > 0 || sins.length > 0)) {
+    const level = getReminderLevel(daysSince);
+    reminderHtml = `
+      <div class="reminder reminder--${level}">
+        <span class="reminder-days">${daysSince} day${daysSince !== 1 ? 's' : ''} ago</span>
+        ${sins.length > 0 ? `<span class="reminder-entries">${sins.length} entr${sins.length !== 1 ? 'ies' : 'y'}</span>` : ''}
+      </div>
+    `;
+  }
 
   container.innerHTML = `
     <header class="home-header">
@@ -41,6 +64,7 @@ export function renderHomeScreen(): HTMLElement {
             <button class="btn-icon" id="edit-date-btn" aria-label="Edit date">✏️</button>
           </div>
           <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
+          ${reminderHtml}
         </div>
         <button class="btn-icon settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
       </div>
