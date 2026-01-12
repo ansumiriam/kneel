@@ -5,19 +5,20 @@
 
 import { clearSins, setLastConfessionDate } from '../services/storage';
 import { navigateTo } from '../utils/router';
+import { showToast } from '../services/toast';
 
 /**
  * Get today's date in ISO format
  */
 function getTodayISO(): string {
-    return new Date().toISOString().split('T')[0];
+  return new Date().toISOString().split('T')[0];
 }
 
 export function renderConfirmClearScreen(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'screen screen--confirm';
+  const container = document.createElement('div');
+  container.className = 'screen screen--confirm';
 
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="confirm-content">
       <div class="confirm-icon">✓</div>
       <h1 class="confirm-title">After Confession</h1>
@@ -32,17 +33,18 @@ export function renderConfirmClearScreen(): HTMLElement {
     </div>
   `;
 
-    // Handle cancel
-    container.querySelector('#cancel-btn')?.addEventListener('click', () => {
-        navigateTo('home');
-    });
+  // Handle cancel
+  container.querySelector('#cancel-btn')?.addEventListener('click', () => {
+    navigateTo('home');
+  });
 
-    // Handle confirm
-    container.querySelector('#confirm-btn')?.addEventListener('click', () => {
-        clearSins();
-        setLastConfessionDate(getTodayISO());
-        navigateTo('home');
-    });
+  // Handle confirm
+  container.querySelector('#confirm-btn')?.addEventListener('click', () => {
+    clearSins();
+    setLastConfessionDate(getTodayISO());
+    showToast('Entries cleared');
+    navigateTo('home');
+  });
 
-    return container;
+  return container;
 }

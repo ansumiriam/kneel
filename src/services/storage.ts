@@ -73,6 +73,43 @@ export function clearSins(): void {
     saveState(state);
 }
 
+/**
+ * Delete a single sin by ID
+ */
+export function deleteSin(id: string): Sin | null {
+    const state = getState();
+    const index = state.sins.findIndex(s => s.id === id);
+    if (index === -1) return null;
+
+    const [deleted] = state.sins.splice(index, 1);
+    saveState(state);
+    return deleted;
+}
+
+/**
+ * Restore a deleted sin
+ */
+export function restoreSin(sin: Sin): void {
+    const state = getState();
+    state.sins.push(sin);
+    saveState(state);
+}
+
+/**
+ * Update a sin's properties
+ */
+export function updateSin(id: string, updates: Partial<Pick<Sin, 'text' | 'color'>>): Sin | null {
+    const state = getState();
+    const sin = state.sins.find(s => s.id === id);
+    if (!sin) return null;
+
+    if (updates.text !== undefined) sin.text = updates.text;
+    if (updates.color !== undefined) sin.color = updates.color;
+
+    saveState(state);
+    return sin;
+}
+
 // === Last Confession Date ===
 
 /**
@@ -147,4 +184,47 @@ export function getDaysSinceConfession(): number | null {
     const diffTime = today.getTime() - confessionDate.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
+}
+
+// === Color Labels ===
+
+const COLOR_LABELS_KEY = 'kneel_color_labels';
+
+export interface ColorLabels {
+    rose: string;
+    amber: string;
+    sage: string;
+    sky: string;
+    lavender: string;
+}
+
+const DEFAULT_COLOR_LABELS: ColorLabels = {
+    rose: 'Repetitive',
+    amber: 'Important',
+    sage: 'Resolved',
+    sky: 'Reflect',
+    lavender: 'Other'
+};
+
+/**
+ * Get color labels
+ */
+export function getColorLabels(): ColorLabels {
+    const stored = localStorage.getItem(COLOR_LABELS_KEY);
+    if (stored) {
+        try {
+            return { ...DEFAULT_COLOR_LABELS, ...JSON.parse(stored) };
+        } catch {
+            // Invalid JSON
+        }
+    }
+    return DEFAULT_COLOR_LABELS;
+}
+
+/**
+ * Set color labels
+ */
+export function setColorLabels(labels: Partial<ColorLabels>): void {
+    const current = getColorLabels();
+    localStorage.setItem(COLOR_LABELS_KEY, JSON.stringify({ ...current, ...labels }));
 }

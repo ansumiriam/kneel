@@ -5,7 +5,13 @@ export interface Sin {
     id: string;
     text: string;
     createdAt: number; // For ordering only, not displayed
+    color?: SinColor; // Optional color tag
 }
+
+/**
+ * Available pastel colors for tagging
+ */
+export type SinColor = 'none' | 'rose' | 'amber' | 'sage' | 'sky' | 'lavender';
 
 /**
  * Persistent app state (stored in LocalStorage)

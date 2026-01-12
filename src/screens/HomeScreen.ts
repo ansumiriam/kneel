@@ -3,14 +3,17 @@
  * Main screen with confession date, sin list, and actions
  */
 
-import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder } from '../services/storage';
+import type { SinColor } from '../types';
+import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, updateSin, getColorLabels } from '../services/storage';
 import { navigateTo } from '../utils/router';
+import { showToast, showUndoToast } from '../services/toast';
+import { addSwipeHandler } from '../utils/swipe';
 
 /**
  * Format date for display
  */
 function formatDate(dateStr: string | null): string {
-  if (!dateStr) return 'Not set';
+  if (!dateStr) return 'Tap to set';
 
   try {
     const date = new Date(dateStr);
@@ -33,6 +36,14 @@ function getReminderLevel(days: number): 'calm' | 'gentle' | 'warm' {
   return 'warm';
 }
 
+/**
+ * Get CSS class for sin color
+ */
+function getColorClass(color?: SinColor): string {
+  if (!color || color === 'none') return '';
+  return `sin-item--${color}`;
+}
+
 export function renderHomeScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--home';
@@ -41,6 +52,7 @@ export function renderHomeScreen(): HTMLElement {
   const lastDate = getLastConfessionDate();
   const daysSince = getDaysSinceConfession();
   const showReminder = getShowReminder();
+  const colorLabels = getColorLabels();
 
   // Build reminder HTML if enabled
   let reminderHtml = '';
@@ -59,9 +71,8 @@ export function renderHomeScreen(): HTMLElement {
       <div class="header-row">
         <div class="confession-date">
           <span class="confession-label">Last Confession</span>
-          <div class="confession-value">
+          <div class="confession-value confession-value--clickable" id="date-trigger">
             <span id="date-display">${formatDate(lastDate)}</span>
-            <button class="btn-icon" id="edit-date-btn" aria-label="Edit date">✏️</button>
           </div>
           <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
           ${reminderHtml}
@@ -75,11 +86,24 @@ export function renderHomeScreen(): HTMLElement {
       ? `<div class="empty-state">
              <p>No entries yet. Take your time.</p>
            </div>`
-      : `<ul class="sin-list">
+      : `<ul class="sin-list" id="sin-list">
              ${sins.map(sin => `
-               <li class="sin-item">${escapeHtml(sin.text)}</li>
+               <li class="sin-item ${getColorClass(sin.color)}" data-id="${sin.id}">
+                 <div class="sin-item-content">
+                   <span class="sin-text">${escapeHtml(sin.text)}</span>
+                 </div>
+                 <div class="sin-item-actions" hidden>
+                   <button class="color-btn" data-color="none" title="No color">○</button>
+                   <button class="color-btn color-btn--rose" data-color="rose" title="${colorLabels.rose}">●</button>
+                   <button class="color-btn color-btn--amber" data-color="amber" title="${colorLabels.amber}">●</button>
+                   <button class="color-btn color-btn--sage" data-color="sage" title="${colorLabels.sage}">●</button>
+                   <button class="color-btn color-btn--sky" data-color="sky" title="${colorLabels.sky}">●</button>
+                   <button class="color-btn color-btn--lavender" data-color="lavender" title="${colorLabels.lavender}">●</button>
+                 </div>
+               </li>
              `).join('')}
-           </ul>`
+           </ul>
+           <p class="swipe-hint">Swipe left to tag, right to delete</p>`
     }
     </main>
 
@@ -91,15 +115,14 @@ export function renderHomeScreen(): HTMLElement {
     </footer>
   `;
 
-  // Edit date functionality
+  // Tap date to edit
+  const dateTrigger = container.querySelector('#date-trigger') as HTMLElement;
   const dateDisplay = container.querySelector('#date-display') as HTMLSpanElement;
   const dateInput = container.querySelector('#date-input') as HTMLInputElement;
-  const editBtn = container.querySelector('#edit-date-btn') as HTMLButtonElement;
 
-  editBtn.addEventListener('click', () => {
+  dateTrigger.addEventListener('click', () => {
     dateInput.hidden = false;
-    dateDisplay.hidden = true;
-    editBtn.hidden = true;
+    dateTrigger.hidden = true;
     dateInput.focus();
   });
 
@@ -110,14 +133,57 @@ export function renderHomeScreen(): HTMLElement {
       dateDisplay.textContent = formatDate(newDate);
     }
     dateInput.hidden = true;
-    dateDisplay.hidden = false;
-    editBtn.hidden = false;
+    dateTrigger.hidden = false;
   });
 
   dateInput.addEventListener('blur', () => {
     dateInput.hidden = true;
-    dateDisplay.hidden = false;
-    editBtn.hidden = false;
+    dateTrigger.hidden = false;
+  });
+
+  // Set up swipe handlers for each sin item
+  const sinItems = container.querySelectorAll('.sin-item');
+  sinItems.forEach(item => {
+    const sinId = (item as HTMLElement).dataset.id!;
+    const actionsDiv = item.querySelector('.sin-item-actions') as HTMLElement;
+
+    addSwipeHandler(item as HTMLElement, {
+      onSwipeLeft: () => {
+        // Show color picker
+        actionsDiv.hidden = !actionsDiv.hidden;
+      },
+      onSwipeRight: () => {
+        // Delete with undo
+        const deleted = deleteSin(sinId);
+        if (deleted) {
+          (item as HTMLElement).style.display = 'none';
+          showUndoToast('Entry deleted', () => {
+            restoreSin(deleted);
+            navigateTo('home'); // Refresh
+          });
+        }
+      }
+    });
+
+    // Color button handlers
+    const colorBtns = actionsDiv.querySelectorAll('.color-btn');
+    colorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = (btn as HTMLElement).dataset.color as SinColor;
+        updateSin(sinId, { color });
+
+        // Update UI immediately
+        item.className = `sin-item ${getColorClass(color)}`;
+        actionsDiv.hidden = true;
+        showToast('Color updated');
+      });
+    });
+
+    // Tap to expand/collapse long text
+    const textSpan = item.querySelector('.sin-text') as HTMLElement;
+    textSpan.addEventListener('click', () => {
+      item.classList.toggle('sin-item--expanded');
+    });
   });
 
   // Navigation buttons
