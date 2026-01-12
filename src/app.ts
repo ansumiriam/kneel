@@ -9,17 +9,22 @@ import { renderPrivacyCheckScreen } from './screens/PrivacyCheckScreen';
 import { renderHomeScreen } from './screens/HomeScreen';
 import { renderAddSinScreen } from './screens/AddSinScreen';
 import { renderConfirmClearScreen } from './screens/ConfirmClearScreen';
+import { renderSettingsScreen, initTheme } from './screens/SettingsScreen';
 
 /**
  * Initialize the application
  */
 export function initApp(): void {
+    // Initialize theme (dark by default)
+    initTheme();
+
     // Register all screens
     registerScreen('lock', renderLockScreen);
     registerScreen('privacy-check', renderPrivacyCheckScreen);
     registerScreen('home', renderHomeScreen);
     registerScreen('add-sin', renderAddSinScreen);
     registerScreen('confirm-clear', renderConfirmClearScreen);
+    registerScreen('settings', renderSettingsScreen);
 
     // Start at lock screen
     navigateTo('lock');

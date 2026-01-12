@@ -33,13 +33,16 @@ export function renderHomeScreen(): HTMLElement {
 
   container.innerHTML = `
     <header class="home-header">
-      <div class="confession-date">
-        <span class="confession-label">Last Confession</span>
-        <div class="confession-value">
-          <span id="date-display">${formatDate(lastDate)}</span>
-          <button class="btn-icon" id="edit-date-btn" aria-label="Edit date">✏️</button>
+      <div class="header-row">
+        <div class="confession-date">
+          <span class="confession-label">Last Confession</span>
+          <div class="confession-value">
+            <span id="date-display">${formatDate(lastDate)}</span>
+            <button class="btn-icon" id="edit-date-btn" aria-label="Edit date">✏️</button>
+          </div>
+          <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
         </div>
-        <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
+        <button class="btn-icon settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
       </div>
     </header>
 
@@ -100,6 +103,10 @@ export function renderHomeScreen(): HTMLElement {
 
   container.querySelector('#clear-btn')?.addEventListener('click', () => {
     navigateTo('confirm-clear');
+  });
+
+  container.querySelector('#settings-btn')?.addEventListener('click', () => {
+    navigateTo('settings');
   });
 
   return container;

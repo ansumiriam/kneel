@@ -90,3 +90,25 @@ export function setLastConfessionDate(date: string): void {
     state.lastConfessionDate = date;
     saveState(state);
 }
+
+// === Theme ===
+
+const THEME_KEY = 'kneel_theme';
+
+/**
+ * Get the current theme (dark is default)
+ */
+export function getTheme(): 'light' | 'dark' {
+    const stored = localStorage.getItem(THEME_KEY);
+    if (stored === 'light' || stored === 'dark') {
+        return stored;
+    }
+    return 'dark'; // Default to dark
+}
+
+/**
+ * Set the theme
+ */
+export function setTheme(theme: 'light' | 'dark'): void {
+    localStorage.setItem(THEME_KEY, theme);
+}

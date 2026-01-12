@@ -5,23 +5,23 @@
 
 /* === Design Tokens === */
 :root {
-  /* Colors */
+  /* Colors - Light Theme */
   --bg-primary: #fafafa;
   --bg-secondary: #f0f0f0;
   --bg-card: #ffffff;
-  
+
   --text-primary: #2d2d2d;
   --text-secondary: #6b6b6b;
   --text-muted: #999999;
-  
+
   --accent: #5a6e7a;
   --accent-light: #7a8e9a;
   --accent-dark: #4a5e6a;
-  
+
   --border: #e0e0e0;
   --focus: #5a6e7a;
   --error: #c45050;
-  
+
   /* Typography */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
   --font-size-sm: 0.875rem;
@@ -30,7 +30,7 @@
   --font-size-xl: 1.5rem;
   --font-size-2xl: 2rem;
   --line-height: 1.6;
-  
+
   /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -38,14 +38,35 @@
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
-  
+
   /* Layout */
   --max-width: 28rem;
   --border-radius: 0.5rem;
 }
 
+/* === Dark Theme === */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-card: #252525;
+
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+
+  --accent: #7a9caa;
+  --accent-light: #8aacba;
+  --accent-dark: #6a8c9a;
+
+  --border: #3a3a3a;
+  --focus: #7a9caa;
+  --error: #e07070;
+}
+
 /* === Reset & Base === */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -349,9 +370,19 @@ body {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
 }
 
 .add-footer {
@@ -413,7 +444,10 @@ body {
 
 /* === Accessibility === */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
@@ -421,6 +455,111 @@ body {
 
 /* Focus visible for keyboard users */
 :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* === Home Header Row === */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.settings-btn {
+  font-size: 1.25rem;
+}
+
+/* === Settings Screen === */
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.settings-title {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+}
+
+.settings-content {
+  flex: 1;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+}
+
+.settings-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.settings-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.settings-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* === Toggle Switch === */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 1.75rem;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--border);
+  transition: 0.3s;
+  border-radius: 1rem;
+}
+
+.toggle-slider::before {
+  position: absolute;
+  content: "";
+  height: 1.25rem;
+  width: 1.25rem;
+  left: 0.25rem;
+  bottom: 0.25rem;
+  background: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggle input:checked+.toggle-slider {
+  background: var(--accent);
+}
+
+.toggle input:checked+.toggle-slider::before {
+  transform: translateX(1.25rem);
+}
+
+.toggle input:focus-visible+.toggle-slider {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
