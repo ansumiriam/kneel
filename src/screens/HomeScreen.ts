@@ -45,6 +45,29 @@ function getColorClass(color?: SinColor): string {
   return `sin-item--${color}`;
 }
 
+/**
+ * Build color picker HTML with selected indicator
+ */
+function buildColorPicker(currentColor: SinColor | undefined, colorLabels: { [key: string]: string }): string {
+  const colors: SinColor[] = ['none', 'rose', 'amber', 'sage', 'sky', 'lavender'];
+  const selectedColor = currentColor || 'none';
+
+  return `
+    <div class="sin-item-actions" hidden>
+      <div class="color-picker-row">
+        ${colors.map(color => `
+          <button class="color-btn ${color !== 'none' ? `color-btn--${color}` : ''} ${selectedColor === color ? 'color-btn--selected' : ''}" 
+                  data-color="${color}" 
+                  title="${color === 'none' ? 'No color' : colorLabels[color] || color}">
+            ${color === 'none' ? '○' : '●'}
+          </button>
+        `).join('')}
+        <button class="color-btn color-btn--close" title="Close">✕</button>
+      </div>
+    </div>
+  `;
+}
+
 export function renderHomeScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--home';
@@ -90,20 +113,11 @@ export function renderHomeScreen(): HTMLElement {
            </div>`
       : `<ul class="sin-list" id="sin-list">
              ${sins.map(sin => `
-               <li class="sin-item ${getColorClass(sin.color)}" data-id="${sin.id}">
+               <li class="sin-item ${getColorClass(sin.color)}" data-id="${sin.id}" data-color="${sin.color || 'none'}">
                  <div class="sin-item-content">
                    <span class="sin-text">${escapeHtml(sin.text)}</span>
                  </div>
-                 ${colorTaggingEnabled ? `
-                 <div class="sin-item-actions" hidden>
-                   <button class="color-btn" data-color="none" title="No color">○</button>
-                   <button class="color-btn color-btn--rose" data-color="rose" title="${colorLabels.rose}">●</button>
-                   <button class="color-btn color-btn--amber" data-color="amber" title="${colorLabels.amber}">●</button>
-                   <button class="color-btn color-btn--sage" data-color="sage" title="${colorLabels.sage}">●</button>
-                   <button class="color-btn color-btn--sky" data-color="sky" title="${colorLabels.sky}">●</button>
-                   <button class="color-btn color-btn--lavender" data-color="lavender" title="${colorLabels.lavender}">●</button>
-                 </div>
-                 ` : ''}
+                 ${colorTaggingEnabled ? buildColorPicker(sin.color, colorLabels) : ''}
                </li>
              `).join('')}
            </ul>
@@ -145,6 +159,13 @@ export function renderHomeScreen(): HTMLElement {
     dateTrigger.hidden = false;
   });
 
+  // Helper to close all color pickers
+  const closeAllPickers = () => {
+    container.querySelectorAll('.sin-item-actions').forEach(el => {
+      (el as HTMLElement).hidden = true;
+    });
+  };
+
   // Set up handlers for each sin item
   const sinItems = container.querySelectorAll('.sin-item');
   sinItems.forEach(item => {
@@ -177,7 +198,10 @@ export function renderHomeScreen(): HTMLElement {
 
       const handleTouchStart = () => {
         longPressTimer = window.setTimeout(() => {
-          actionsDiv.hidden = !actionsDiv.hidden;
+          // Close other pickers first
+          closeAllPickers();
+          // Show this picker
+          actionsDiv.hidden = false;
         }, 500); // 500ms for long press
       };
 
@@ -192,8 +216,15 @@ export function renderHomeScreen(): HTMLElement {
       item.addEventListener('touchend', handleTouchEnd, { passive: true });
       item.addEventListener('touchmove', handleTouchEnd, { passive: true });
 
+      // Close button handler
+      const closeBtn = actionsDiv.querySelector('.color-btn--close');
+      closeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        actionsDiv.hidden = true;
+      });
+
       // Color button handlers
-      const colorBtns = actionsDiv.querySelectorAll('.color-btn');
+      const colorBtns = actionsDiv.querySelectorAll('.color-btn:not(.color-btn--close)');
       colorBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -202,6 +233,13 @@ export function renderHomeScreen(): HTMLElement {
 
           // Update UI immediately
           item.className = `sin-item ${getColorClass(color)}`;
+          (item as HTMLElement).dataset.color = color;
+
+          // Update selected indicator
+          actionsDiv.querySelectorAll('.color-btn').forEach(b => b.classList.remove('color-btn--selected'));
+          btn.classList.add('color-btn--selected');
+
+          // Close picker after selection
           actionsDiv.hidden = true;
           showToast('Color updated');
         });

@@ -45,7 +45,7 @@ export function renderSettingsScreen(): HTMLElement {
 
       <div class="settings-item">
         <div class="settings-label">
-          <span class="settings-name">Color Tagging</span>
+          <span class="settings-name">Color Code Sin</span>
           <span class="settings-desc">Long press entries to add color tags</span>
         </div>
         <label class="toggle">

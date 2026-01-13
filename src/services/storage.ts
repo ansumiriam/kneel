@@ -210,6 +210,7 @@ export function getDaysSinceConfession(): number | null {
 const COLOR_LABELS_KEY = 'kneel_color_labels';
 
 export interface ColorLabels {
+    [key: string]: string;
     rose: string;
     amber: string;
     sage: string;
