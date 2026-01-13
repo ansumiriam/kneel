@@ -8,11 +8,12 @@ import { ATTRIBUTION } from '../content/prayers';
 import { setCurrentPrayer } from './PrayerScreen';
 
 export function renderPrepareScreen(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'screen screen--prepare';
+  const container = document.createElement('div');
+  container.className = 'screen screen--prepare';
 
-    container.innerHTML = `
+  container.innerHTML = `
     <header class="prepare-header">
+      <button class="btn-back" id="back-btn" aria-label="Go back">← Back</button>
       <h1 class="prepare-title">Prepare</h1>
     </header>
 
@@ -37,7 +38,7 @@ export function renderPrepareScreen(): HTMLElement {
         <span class="prepare-icon">📖</span>
         <div class="prepare-card-text">
           <span class="prepare-card-title">Preparation Guide</span>
-          <span class="prepare-card-desc">10 pages · Swipe to read</span>
+          <span class="prepare-card-desc">Swipe to read · Self-examination & Commandments</span>
         </div>
       </div>
 
@@ -46,38 +47,27 @@ export function renderPrepareScreen(): HTMLElement {
         <a href="${ATTRIBUTION.url}" target="_blank" class="attribution-link">View Full PDF</a>
       </div>
     </main>
-
-    <nav class="bottom-nav">
-      <button class="nav-tab" id="nav-home">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label">Home</span>
-      </button>
-      <button class="nav-tab nav-tab--active" id="nav-prepare">
-        <span class="nav-icon">📖</span>
-        <span class="nav-label">Prepare</span>
-      </button>
-    </nav>
   `;
 
-    // Card click handlers
-    container.querySelector('#prayer-before')?.addEventListener('click', () => {
-        setCurrentPrayer('before');
-        navigateTo('prayer');
-    });
+  // Back button
+  container.querySelector('#back-btn')?.addEventListener('click', () => {
+    navigateTo('home');
+  });
 
-    container.querySelector('#act-contrition')?.addEventListener('click', () => {
-        setCurrentPrayer('contrition');
-        navigateTo('prayer');
-    });
+  // Card click handlers
+  container.querySelector('#prayer-before')?.addEventListener('click', () => {
+    setCurrentPrayer('before');
+    navigateTo('prayer');
+  });
 
-    container.querySelector('#prep-guide')?.addEventListener('click', () => {
-        navigateTo('guide');
-    });
+  container.querySelector('#act-contrition')?.addEventListener('click', () => {
+    setCurrentPrayer('contrition');
+    navigateTo('prayer');
+  });
 
-    // Navigation
-    container.querySelector('#nav-home')?.addEventListener('click', () => {
-        navigateTo('home');
-    });
+  container.querySelector('#prep-guide')?.addEventListener('click', () => {
+    navigateTo('guide');
+  });
 
-    return container;
+  return container;
 }

@@ -1,6 +1,6 @@
 /**
  * Guide Screen
- * Swipeable preparation guide pages
+ * Swipeable preparation guide pages with page flip animation
  */
 
 import { navigateTo } from '../utils/router';
@@ -12,69 +12,41 @@ export function renderGuideScreen(): HTMLElement {
     const container = document.createElement('div');
     container.className = 'screen screen--guide';
 
-    const renderPage = () => {
+    const renderPage = (direction: 'left' | 'right' | 'none' = 'none') => {
         const page = PREPARATION_GUIDE_PAGES[currentPage];
         const totalPages = PREPARATION_GUIDE_PAGES.length;
 
         container.innerHTML = `
       <header class="guide-header">
         <button class="btn-back" id="back-btn" aria-label="Go back">← Back</button>
-        <span class="guide-progress">${currentPage + 1} / ${totalPages}</span>
+        <span class="guide-title-text">${page.title}</span>
       </header>
 
-      <main class="guide-content" id="guide-main">
-        <h2 class="guide-title">${page.title}</h2>
-        <span class="guide-subtitle">${page.subtitle}</span>
+      <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="guide-main">
         <div class="guide-text">${formatGuideText(page.content)}</div>
       </main>
 
-      <footer class="guide-nav">
-        <button class="btn btn--secondary" id="prev-btn" ${currentPage === 0 ? 'disabled' : ''}>← Previous</button>
-        <button class="btn btn--primary" id="next-btn" ${currentPage === totalPages - 1 ? 'disabled' : ''}>Next →</button>
+      <footer class="guide-footer">
+        <div class="guide-dots">
+          ${Array.from({ length: totalPages }, (_, i) =>
+            `<span class="guide-dot ${i === currentPage ? 'guide-dot--active' : ''}"></span>`
+        ).join('')}
+        </div>
+        <span class="guide-page-num">${currentPage + 1} / ${totalPages}</span>
+        <a href="${ATTRIBUTION.url}" target="_blank" class="guide-source-link">Source: Malankara Library</a>
       </footer>
-
-      <div class="guide-attribution">
-        <a href="${ATTRIBUTION.url}" target="_blank">Source: ${ATTRIBUTION.source}</a>
-      </div>
-
-      <nav class="bottom-nav">
-        <button class="nav-tab" id="nav-home">
-          <span class="nav-icon">🏠</span>
-          <span class="nav-label">Home</span>
-        </button>
-        <button class="nav-tab nav-tab--active" id="nav-prepare">
-          <span class="nav-icon">📖</span>
-          <span class="nav-label">Prepare</span>
-        </button>
-      </nav>
     `;
 
-        // Button handlers
+        // Remove animation class after it completes
+        setTimeout(() => {
+            const mainEl = container.querySelector('#guide-main');
+            if (mainEl) {
+                mainEl.classList.remove('page-flip--left', 'page-flip--right');
+            }
+        }, 300);
+
+        // Back button handler
         container.querySelector('#back-btn')?.addEventListener('click', () => {
-            currentPage = 0;
-            navigateTo('prepare');
-        });
-
-        container.querySelector('#prev-btn')?.addEventListener('click', () => {
-            if (currentPage > 0) {
-                currentPage--;
-                renderPage();
-            }
-        });
-
-        container.querySelector('#next-btn')?.addEventListener('click', () => {
-            if (currentPage < totalPages - 1) {
-                currentPage++;
-                renderPage();
-            }
-        });
-
-        container.querySelector('#nav-home')?.addEventListener('click', () => {
-            currentPage = 0;
-            navigateTo('home');
-        });
-
-        container.querySelector('#nav-prepare')?.addEventListener('click', () => {
             currentPage = 0;
             navigateTo('prepare');
         });
@@ -85,24 +57,31 @@ export function renderGuideScreen(): HTMLElement {
 
     const setupSwipe = (element: HTMLElement) => {
         let startX = 0;
+        let startY = 0;
 
         element.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
         }, { passive: true });
 
         element.addEventListener('touchend', (e) => {
             const endX = e.changedTouches[0].clientX;
-            const diff = endX - startX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = endX - startX;
+            const diffY = Math.abs(endY - startY);
             const totalPages = PREPARATION_GUIDE_PAGES.length;
 
-            if (diff > 50 && currentPage > 0) {
-                // Swipe right = previous
-                currentPage--;
-                renderPage();
-            } else if (diff < -50 && currentPage < totalPages - 1) {
-                // Swipe left = next
-                currentPage++;
-                renderPage();
+            // Only trigger if horizontal swipe is dominant
+            if (Math.abs(diffX) > 50 && diffY < 100) {
+                if (diffX > 0 && currentPage > 0) {
+                    // Swipe right = previous page
+                    currentPage--;
+                    renderPage('right');
+                } else if (diffX < 0 && currentPage < totalPages - 1) {
+                    // Swipe left = next page
+                    currentPage++;
+                    renderPage('left');
+                }
             }
         }, { passive: true });
     };

@@ -41,21 +41,44 @@ Amen.`
 
 export const PREPARATION_GUIDE_PAGES = [
     {
-        title: "Preparation for Confession",
-        subtitle: "Page 1 of 10",
+        title: "Self-Examination",
+        subtitle: "Page 1 of 11",
         content: `**The Most Important Commandment**
 
 *"You shall love the Lord your God with all your heart and with all your soul, and with all your mind and with all your strength."* — Mark 12:30
+
+**Key Scripture Reminders:**
 
 • Those who love me will obey my commandments. (John 14:21, 23, 24)
 • Love each other as I have loved you. (John 15:12)
 • If you do not forgive others, neither will your Heavenly Father forgive you. (Matthew 6:14, 18:35)
 • We are not living, but dead if we do not love each other. (1 John 3:14)
-• "Truly I tell you, just as you did not do it to the least of these, you did not do it to me." (Matthew 25:45)`
+• "Truly I tell you, just as you did not do it to the least of these, you did not do it to me." (Matthew 25:45)
+• Do not judge so that you may not be judged. (Matthew 7:1, Romans 2:1)
+• Greed which is the same as idolatry. (Colossians 3:5)
+• Do not be a cause for others to fall. (Luke 17:1)
+• Satan is a liar and the father of lies. (John 8:44)`
+    },
+    {
+        title: "More Self-Examination",
+        subtitle: "Page 2 of 11",
+        content: `**Additional Scripture for Reflection:**
+
+• Fornication, impurity, idolatry, sorcery, enmities, jealousy, anger, quarrels, dissentions, factions, envy, drunkenness… (Galatians 5:19)
+• Wrongdoers – idolaters, adulterers, thieves – will not inherit the kingdom of God. (1 Corinthians 6:10)
+• "Be on guard so that your hearts are not weighed down with dissipation and drunkenness and worries of this world." (Luke 21:34)
+• Do you take up your daily crosses in a manner God desires of you? (Luke 9:23)
+• "Children, obey your parents." (Ephesians 6:1)
+• My child, help your father in his old age and do not grieve him as long as he lives. (Sirach 3:12-16)
+
+**The Ten Commandments Summary:**
+
+1. Love God above all
+2. Love one another as yourself`
     },
     {
         title: "First Commandment",
-        subtitle: "Page 2 of 10",
+        subtitle: "Page 3 of 11",
         content: `**I am the Lord your God. You shall not have strange gods before me.**
 
 • Have I believed in other gods, gave adoration/worship to them?
