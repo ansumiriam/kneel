@@ -39,4 +39,7 @@ export type ScreenId =
     | 'add-sin'
     | 'edit-sin'
     | 'confirm-clear'
-    | 'settings';
+    | 'settings'
+    | 'prepare'
+    | 'prayer'
+    | 'guide';

@@ -11,6 +11,9 @@ import { renderAddSinScreen } from './screens/AddSinScreen';
 import { renderEditSinScreen } from './screens/EditSinScreen';
 import { renderConfirmClearScreen } from './screens/ConfirmClearScreen';
 import { renderSettingsScreen, initTheme } from './screens/SettingsScreen';
+import { renderPrepareScreen } from './screens/PrepareScreen';
+import { renderPrayerScreen } from './screens/PrayerScreen';
+import { renderGuideScreen } from './screens/GuideScreen';
 
 /**
  * Initialize the application
@@ -27,6 +30,9 @@ export function initApp(): void {
     registerScreen('edit-sin', renderEditSinScreen);
     registerScreen('confirm-clear', renderConfirmClearScreen);
     registerScreen('settings', renderSettingsScreen);
+    registerScreen('prepare', renderPrepareScreen);
+    registerScreen('prayer', renderPrayerScreen);
+    registerScreen('guide', renderGuideScreen);
 
     // Start at lock screen
     navigateTo('lock');

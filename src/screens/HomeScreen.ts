@@ -131,6 +131,17 @@ export function renderHomeScreen(): HTMLElement {
         After Confession
       </button>
     </footer>
+
+    <nav class="bottom-nav">
+      <button class="nav-tab nav-tab--active" id="nav-home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-tab" id="nav-prepare">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Prepare</span>
+      </button>
+    </nav>
   `;
 
   // Tap date to edit
@@ -267,6 +278,11 @@ export function renderHomeScreen(): HTMLElement {
 
   container.querySelector('#settings-btn')?.addEventListener('click', () => {
     navigateTo('settings');
+  });
+
+  // Bottom navigation
+  container.querySelector('#nav-prepare')?.addEventListener('click', () => {
+    navigateTo('prepare');
   });
 
   return container;
