@@ -415,6 +415,10 @@ body {
   border-top: 1px solid var(--border);
 }
 
+.sin-item-actions[hidden] {
+  display: none !important;
+}
+
 .color-btn {
   width: 2.5rem;
   height: 2.5rem;
