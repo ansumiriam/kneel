@@ -8,6 +8,7 @@ import { renderLockScreen } from './screens/LockScreen';
 import { renderPrivacyCheckScreen } from './screens/PrivacyCheckScreen';
 import { renderHomeScreen } from './screens/HomeScreen';
 import { renderAddSinScreen } from './screens/AddSinScreen';
+import { renderEditSinScreen } from './screens/EditSinScreen';
 import { renderConfirmClearScreen } from './screens/ConfirmClearScreen';
 import { renderSettingsScreen, initTheme } from './screens/SettingsScreen';
 
@@ -23,6 +24,7 @@ export function initApp(): void {
     registerScreen('privacy-check', renderPrivacyCheckScreen);
     registerScreen('home', renderHomeScreen);
     registerScreen('add-sin', renderAddSinScreen);
+    registerScreen('edit-sin', renderEditSinScreen);
     registerScreen('confirm-clear', renderConfirmClearScreen);
     registerScreen('settings', renderSettingsScreen);
 

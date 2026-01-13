@@ -37,5 +37,6 @@ export type ScreenId =
     | 'privacy-check'
     | 'home'
     | 'add-sin'
+    | 'edit-sin'
     | 'confirm-clear'
     | 'settings';

@@ -4,10 +4,11 @@
  */
 
 import type { SinColor } from '../types';
-import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, updateSin, getColorLabels } from '../services/storage';
+import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, updateSin, getColorLabels, getColorTaggingEnabled } from '../services/storage';
 import { navigateTo } from '../utils/router';
 import { showToast, showUndoToast } from '../services/toast';
 import { addSwipeHandler } from '../utils/swipe';
+import { setEditingSinId } from './EditSinScreen';
 
 /**
  * Format date for display
@@ -53,6 +54,7 @@ export function renderHomeScreen(): HTMLElement {
   const daysSince = getDaysSinceConfession();
   const showReminder = getShowReminder();
   const colorLabels = getColorLabels();
+  const colorTaggingEnabled = getColorTaggingEnabled();
 
   // Build reminder HTML if enabled
   let reminderHtml = '';
@@ -92,6 +94,7 @@ export function renderHomeScreen(): HTMLElement {
                  <div class="sin-item-content">
                    <span class="sin-text">${escapeHtml(sin.text)}</span>
                  </div>
+                 ${colorTaggingEnabled ? `
                  <div class="sin-item-actions" hidden>
                    <button class="color-btn" data-color="none" title="No color">○</button>
                    <button class="color-btn color-btn--rose" data-color="rose" title="${colorLabels.rose}">●</button>
@@ -100,10 +103,11 @@ export function renderHomeScreen(): HTMLElement {
                    <button class="color-btn color-btn--sky" data-color="sky" title="${colorLabels.sky}">●</button>
                    <button class="color-btn color-btn--lavender" data-color="lavender" title="${colorLabels.lavender}">●</button>
                  </div>
+                 ` : ''}
                </li>
              `).join('')}
            </ul>
-           <p class="swipe-hint">Swipe left to tag, right to delete</p>`
+           <p class="swipe-hint">Swipe left to edit, right to delete${colorTaggingEnabled ? '. Long press for colors.' : ''}</p>`
     }
     </main>
 
@@ -141,16 +145,18 @@ export function renderHomeScreen(): HTMLElement {
     dateTrigger.hidden = false;
   });
 
-  // Set up swipe handlers for each sin item
+  // Set up handlers for each sin item
   const sinItems = container.querySelectorAll('.sin-item');
   sinItems.forEach(item => {
     const sinId = (item as HTMLElement).dataset.id!;
-    const actionsDiv = item.querySelector('.sin-item-actions') as HTMLElement;
+    const actionsDiv = item.querySelector('.sin-item-actions') as HTMLElement | null;
 
+    // Swipe handlers
     addSwipeHandler(item as HTMLElement, {
       onSwipeLeft: () => {
-        // Show color picker
-        actionsDiv.hidden = !actionsDiv.hidden;
+        // Edit the entry
+        setEditingSinId(sinId);
+        navigateTo('edit-sin');
       },
       onSwipeRight: () => {
         // Delete with undo
@@ -165,23 +171,49 @@ export function renderHomeScreen(): HTMLElement {
       }
     });
 
-    // Color button handlers
-    const colorBtns = actionsDiv.querySelectorAll('.color-btn');
-    colorBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const color = (btn as HTMLElement).dataset.color as SinColor;
-        updateSin(sinId, { color });
+    // Long press for color picker (only if enabled)
+    if (colorTaggingEnabled && actionsDiv) {
+      let longPressTimer: number | null = null;
 
-        // Update UI immediately
-        item.className = `sin-item ${getColorClass(color)}`;
-        actionsDiv.hidden = true;
-        showToast('Color updated');
+      const handleTouchStart = () => {
+        longPressTimer = window.setTimeout(() => {
+          actionsDiv.hidden = !actionsDiv.hidden;
+        }, 500); // 500ms for long press
+      };
+
+      const handleTouchEnd = () => {
+        if (longPressTimer) {
+          clearTimeout(longPressTimer);
+          longPressTimer = null;
+        }
+      };
+
+      item.addEventListener('touchstart', handleTouchStart, { passive: true });
+      item.addEventListener('touchend', handleTouchEnd, { passive: true });
+      item.addEventListener('touchmove', handleTouchEnd, { passive: true });
+
+      // Color button handlers
+      const colorBtns = actionsDiv.querySelectorAll('.color-btn');
+      colorBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const color = (btn as HTMLElement).dataset.color as SinColor;
+          updateSin(sinId, { color });
+
+          // Update UI immediately
+          item.className = `sin-item ${getColorClass(color)}`;
+          actionsDiv.hidden = true;
+          showToast('Color updated');
+        });
       });
-    });
+    }
 
     // Tap to expand/collapse long text
     const textSpan = item.querySelector('.sin-text') as HTMLElement;
-    textSpan.addEventListener('click', () => {
+    textSpan.addEventListener('click', (e) => {
+      // Don't expand if color actions are visible
+      if (actionsDiv && !actionsDiv.hidden) return;
+      e.stopPropagation();
       item.classList.toggle('sin-item--expanded');
     });
   });

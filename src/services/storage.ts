@@ -172,6 +172,25 @@ export function setShowReminder(show: boolean): void {
     localStorage.setItem(REMINDER_KEY, show ? 'true' : 'false');
 }
 
+// === Color Tagging ===
+
+const COLOR_TAGGING_KEY = 'kneel_color_tagging';
+
+/**
+ * Get color tagging preference (disabled by default)
+ */
+export function getColorTaggingEnabled(): boolean {
+    const stored = localStorage.getItem(COLOR_TAGGING_KEY);
+    return stored === 'true'; // Default to disabled
+}
+
+/**
+ * Set color tagging preference
+ */
+export function setColorTaggingEnabled(enabled: boolean): void {
+    localStorage.setItem(COLOR_TAGGING_KEY, enabled ? 'true' : 'false');
+}
+
 /**
  * Calculate days since last confession
  */
