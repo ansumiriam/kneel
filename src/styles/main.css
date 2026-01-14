@@ -1024,13 +1024,22 @@ body {
   margin-bottom: var(--space-md);
 }
 
-.guide-text li {
+.guide-text ol {
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-lg);
+}
+
+.guide-text ul li {
   padding-left: var(--space-md);
   margin-bottom: var(--space-sm);
   position: relative;
 }
 
-.guide-text li::before {
+.guide-text ol li {
+  margin-bottom: var(--space-sm);
+}
+
+.guide-text ul li::before {
   content: "•";
   position: absolute;
   left: 0;
