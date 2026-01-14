@@ -101,10 +101,15 @@ function formatGuideText(text: string): string {
             para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
             // Italic text
             para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            // List items
+            // Bullet list items
             if (para.startsWith('• ')) {
                 const items = para.split('\n').map(item => `<li>${item.replace('• ', '')}</li>`).join('');
                 return `<ul>${items}</ul>`;
+            }
+            // Numbered list items (1. 2. 3. etc.)
+            if (/^\d+\.\s/.test(para)) {
+                const items = para.split('\n').map(item => `<li>${item.replace(/^\d+\.\s/, '')}</li>`).join('');
+                return `<ol>${items}</ol>`;
             }
             return `<p>${para}</p>`;
         })
