@@ -19,7 +19,7 @@ export function renderPrepareScreen(): HTMLElement {
 
     <main class="prepare-content">
       <div class="prepare-card" id="prayer-before">
-        <span class="prepare-icon">📿</span>
+        <span class="prepare-icon">🙏</span>
         <div class="prepare-card-text">
           <span class="prepare-card-title">Prayer Before Confession</span>
           <span class="prepare-card-desc">Tap to read</span>
