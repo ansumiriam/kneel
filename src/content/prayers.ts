@@ -108,6 +108,7 @@ export const PREPARATION_GUIDE_PAGES = [
     {
         title: "Pride",
         content: `**Do I have pride?**
+
 • Do I desire honour and positions?
 • Am I stubborn or selfish?
 • Do I have greed for money?
