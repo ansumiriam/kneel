@@ -74,12 +74,14 @@ export const PREPARATION_GUIDE_PAGES = [
     },
     {
         title: "Ten Commandments (cont.)",
-        content: `8. You shall not bear false witness
+        content: `8. You shall not bear false witness against your neighbour
 9. You shall not covet your neighbour's wife
 10. You shall not covet your neighbour's goods
 
-**These can be summarised into two:**
-Love God above all. Love one another as yourself.`
+**These ten commandments can be summarised into two:**
+
+1. Love God above all.
+2. Love one another as yourself.`
     },
     {
         title: "1st Commandment",
