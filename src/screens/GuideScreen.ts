@@ -19,10 +19,10 @@ export function renderGuideScreen(): HTMLElement {
         container.innerHTML = `
       <header class="guide-header">
         <button class="btn-back" id="back-btn" aria-label="Go back">← Back</button>
-        <span class="guide-title-text">${page.title}</span>
       </header>
 
       <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="guide-main">
+        <h2 class="guide-page-title">${page.title}</h2>
         <div class="guide-text">${formatGuideText(page.content)}</div>
       </main>
 
