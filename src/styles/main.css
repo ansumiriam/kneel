@@ -993,8 +993,14 @@ body {
 }
 
 .guide-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: var(--space-md) var(--space-lg);
   padding-top: calc(var(--space-md) + env(safe-area-inset-top));
+  background: var(--bg-primary);
+  z-index: 100;
 }
 
 .guide-page-title {
@@ -1007,6 +1013,7 @@ body {
 .guide-content {
   flex: 1;
   padding: 0 var(--space-lg);
+  padding-top: calc(60px + env(safe-area-inset-top));
   overflow: hidden;
 }
 
