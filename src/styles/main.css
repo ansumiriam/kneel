@@ -1009,7 +1009,7 @@ body {
 .guide-content {
   flex: 1;
   padding: 0 var(--space-lg);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .guide-text {
