@@ -46,76 +46,96 @@ export const PREPARATION_GUIDE_PAGES = [
 
 *"You shall love the Lord your God with all your heart and with all your soul, and with all your mind and with all your strength."* — Mark 12:30
 
-• Those who love me will obey my commandments (John 14:21)
-• Love each other as I have loved you (John 15:12)
-• If you do not forgive others, neither will your Heavenly Father forgive you (Matthew 6:14)
-• We are not living, but dead if we do not love each other (1 John 3:14)`
+• Those who love me will obey my commandments
+• Love each other as I have loved you
+• If you do not forgive others, neither will your Heavenly Father forgive you`
     },
     {
         title: "Scripture Reminders",
-        content: `• Just as you did not do it to the least of these, you did not do it to me (Matthew 25:45)
+        content: `• We are not living, but dead if we do not love each other (1 John 3:14)
+• Just as you did not do it to the least of these, you did not do it to me (Matthew 25:45)
 • Do not judge so that you may not be judged (Matthew 7:1)
 • Greed is the same as idolatry (Colossians 3:5)
-• Do not be a cause for others to fall (Luke 17:1)
-• Satan is a liar and the father of lies (John 8:44)
-• Wrongdoers will not inherit the kingdom of God (1 Corinthians 6:10)
-• Be on guard so your hearts are not weighed down (Luke 21:34)`
+• Do not be a cause for others to fall (Luke 17:1)`
     },
     {
-        title: "The Ten Commandments",
+        title: "More Scripture",
+        content: `• Satan is a liar and the father of lies (John 8:44)
+• Wrongdoers will not inherit the kingdom of God (1 Corinthians 6:10)
+• Be on guard so your hearts are not weighed down with worries of this world (Luke 21:34)
+• Do you take up your daily crosses as God desires? (Luke 9:23)
+• Children, obey your parents (Ephesians 6:1)`
+    },
+    {
+        title: "Ten Commandments",
         content: `1. I am the Lord your God: you shall not have strange Gods before me
 2. You shall not take the name of the Lord your God in vain
 3. Remember to keep holy the Lord's Day
 4. Honour your father and mother
-5. You shall not kill
-6. You shall not commit adultery
-7. You shall not steal`
+5. You shall not kill`
     },
     {
-        title: "The Ten Commandments (cont.)",
-        content: `8. You shall not bear false witness
+        title: "Ten Commandments (cont.)",
+        content: `6. You shall not commit adultery
+7. You shall not steal
+8. You shall not bear false witness
 9. You shall not covet your neighbour's wife
 10. You shall not covet your neighbour's goods
 
 **These can be summarised into two:**
-Love God above all. Love one another as yourself.
-
-**1st Commandment: I am the Lord your God.**`
+Love God above all. Love one another as yourself.`
     },
     {
         title: "1st Commandment",
-        content: `**You shall not have strange gods before me.**
+        content: `**I am the Lord your God. You shall not have strange gods before me.**
 
 • Have I believed in other gods or worshipped them?
 • Have I believed/practised witchcraft, horoscope, omens?
 • Have I worn amulets, sacred threads, charms?
-• Have I taken advice from sorcerers or black magicians?
-• Have I done palm reading, occult arts, horoscopy, Satan worship?
-• Have I believed in superstitions?`
+• Have I taken advice from sorcerers or black magicians?`
     },
     {
-        title: "Pride & Priorities",
+        title: "1st Commandment (cont.)",
+        content: `• Have I done palm reading, occult arts, horoscopy, Satan worship?
+• Have I believed in superstitions?
+• Have I visited places of spiritism?
+• Have I offered offerings at temples?
+• Have I bowed before images of other gods?`
+    },
+    {
+        title: "Pride & Faith",
         content: `**Do I have pride?**
 • Do I desire honour and positions?
 • Am I stubborn or selfish?
 • Do I have greed for money?
 • Do I idolize my work?
-• Am I addicted to alcohol, drugs, gambling?
-
-**Have I given first priority to God?**
-• Have I wrongly prioritised money, people, beauty, honour, work?`
+• Am I addicted to alcohol, drugs, gambling?`
+    },
+    {
+        title: "Priorities",
+        content: `• Have I given first priority to God?
+• Have I wrongly prioritised money, people, beauty, honour, work, power?
+• Have I tried to please people more than God?
+• Have I enough faith in God and sacraments?
+• Have I thanked God for His goodness and mercy?`
     },
     {
         title: "2nd Commandment",
         content: `**You shall not take the name of the Lord your God in vain.**
 
-• Do I tend to swear frequently? Have I cursed God?
+• Do I tend to swear frequently?
+• Have I cursed God?
 • Have I done false witnesses/perjury?
 • Have I filed false cases?
-• Do I have unfulfilled vows or prayers?
-• Have I spoken disrespectfully of God?
+• Do I have unfulfilled vows or prayers?`
+    },
+    {
+        title: "2nd Commandment (cont.)",
+        content: `• Have I spoken disrespectfully of God?
 • Have I insulted Saints or Holy objects?
-• Have I been ashamed to testify Jesus Christ?`
+• Have I been ashamed to testify Jesus Christ?
+• Have I misused or hated the Word of God?
+• Do I read the Holy Bible daily?`
     },
     {
         title: "3rd Commandment",
@@ -124,10 +144,15 @@ Love God above all. Love one another as yourself.
 • Have I deliberately missed Mass on Sundays?
 • Was my conduct appropriate at Holy Mass?
 • Have I worked on Sunday or made others work?
-• Have I received Eucharist unworthily?
-• Do I pray regularly - personal and family prayer?
+• Have I received Eucharist unworthily?`
+    },
+    {
+        title: "3rd Commandment (cont.)",
+        content: `• Do I pray regularly - personal and family prayer?
 • Have I done my yearly confession?
-• Have I abstained from meat on Fridays?`
+• Have I abstained from meat on Fridays?
+• Have I paid my tithes to God?
+• Have I given thanks for blessings received?`
     },
     {
         title: "4th Commandment",
@@ -137,9 +162,7 @@ Love God above all. Love one another as yourself.
 • Have I given love and acceptance to them?
 • Have I hurt them by speech or action?
 • Have I cared for them in sickness and old age?
-• Have I shown respect to my teachers and elders?
-• Have I disobeyed my elders and superiors?
-• Do I neglect the needs of my aged or disabled parents?`
+• Have I shown respect to my teachers and elders?`
     },
     {
         title: "5th Commandment",
@@ -149,31 +172,32 @@ Love God above all. Love one another as yourself.
 • Have I tarnished the reputation of others?
 • Have I hindered others from getting married?
 • Have I resorted to or supported abortion?
-• Have I attempted or supported suicide?
-• Am I prone to jealousy or anger?
-• Do I use profane language?`
+• Have I attempted or supported suicide?`
     },
     {
         title: "5th Commandment (cont.)",
-        content: `• Do I hold a grudge? Is there anyone I need to forgive?
+        content: `• Am I prone to jealousy or anger?
+• Do I use profane language?
+• Do I hold a grudge? Is there anyone I need to forgive?
 • Have I subjected my body to alcohol, smoking, drugs?
-• Have I neglected people who needed my help?
-• Have I destroyed public property?
-• Have I resorted to revengeful behaviour?
-• Have I led others to sin?
-
-**6th Commandment: You shall not commit adultery.**`
+• Have I neglected people who needed my help?`
     },
     {
         title: "6th Commandment",
-        content: `*The human body is the temple of the Holy Spirit (1 Cor 6:19)*
+        content: `**You shall not commit adultery.**
+
+*The human body is the temple of the Holy Spirit (1 Cor 6:19)*
 
 • Have I kept my body clean and healthy?
 • Have I sinned with my eyes - books, posters, movies?
-• Have I used my ears to hear obscene talk?
-• Have I encouraged bad thoughts?
+• Have I used my ears to hear obscene talk?`
+    },
+    {
+        title: "6th Commandment (cont.)",
+        content: `• Have I encouraged bad thoughts?
 • Have I committed adultery before or after marriage?
 • Have I looked at others with unholy eyes?
+• Have I caused others to sin by my behaviour?
 • Have I dressed immodestly?`
     },
     {
@@ -184,9 +208,15 @@ Love God above all. Love one another as yourself.
 • Have I behaved rudely to subordinates or children?
 • Have I deliberately withheld paying someone?
 • Have I treated workers fairly?
-• Have I taken property of someone?
-• Have I used others for my benefit?
-• Have I earned money through wrong means?`
+• Have I taken property of someone?`
+    },
+    {
+        title: "7th Commandment (cont.)",
+        content: `• Have I used others for my benefit?
+• Have I earned money through wrong means?
+• Have I faked documents?
+• Have I spread false stories?
+• Have I broken promises?`
     },
     {
         title: "8th Commandment",
@@ -194,24 +224,29 @@ Love God above all. Love one another as yourself.
 
 *"Lying lips are an abomination to the Lord" (Proverbs 12:22)*
 
-• Do I lie? Have I faked documents?
+• Do I lie?
 • Have I acted against the truth?
 • Have I let out secrets of someone?
-• Am I a hypocrite?
-• Do I spread false stories?
-• Have I been a cause for defaming someone?`
+• Am I a hypocrite?`
     },
     {
-        title: "9th & 10th Commandments",
-        content: `**You shall not covet your neighbour's wife or goods.**
+        title: "9th Commandment",
+        content: `**You shall not covet your neighbour's wife.**
 
 • Have I looked at others with unholy eyes?
 • Have I aroused feelings of another inappropriately?
 • Have I caused others to sin by my speech, look, or touch?
+• Have I been a bad role model?`
+    },
+    {
+        title: "10th Commandment",
+        content: `**You shall not covet your neighbour's goods.**
+
 • Have I changed boundary stones of property?
 • Have I cheated or changed documents?
 • Have I defaulted loans deliberately?
-• Have I broken promises?`
+• Have I shown cruelty to animals?
+• Have I denied others their rights?`
     },
     {
         title: "Marriage & Family",
@@ -219,10 +254,15 @@ Love God above all. Love one another as yourself.
 • Have I criticised spouse/children in front of others?
 • Have I been unfaithful to my spouse?
 • Have I failed to fulfil my marital duty?
-• Do I always criticize my children?
-• Have I punished my children harshly?
-• Have I disobeyed government laws?
-• Have I evaded taxes fraudulently?`
+• Do I always criticize my children?`
+    },
+    {
+        title: "Work & Society",
+        content: `• Have I disobeyed government laws?
+• Have I evaded taxes fraudulently?
+• Have I been punctual in my work?
+• Have I been happy at others' failure?
+• Have I wasted God-given time and opportunities?`
     },
     {
         title: "Seven Cardinal Sins",
@@ -230,20 +270,28 @@ Love God above all. Love one another as yourself.
 2. **Envy** — conquered by brotherly love
 3. **Wrath** — conquered by loving patience
 4. **Gluttony** — conquered by moderation
-5. **Lust** — conquered by pure love
-6. **Sloth** — conquered by diligence
-7. **Greed** — conquered by generous giving`
+5. **Lust** — conquered by pure love`
     },
     {
-        title: "Sins Against the Holy Spirit",
-        content: `• Despairing of Salvation
-• Presumption of Salvation
-• Denying a truth recognised
-• Envying the grace God gives to others
-• Obstinacy in sin
-• Final impenitence
+        title: "Cardinal Sins (cont.)",
+        content: `6. **Sloth** — conquered by diligence
+7. **Greed** — conquered by generous giving
 
-*My friends, God is delighted by your intention to confess your sins! He is so eager to get you back!*`
+**Sins against the Holy Spirit:**
+• Despairing of Salvation
+• Presumption of Salvation
+• Obstinacy in sin`
+    },
+    {
+        title: "Final Reflection",
+        content: `*My friends, God is delighted by your intention to confess your sins! He is so eager to get you back!*
+
+**Remember:**
+• God's mercy is greater than any sin
+• Approach confession with confidence
+• Trust in His forgiveness
+
+*Swipe back to review any section*`
     }
 ];
 
