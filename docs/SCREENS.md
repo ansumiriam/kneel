@@ -1,6 +1,6 @@
 # Screens Specification
 
-Kneel has exactly **5 screens**. No more, no less.
+Kneel has **10 screens** organized into core flows and auxiliary sections.
 
 ---
 
@@ -21,11 +21,12 @@ Kneel has exactly **5 screens**. No more, no less.
 │    3. Home Screen   │───┘
 └──┬──────────────┬───┘
    │              │
-   ▼              ▼
-┌──────────┐  ┌──────────────────┐
-│ 4. Add   │  │ 5. Confirm Clear │
-│   Sin    │  │                  │
-└──────────┘  └──────────────────┘
+   ├──► 4. Add Sin
+   ├──► 5. Edit Sin
+   ├──► 6. Confirm Clear
+   ├──► 7. Settings
+   └──► 8. Prepare ─┬─► 9. Prayer (read-only)
+                    └─► 10. Guide (25 pages)
 ```
 
 ---
@@ -70,21 +71,23 @@ Kneel has exactly **5 screens**. No more, no less.
 
 ## 3. Home Screen
 
-**Purpose**: Main screen showing confession state and sin list.
+**Purpose**: Main screen showing confession state and entry list.
 
 ### Layout
 ```
 ┌─────────────────────────────┐
-│ Last Confession: [Date] ✏️  │
+│ Last Confession: [Date] ✏️ ⚙️📖│
+├─────────────────────────────┤
+│ [Gentle Reminder Indicator] │
 ├─────────────────────────────┤
 │                             │
-│  • Sin entry 1              │
-│  • Sin entry 2              │
-│  • Sin entry 3              │
+│  • Entry 1 (with color tag) │
+│  • Entry 2                  │
+│  • Entry 3                  │
 │  ...                        │
 │                             │
 ├─────────────────────────────┤
-│ [+ Add Sin]                 │
+│ [+ Add Entry]               │
 │ [After Confession]          │
 └─────────────────────────────┘
 ```
@@ -92,16 +95,25 @@ Kneel has exactly **5 screens**. No more, no less.
 ### Elements
 | Element | Description |
 |---------|-------------|
-| Last Confession Date | Editable date display |
-| Sin List | Text-only entries, most recent first |
-| Add Sin Button | Navigate to Add Sin screen |
+| Last Confession Date | Tap to edit via date picker |
+| Gentle Reminder | Visual indicator of days since confession |
+| Settings Button | ⚙️ icon → Settings screen |
+| Prepare Button | 📖 icon → Prepare screen |
+| Entry List | Text entries with optional color tags |
+| Add Entry Button | Navigate to Add Sin screen |
 | After Confession Button | Navigate to Confirm Clear screen |
+
+### Interactions
+- **Swipe left** on entry → Edit
+- **Swipe right** on entry → Delete (with undo toast)
+- **Tap** entry → Expand/collapse text
+- **Long press** entry → Color picker (when enabled)
 
 ---
 
 ## 4. Add Sin Screen
 
-**Purpose**: Free-text input for adding a sin.
+**Purpose**: Free-text input for adding an entry.
 
 ### Elements
 - Title: "Add Entry"
@@ -116,9 +128,26 @@ Kneel has exactly **5 screens**. No more, no less.
 
 ---
 
-## 5. Confirm Clear Screen
+## 5. Edit Sin Screen
 
-**Purpose**: Confirmation before clearing all sins.
+**Purpose**: Modify an existing entry.
+
+### Elements
+- Title: "Edit Entry"
+- Textarea pre-filled with entry text
+- **Save** button (primary)
+- **Cancel** button (secondary/back)
+
+### Behavior
+- Save validates non-empty text
+- On save → Update entry and return to Home
+- On cancel → Discard changes, return to Home
+
+---
+
+## 6. Confirm Clear Screen
+
+**Purpose**: Confirmation before clearing all entries.
 
 ### Elements
 - Icon (optional): Checkmark or peaceful symbol
@@ -128,5 +157,75 @@ Kneel has exactly **5 screens**. No more, no less.
 - **Cancel** button (secondary)
 
 ### Behavior
-- Confirm → Clear all sins, set date to today, return to Home
+- Confirm → Clear all entries, set date to today, return to Home
 - Cancel → Return to Home unchanged
+
+---
+
+## 7. Settings Screen
+
+**Purpose**: Configure app preferences.
+
+### Elements
+| Setting | Description |
+|---------|-------------|
+| Dark Mode | Toggle light/dark theme |
+| Gentle Reminder | Toggle days-since indicator |
+| Color Tagging | Enable long-press color picker |
+
+### Behavior
+- All toggles save immediately to LocalStorage
+- Changes apply instantly (no save button needed)
+
+---
+
+## 8. Prepare Screen
+
+**Purpose**: Prayer selection hub before confession.
+
+### Elements
+- Title: "Prepare"
+- Back button (← Home)
+- Three icon buttons:
+  - 🙏 Prayer Before Confession
+  - ❤️ Act of Contrition
+  - 📖 Preparation Guide
+
+### Behavior
+- 🙏 → Prayer screen (read-only)
+- ❤️ → Prayer screen (read-only)
+- 📖 → Guide screen (swipeable)
+
+---
+
+## 9. Prayer Screen
+
+**Purpose**: Display prayer text for reading.
+
+### Elements
+- Title (prayer name)
+- Back button
+- Scrollable prayer text
+
+### Behavior
+- Read-only, no interaction
+- Back button returns to Prepare
+
+---
+
+## 10. Guide Screen
+
+**Purpose**: 25-page preparation guide with swipe navigation.
+
+### Elements
+- Fixed header with back button
+- Page content (formatted text)
+- Page dots at bottom
+- Page number ("Page X of 25")
+- Attribution: "Adapted from Malankara Library"
+
+### Behavior
+- **Swipe only** navigation (no prev/next buttons)
+- Page flip animation
+- No scroll within pages
+- Back button returns to Prepare

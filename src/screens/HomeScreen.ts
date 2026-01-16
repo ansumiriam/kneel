@@ -81,12 +81,11 @@ export function renderHomeScreen(): HTMLElement {
 
   // Build reminder HTML if enabled
   let reminderHtml = '';
-  if (showReminder && daysSince !== null && (daysSince > 0 || sins.length > 0)) {
+  if (showReminder && daysSince !== null && daysSince > 0) {
     const level = getReminderLevel(daysSince);
     reminderHtml = `
       <div class="reminder reminder--${level}">
-        <span class="reminder-days">${daysSince} day${daysSince !== 1 ? 's' : ''} ago</span>
-        ${sins.length > 0 ? `<span class="reminder-entries">${sins.length} entr${sins.length !== 1 ? 'ies' : 'y'}</span>` : ''}
+        <span class="reminder-days">${daysSince} day${daysSince !== 1 ? 's' : ''} since last confession</span>
       </div>
     `;
   }
@@ -101,10 +100,6 @@ export function renderHomeScreen(): HTMLElement {
           </div>
           <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
           ${reminderHtml}
-        </div>
-        <div class="header-actions">
-          <button class="btn-icon prepare-btn" id="prepare-btn" aria-label="Prepare">📖</button>
-          <button class="btn-icon settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
         </div>
       </div>
     </header>
@@ -129,10 +124,12 @@ export function renderHomeScreen(): HTMLElement {
     </main>
 
     <footer class="home-footer">
-      <button class="btn btn--primary" id="add-btn">+ Add Entry</button>
-      <button class="btn btn--secondary" id="clear-btn" ${sins.length === 0 ? 'disabled' : ''}>
-        After Confession
-      </button>
+      <div class="footer-grid">
+        <button class="btn btn--primary" id="add-btn">+ Add Entry</button>
+        <button class="btn btn--secondary" id="clear-btn" ${sins.length === 0 ? 'disabled' : ''}>After Confession</button>
+        <button class="btn btn--secondary" id="prepare-btn">📖 Prepare</button>
+        <button class="btn btn--secondary" id="settings-btn">⚙️ Settings</button>
+      </div>
     </footer>
   `;
 

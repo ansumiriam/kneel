@@ -20,29 +20,65 @@ UI/UX principles and visual design specifications for Kneel.
 
 A soft, neutral palette that feels calm and private.
 
+### Light Theme
+
 ```css
 :root {
   /* Background */
   --bg-primary: #fafafa;      /* Light gray-white */
   --bg-secondary: #f0f0f0;    /* Subtle contrast */
+  --bg-card: #ffffff;         /* Card surfaces */
   
   /* Text */
   --text-primary: #2d2d2d;    /* Soft black */
   --text-secondary: #6b6b6b;  /* Muted gray */
+  --text-muted: #999999;      /* Very muted */
   
   /* Accent */
   --accent: #5a6e7a;          /* Muted blue-gray */
   --accent-light: #7a8e9a;    /* Lighter variant */
+  --accent-dark: #4a5e6a;     /* Darker variant */
   
   /* Interactive */
-  --button-primary: #5a6e7a;
-  --button-secondary: #e0e0e0;
-  
-  /* Semantic */
   --border: #e0e0e0;
   --focus: #5a6e7a;
+  --error: #c45050;
 }
 ```
+
+### Dark Theme (Default)
+
+```css
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-card: #252525;
+
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+
+  --accent: #7a9caa;
+  --accent-light: #8aacba;
+  --accent-dark: #6a8c9a;
+
+  --border: #3a3a3a;
+  --focus: #7a9caa;
+  --error: #e07070;
+}
+```
+
+### Color Tags (Pastel)
+
+For optional entry categorization:
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Rose | `#e8a0a0` | Repetitive |
+| Amber | `#d4a574` | Important |
+| Sage | `#a8c4a8` | Resolved |
+| Sky | `#a0c4d4` | Reflect |
+| Lavender | `#c4a8d4` | Other |
 
 ---
 
@@ -91,59 +127,37 @@ Consistent spacing creates visual harmony.
 
 ```css
 /* Primary Button */
-.btn-primary {
-  background: var(--button-primary);
+.btn--primary {
+  background: var(--accent);
   color: white;
-  padding: var(--space-sm) var(--space-lg);
+  padding: var(--space-md) var(--space-xl);
   border: none;
-  border-radius: 8px;
-  font-size: var(--font-size-base);
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
+  border-radius: 0.5rem;
 }
 
 /* Secondary Button */
-.btn-secondary {
+.btn--secondary {
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border);
-  /* ... same padding/radius as primary */
-}
-```
-
-### Input / Textarea
-
-```css
-.input {
-  width: 100%;
-  padding: var(--space-md);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: var(--font-size-base);
-  font-family: inherit;
-  resize: vertical;
-}
-
-.input:focus {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
 }
 ```
 
 ### Cards / List Items
 
 ```css
-.card {
-  background: white;
+.sin-item {
+  background: var(--bg-card);
   padding: var(--space-md);
-  border-radius: 8px;
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--accent-light);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 ```
+
+### Toggle Switch
+
+Custom toggle for Settings screen with smooth animation.
 
 ---
 
@@ -151,7 +165,7 @@ Consistent spacing creates visual harmony.
 
 1. **Mobile-first** — Design for phone screens first
 2. **Full-height screens** — Each screen fills the viewport
-3. **Centered content** — Max-width ~400px for readability
+3. **Centered content** — Max-width ~28rem for readability
 4. **Generous whitespace** — Let elements breathe
 5. **Fixed footer** — Action buttons at bottom for thumb reach
 
@@ -169,13 +183,27 @@ Consistent spacing creates visual harmony.
 
 ---
 
+## Gentle Reminder Indicator
+
+A passive, non-intrusive visual cue on the Home screen.
+
+| State | Background | Meaning |
+|-------|------------|---------|
+| Calm | `--bg-secondary` | Within reasonable timeframe |
+| Gentle | Soft amber (15% opacity) | Moderate time passed |
+| Warm | Soft rose (15% opacity) | Longer time since confession |
+
+> **Note**: This is intentionally a passive indicator, not a notification.
+
+---
+
 ## What NOT to Include
 
 Per specification, avoid:
-- ❌ Statistics or counts
+- ❌ Statistics or counts (beyond days since confession)
 - ❌ Streaks or gamification
 - ❌ Categories or severity labels
 - ❌ AI suggestions
-- ❌ Reminders or notifications
+- ❌ Push notifications or system reminders
 - ❌ Social features
 - ❌ Export/import

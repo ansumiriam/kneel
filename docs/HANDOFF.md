@@ -1,7 +1,7 @@
 # Kneel PWA - Agent Handoff Document
 
-**Last Updated:** 2026-01-14
-**Conversation Steps at Handoff:** ~1170
+**Last Updated:** 2026-01-16
+**Conversation Steps at Handoff:** ~1200
 
 ---
 
@@ -129,7 +129,7 @@ git add .; git commit -m "message"; git push   # Git combined
 ## Pending Work
 
 - [ ] Biometric authentication (WebAuthn)
-- [ ] Custom color label names
+- [ ] Custom color label names (UI in Settings)
 - [ ] Lock screen polish
 
 ---

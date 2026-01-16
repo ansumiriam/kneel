@@ -1,6 +1,6 @@
 # Tech Stack
 
-Technology choices for Kneel MVP, designed for beginners.
+Technology choices for Kneel, designed for beginners.
 
 ---
 
@@ -12,6 +12,7 @@ Technology choices for Kneel MVP, designed for beginners.
 | **Vite** | 5.x | Fast build tool & dev server |
 | **vite-plugin-pwa** | 0.x | PWA manifest & service worker |
 | **Vanilla CSS** | - | Styling without framework overhead |
+| **pnpm** | - | Package manager |
 
 ---
 
@@ -27,7 +28,7 @@ Technology choices for Kneel MVP, designed for beginners.
 - Zero-config TypeScript support
 - Instant hot module replacement (HMR)
 - Small production bundles
-- Beginner-friendly — just run `npm run dev`
+- Beginner-friendly — just run `pnpm dev`
 
 ### No Framework (Vanilla TS)
 - Keeps all logic visible and explicit
@@ -57,13 +58,32 @@ Technology choices for Kneel MVP, designed for beginners.
 
 ```
 kneel/
-├── docs/                   # Documentation (you are here)
+├── docs/                   # Documentation
 ├── public/
 │   └── icons/              # PWA icons
 ├── src/
-│   ├── screens/            # Screen components
-│   ├── services/           # Storage, auth utilities
-│   ├── styles/             # CSS files
+│   ├── screens/            # Screen components (10 screens)
+│   │   ├── LockScreen.ts
+│   │   ├── PrivacyCheckScreen.ts
+│   │   ├── HomeScreen.ts
+│   │   ├── AddSinScreen.ts
+│   │   ├── EditSinScreen.ts
+│   │   ├── ConfirmClearScreen.ts
+│   │   ├── SettingsScreen.ts
+│   │   ├── PrepareScreen.ts
+│   │   ├── PrayerScreen.ts
+│   │   └── GuideScreen.ts
+│   ├── content/
+│   │   └── prayers.ts      # Prayer text + 25 guide pages
+│   ├── services/
+│   │   ├── storage.ts      # LocalStorage operations
+│   │   ├── auth.ts         # Authentication (placeholder)
+│   │   └── toast.ts        # Toast notifications
+│   ├── utils/
+│   │   ├── router.ts       # Simple screen routing
+│   │   └── swipe.ts        # Swipe gesture detection
+│   ├── styles/
+│   │   └── main.css        # All styles (~1150 lines)
 │   ├── types.ts            # TypeScript interfaces
 │   ├── app.ts              # Main app logic
 │   └── main.ts             # Entry point
@@ -79,16 +99,16 @@ kneel/
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 
 # Preview production build
-npm run preview
+pnpm run preview
 ```
 
 ---

@@ -147,6 +147,16 @@ body {
   background: var(--bg-secondary);
 }
 
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--bg-secondary);
+}
+
 .btn-icon {
   background: none;
   border: none;
@@ -519,17 +529,22 @@ body {
   left: 0;
   right: 0;
   background: var(--bg-primary);
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
   max-width: var(--max-width);
   margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
-.home-footer .btn {
-  width: 100%;
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.footer-grid .btn {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
 }
 
 /* === Add Sin Screen === */
@@ -943,6 +958,60 @@ body {
   font-size: var(--font-size-sm);
   color: var(--accent);
   text-decoration: none;
+}
+
+/* Help card variant */
+.prepare-card--help {
+  border: 1px dashed var(--border);
+  background: transparent;
+}
+
+/* About Panel */
+.about-panel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  z-index: 100;
+}
+
+.about-panel[hidden] {
+  display: none;
+}
+
+.about-content {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: var(--space-xl);
+  max-width: 24rem;
+  width: 100%;
+}
+
+.about-title {
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.about-text {
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.about-text--muted {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.about-close {
+  width: 100%;
+  margin-top: var(--space-md);
 }
 
 /* =========================

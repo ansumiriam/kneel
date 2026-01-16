@@ -1,6 +1,6 @@
 # Features Specification
 
-Detailed breakdown of all required features for Kneel MVP.
+Detailed breakdown of all features in Kneel.
 
 ---
 
@@ -51,7 +51,7 @@ This screen appears **immediately after successful authentication** and **before
 ### Requirements
 - Store a single date value
 - Display prominently on the home screen
-- Allow editing via date picker
+- Allow editing via date picker (tap to edit)
 
 ### Storage
 - Key: `lastConfessionDate`
@@ -60,7 +60,25 @@ This screen appears **immediately after successful authentication** and **before
 
 ---
 
-## 4. Add Sin
+## 4. Gentle Reminder Indicator
+
+A non-judgmental visual cue showing time since last confession.
+
+### Display States
+| State | Color | Meaning |
+|-------|-------|---------|
+| Calm | Neutral gray | Within reasonable timeframe |
+| Gentle | Soft amber | Moderate time has passed |
+| Warm | Soft rose | Longer time since confession |
+
+### Behavior
+- Togglable in Settings (enabled by default)
+- Passive indicator only — NOT a push notification
+- Shows days count and number of entries
+
+---
+
+## 5. Add Entry
 
 ### Requirements
 - Free-text input only
@@ -73,32 +91,113 @@ interface Sin {
   id: string;        // UUID for identification
   text: string;      // User's free-text input
   createdAt: number; // For ordering only (not displayed)
+  color?: SinColor;  // Optional color tag
 }
 ```
 
 ---
 
-## 5. Sin List
+## 6. Entry List
 
 ### Requirements
-- Show sins added since last confession
+- Show entries added since last confession
 - Sorted by insertion order (most recent first)
-- Each entry shows text only
+- Each entry shows text only (no timestamps)
 
-### Display Rules
-- No timestamps shown
-- No categories or labels
-- Simple, clean list format
+### Interactions
+| Gesture | Action |
+|---------|--------|
+| Tap | Expand/collapse entry text |
+| Swipe left | Navigate to Edit screen |
+| Swipe right | Delete with undo toast |
+| Long press | Open color picker (when enabled) |
 
 ---
 
-## 6. After Confession
+## 7. Color Tagging
+
+Optional feature to categorize entries with pastel colors.
+
+### Available Colors
+| Color | Default Label |
+|-------|---------------|
+| Rose 🌹 | Repetitive |
+| Amber 🔶 | Important |
+| Sage 🌿 | Resolved |
+| Sky 🩵 | Reflect |
+| Lavender 💜 | Other |
+
+### Behavior
+- Disabled by default (enable in Settings)
+- Long-press entry to open color picker
+- Colors show as left border + gradient background
+- Labels stored in LocalStorage (customizable future feature)
+
+---
+
+## 8. After Confession
 
 ### Flow
 1. User taps **"After Confession"** button
 2. Confirmation screen appears
-3. If confirmed → Clear entire sin list
+3. If confirmed → Clear entire entry list
 4. Update last confession date to today
 
 ### Confirmation Copy
-> Are you sure? This will clear all entries.
+> This will clear all entries and update your confession date.
+
+---
+
+## 9. Theme Support
+
+### Options
+- **Dark mode** (default)
+- **Light mode**
+
+### Behavior
+- Toggle in Settings
+- Persisted in LocalStorage
+- Applies immediately
+
+---
+
+## 10. Prepare Section
+
+Prayer and preparation resources accessible from Home header.
+
+### Contents
+| Icon | Name | Type |
+|------|------|------|
+| 🙏 | Prayer Before Confession | Read-only text |
+| ❤️ | Act of Contrition | Read-only text |
+| 📖 | Preparation Guide | 25-page swipeable guide |
+
+### Guide Features
+- Swipe-only navigation (no buttons)
+- Page flip animation
+- Fixed header with back button
+- Page dots + page number at bottom
+- Content sourced from Malankara Library PDF
+
+---
+
+## 11. Toast Notifications
+
+In-app feedback for user actions.
+
+### Features
+- Appears at bottom of screen
+- Auto-dismisses after timeout
+- Delete toast includes "Undo" button
+- Non-intrusive animation
+
+---
+
+## 12. Settings
+
+### Available Options
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Dark Mode | On | Light/dark theme toggle |
+| Gentle Reminder | On | Show days-since indicator |
+| Color Tagging | Off | Enable long-press color picker |
