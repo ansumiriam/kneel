@@ -15,12 +15,11 @@ export function renderSettingsScreen(): HTMLElement {
   const colorTaggingEnabled = getColorTaggingEnabled();
 
   container.innerHTML = `
-    <header class="settings-header">
-      <button class="btn-back" id="back-btn" aria-label="Go back">← Back</button>
-      <h1 class="settings-title">Settings</h1>
-    </header>
+    <div class="settings-spacer"></div>
 
     <main class="settings-content">
+      <h1 class="settings-title">Settings</h1>
+      
       <div class="settings-item">
         <div class="settings-label">
           <span class="settings-name">Dark Mode</span>
@@ -35,7 +34,7 @@ export function renderSettingsScreen(): HTMLElement {
       <div class="settings-item">
         <div class="settings-label">
           <span class="settings-name">Gentle Reminder</span>
-          <span class="settings-desc">Show days since confession & entry count</span>
+          <span class="settings-desc">Show days since confession</span>
         </div>
         <label class="toggle">
           <input type="checkbox" id="reminder-toggle" ${showReminder ? 'checked' : ''} />
@@ -54,6 +53,10 @@ export function renderSettingsScreen(): HTMLElement {
         </label>
       </div>
     </main>
+
+    <footer class="screen-footer settings-footer">
+      <button class="btn btn--secondary" id="back-btn">← Back</button>
+    </footer>
   `;
 
   // Handle back navigation

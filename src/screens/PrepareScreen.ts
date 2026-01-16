@@ -12,12 +12,9 @@ export function renderPrepareScreen(): HTMLElement {
   container.className = 'screen screen--prepare';
 
   container.innerHTML = `
-    <header class="prepare-header">
-      <button class="btn-back" id="back-btn" aria-label="Go back">← Back</button>
-      <h1 class="prepare-title">Prepare</h1>
-    </header>
-
     <main class="prepare-content">
+      <h1 class="prepare-title">Prepare</h1>
+      
       <div class="prepare-card" id="prayer-before">
         <span class="prepare-icon">🙏</span>
         <div class="prepare-card-text">
@@ -78,6 +75,10 @@ export function renderPrepareScreen(): HTMLElement {
         <a href="${ATTRIBUTION.url}" target="_blank" class="attribution-link">View Full PDF</a>
       </div>
     </main>
+
+    <footer class="screen-footer prepare-footer">
+      <button class="btn btn--secondary" id="back-btn">← Back</button>
+    </footer>
   `;
 
   // Back button

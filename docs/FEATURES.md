@@ -33,76 +33,43 @@ This screen appears **immediately after successful authentication** and **before
 - **Yes** — Navigate to Home screen
 - **Later** — Return to Lock/Authentication screen
 
-### Behavior Rules
-| Rule | Description |
-|------|-------------|
-| Session-only | Reset on every app launch |
-| No storage | Do NOT store the response |
-| No persistence | Do NOT persist any state |
-| No inference | Do NOT infer or track anything |
-| Show once | Do NOT show again until next app launch |
-
-> This is a **gentle pause**, not a security mechanism.
-
 ---
 
 ## 3. Last Confession Date
 
 ### Requirements
 - Store a single date value
-- Display prominently on the home screen
-- Allow editing via date picker (tap to edit)
+- Display inline on the home screen next to the formatted date (e.g., "(4 days ago)")
+- Allow editing via:
+  1. **Home Screen**: Tap the date to open a native date input.
+  2. **"Confessed?" Flow**: Set the date during the clearing ritual.
 
 ### Storage
 - Key: `lastConfessionDate`
 - Format: ISO date string (e.g., `"2026-01-12"`)
-- Location: LocalStorage
 
 ---
 
 ## 4. Gentle Reminder Indicator
 
-A non-judgmental visual cue showing time since last confession.
+A non-judgmental inline visual cue showing time since last confession in parenthetical format.
 
 ### Display States
-| State | Color | Meaning |
-|-------|-------|---------|
-| Calm | Neutral gray | Within reasonable timeframe |
-| Gentle | Soft amber | Moderate time has passed |
-| Warm | Soft rose | Longer time since confession |
-
-### Behavior
-- Togglable in Settings (enabled by default)
-- Passive indicator only — NOT a push notification
-- Shows days count and number of entries
+- **Format**: `Jan 16, 2026 ✏️ (4 days ago)`
+- **Behavior**: Passive indicator only — NOT a push notification.
 
 ---
 
 ## 5. Add Entry
 
 ### Requirements
-- Free-text input only
-- Do NOT automatically attach timestamps
-- Save locally immediately
-
-### Data Structure
-```typescript
-interface Sin {
-  id: string;        // UUID for identification
-  text: string;      // User's free-text input
-  createdAt: number; // For ordering only (not displayed)
-  color?: SinColor;  // Optional color tag
-}
-```
+- Free-text input only.
+- Fixed footer with "Back" and "Save" buttons.
+- Save locally immediately.
 
 ---
 
-## 6. Entry List
-
-### Requirements
-- Show entries added since last confession
-- Sorted by insertion order (most recent first)
-- Each entry shows text only (no timestamps)
+## 6. Entry List (Home Screen)
 
 ### Interactions
 | Gesture | Action |
@@ -119,8 +86,8 @@ interface Sin {
 Optional feature to categorize entries with pastel colors.
 
 ### Available Colors
-| Color | Default Label |
-|-------|---------------|
+| Color | Label |
+|-------|-------|
 | Rose 🌹 | Repetitive |
 | Amber 🔶 | Important |
 | Sage 🌿 | Resolved |
@@ -128,72 +95,54 @@ Optional feature to categorize entries with pastel colors.
 | Lavender 💜 | Other |
 
 ### Behavior
-- Disabled by default (enable in Settings)
-- Long-press entry to open color picker
-- Colors show as left border + gradient background
-- Labels stored in LocalStorage (customizable future feature)
+- Disabled by default (enable in Settings).
+- Long-press entry to open color picker.
+- Colors show as left border + gradient background.
 
 ---
 
-## 8. After Confession
+## 8. "Confessed?" Ritual (Clear Entries)
+
+Replaces the standard "Clear All" with a meaningful transition.
 
 ### Flow
-1. User taps **"After Confession"** button
-2. Confirmation screen appears
-3. If confirmed → Clear entire entry list
-4. Update last confession date to today
-
-### Confirmation Copy
-> This will clear all entries and update your confession date.
+1. User taps **"Confessed?"** on Home screen.
+2. Confirmation screen appears:
+   - **Title**: "Ready for a fresh start?"
+   - **Warning**: "Have you completed your confession? **This will permanently delete all entries from your device.**"
+   - **Date Picker**: Defaults to today, allows historical logging.
+3. If confirmed → Clear entire entry list and update `lastConfessionDate` to the selected value.
 
 ---
 
 ## 9. Theme Support
 
 ### Options
-- **Dark mode** (default)
-- **Light mode**
+- **Dark mode** (Default, WhatsApp Green accent)
+- **Light mode** (Muted Maroon accent)
 
 ### Behavior
-- Toggle in Settings
-- Persisted in LocalStorage
-- Applies immediately
+- Primary buttons in Dark Mode use dark text on green background for readability.
 
 ---
 
 ## 10. Prepare Section
 
-Prayer and preparation resources accessible from Home header.
+Accessible from the Home footer via the 📖 **Prepare** button.
 
 ### Contents
-| Icon | Name | Type |
-|------|------|------|
-| 🙏 | Prayer Before Confession | Read-only text |
-| ❤️ | Act of Contrition | Read-only text |
-| 📖 | Preparation Guide | 25-page swipeable guide |
+- **Prayer Before Confession**: Read-only text.
+- **Act of Contrition**: Read-only text.
+- **Preparation Guide**: 25-page swipeable examination of conscience.
 
-### Guide Features
-- Swipe-only navigation (no buttons)
-- Page flip animation
-- Fixed header with back button
-- Page dots + page number at bottom
-- Content sourced from Malankara Library PDF
+### Swipe Guide Features (One-Handed)
+- **Wide Back Button**: Standard 120px footprint.
+- **Instagram-Style Dots**: Max 5 dots visible with progressive scaling/fading.
+- **Page Stats**: Current page vs total (e.g., "1 / 25") right-aligned.
 
 ---
 
-## 11. Toast Notifications
-
-In-app feedback for user actions.
-
-### Features
-- Appears at bottom of screen
-- Auto-dismisses after timeout
-- Delete toast includes "Undo" button
-- Non-intrusive animation
-
----
-
-## 12. Settings
+## 11. Settings
 
 ### Available Options
 | Setting | Default | Description |

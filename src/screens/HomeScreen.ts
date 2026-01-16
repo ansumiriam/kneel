@@ -9,24 +9,9 @@ import { navigateTo } from '../utils/router';
 import { showToast, showUndoToast } from '../services/toast';
 import { addSwipeHandler } from '../utils/swipe';
 import { setEditingSinId } from './EditSinScreen';
+import { formatDate } from '../utils/date';
 
-/**
- * Format date for display
- */
-function formatDate(dateStr: string | null): string {
-  if (!dateStr) return 'Tap to set';
 
-  try {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  } catch {
-    return 'Invalid date';
-  }
-}
 
 
 
@@ -113,7 +98,7 @@ export function renderHomeScreen(): HTMLElement {
     <footer class="home-footer">
       <div class="footer-grid">
         <button class="btn btn--primary" id="add-btn">+ Add Entry</button>
-        <button class="btn btn--secondary" id="clear-btn" ${sins.length === 0 ? 'disabled' : ''}>After Confession</button>
+        <button class="btn btn--secondary" id="clear-btn" ${sins.length === 0 ? 'disabled' : ''}>Confessed?</button>
         <button class="btn btn--secondary" id="prepare-btn">📖 Prepare</button>
         <button class="btn btn--secondary" id="settings-btn">⚙️ Settings</button>
       </div>

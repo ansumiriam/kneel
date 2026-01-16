@@ -6,27 +6,20 @@ Kneel has **10 screens** organized into core flows and auxiliary sections.
 
 ## Screen Flow
 
-```
-┌─────────────────┐
-│  1. Lock Screen │
-└────────┬────────┘
-         │ (Auth success)
-         ▼
-┌─────────────────────┐
-│ 2. Privacy Check    │◄──┐
-└────────┬────────────┘   │
-         │ (Yes)     (Later)
-         ▼                │
-┌─────────────────────┐   │
-│    3. Home Screen   │───┘
-└──┬──────────────┬───┘
-   │              │
-   ├──► 4. Add Sin
-   ├──► 5. Edit Sin
-   ├──► 6. Confirm Clear
-   ├──► 7. Settings
-   └──► 8. Prepare ─┬─► 9. Prayer (read-only)
-                    └─► 10. Guide (25 pages)
+```mermaid
+graph TD
+    A[1. Lock Screen] -->|Auth Success| B[2. Privacy Check]
+    B -->|Yes| C[3. Home Screen]
+    B -->|Later| A
+    C --> D[4. Add Sin]
+    C --> E[5. Edit Sin]
+    C --> F[6. Confirm Clear]
+    C --> G[7. Settings]
+    C --> H[8. Prepare]
+    H --> I[9. Prayer]
+    H --> J[10. Guide]
+    D & E & F & G & H --> C
+    I & J --> H
 ```
 
 ---
@@ -35,73 +28,43 @@ Kneel has **10 screens** organized into core flows and auxiliary sections.
 
 **Purpose**: Secure app access with device authentication.
 
-### Elements
-- App name: "Kneel"
-- Simple icon/logo
-- "Unlock" button
-- Error message area (for failed auth)
-
-### States
-| State | Display |
-|-------|---------|
-| Initial | Unlock button visible |
-| Authenticating | Loading indicator |
-| Failed | Error message + retry button |
-
-> ⚠️ **Note**: Biometric auth will be added after core testing. Initially, this screen will auto-proceed.
-
 ---
 
 ## 2. Privacy Check Screen
 
 **Purpose**: Gentle pause before reflection (session-only).
 
-### Elements
-- Heading: "This is a private moment."
-- Subtext: "Are you in a place where you can reflect freely?"
-- **Yes** button (primary)
-- **Later** button (secondary)
-
-### Behavior
-- "Yes" → Navigate to Home
-- "Later" → Return to Lock screen
-- No data stored
-
 ---
 
-## 3. Home Screen
+## 3. Home Screen (One-Handed Navigation)
 
 **Purpose**: Main screen showing confession state and entry list.
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│ Last Confession: [Date] ✏️ ⚙️📖│
-├─────────────────────────────┤
-│ [Gentle Reminder Indicator] │
-├─────────────────────────────┤
-│                             │
-│  • Entry 1 (with color tag) │
-│  • Entry 2                  │
-│  • Entry 3                  │
-│  ...                        │
-│                             │
-├─────────────────────────────┤
-│ [+ Add Entry]               │
-│ [After Confession]          │
-└─────────────────────────────┘
+┌────────────────────────────────┐
+│ Jan 16, 2026 ✏️ (4 days ago)    │
+├────────────────────────────────┤
+│                                │
+│  • Entry 1 (Rose)              │
+│  • Entry 2 (Sage)              │
+│  • Entry 3                     │
+│  ...                           │
+│                                │
+├────────────────────────────────┤
+│        [+ Add Entry]           │
+│ [Confessed?]     [📖 Prepare]  │
+│ [⚙️ Settings]    [           ]  │
+└────────────────────────────────┘
 ```
 
 ### Elements
 | Element | Description |
 |---------|-------------|
-| Last Confession Date | Tap to edit via date picker |
-| Gentle Reminder | Visual indicator of days since confession |
-| Settings Button | ⚙️ icon → Settings screen |
-| Prepare Button | 📖 icon → Prepare screen |
-| Entry List | Text entries with optional color tags |
-| Add Entry Button | Navigate to Add Sin screen |
-| After Confession Button | Navigate to Confirm Clear screen |
+| Last Confession Date | Inline date with pencil icon. Tap to edit directly. |
+| Parenthetical Timer | e.g. "(4 days ago)". Inline reminder since last confession. |
+| Entry List | Multi-line text entries. Sorted newest first. |
+| Footer Grid | 2x2 grid containing Core actions: **Add Entry**, **Confessed?**, **Prepare**, & **Settings**. |
 
 ### Interactions
 - **Swipe left** on entry → Edit
@@ -111,121 +74,65 @@ Kneel has **10 screens** organized into core flows and auxiliary sections.
 
 ---
 
-## 4. Add Sin Screen
+## 4. Add / 5. Edit Entry
 
-**Purpose**: Free-text input for adding an entry.
+**Purpose**: Input or modify free-text reflections.
 
-### Elements
-- Title: "Add Entry"
-- Textarea (multi-line, placeholder: "What's on your mind?")
-- **Save** button (primary)
-- **Cancel** button (secondary/back)
-
-### Behavior
-- Save validates non-empty text
-- On save → Return to Home with new entry
-- On cancel → Return to Home unchanged
+### Layout
+- **Reachability**: Fixed footer containing **Back** (Left) and **Save** (Right).
+- **Back Button**: Standardized 120px wide touch target.
 
 ---
 
-## 5. Edit Sin Screen
+## 6. Confirm Clear ("Confessed?")
 
-**Purpose**: Modify an existing entry.
-
-### Elements
-- Title: "Edit Entry"
-- Textarea pre-filled with entry text
-- **Save** button (primary)
-- **Cancel** button (secondary/back)
-
-### Behavior
-- Save validates non-empty text
-- On save → Update entry and return to Home
-- On cancel → Discard changes, return to Home
-
----
-
-## 6. Confirm Clear Screen
-
-**Purpose**: Confirmation before clearing all entries.
+**Purpose**: Specialized ritualistic confirmation before clearing data.
 
 ### Elements
-- Icon (optional): Checkmark or peaceful symbol
-- Heading: "After Confession"
-- Subtext: "This will clear all entries and update your confession date."
-- **Confirm** button (primary)
-- **Cancel** button (secondary)
-
-### Behavior
-- Confirm → Clear all entries, set date to today, return to Home
-- Cancel → Return to Home unchanged
+- **Icon**: Primary accent checkmark (WhatsApp Green in Dark mode).
+- **Heading**: "Ready for a fresh start?"
+- **Warning**: "**This will permanently delete all entries from your device.**" (Bolded for emphasis).
+- **Date Picker**: Field to set the historical date of confession (defaults to Today).
+- **Actions**: "Cancel" and "Confirm" buttons in the footer.
 
 ---
 
 ## 7. Settings Screen
 
-**Purpose**: Configure app preferences.
+**Purpose**: Configure app preferences with one-handed reachability.
 
 ### Elements
-| Setting | Description |
-|---------|-------------|
-| Dark Mode | Toggle light/dark theme |
-| Gentle Reminder | Toggle days-since indicator |
-| Color Tagging | Enable long-press color picker |
-
-### Behavior
-- All toggles save immediately to LocalStorage
-- Changes apply instantly (no save button needed)
+- **Layout**: Uses a flexible spacer to push toggle items toward the lower half of the screen.
+- **Back Button**: Standardized 120px wide button, centered at the bottom.
 
 ---
 
 ## 8. Prepare Screen
 
-**Purpose**: Prayer selection hub before confession.
+**Purpose**: Resource hub for reflection.
 
 ### Elements
-- Title: "Prepare"
-- Back button (← Home)
-- Three icon buttons:
-  - 🙏 Prayer Before Confession
-  - ❤️ Act of Contrition
-  - 📖 Preparation Guide
-
-### Behavior
-- 🙏 → Prayer screen (read-only)
-- ❤️ → Prayer screen (read-only)
-- 📖 → Guide screen (swipeable)
+- **Grid Hub**: ❓ Help Card, 🙏 Prayer Before, ❤️ Act of Contrition, 📖 Guide.
+- **Footer**: Centered 120px wide "Back" button.
 
 ---
 
 ## 9. Prayer Screen
 
-**Purpose**: Display prayer text for reading.
+**Purpose**: Read-only text display.
 
 ### Elements
-- Title (prayer name)
-- Back button
-- Scrollable prayer text
-
-### Behavior
-- Read-only, no interaction
-- Back button returns to Prepare
+- **Layout**: Full-height scrollable text.
+- **Footer**: Centered 120px wide "Back" button.
 
 ---
 
 ## 10. Guide Screen
 
-**Purpose**: 25-page preparation guide with swipe navigation.
+**Purpose**: 25-page swipeable examination of conscience.
 
 ### Elements
-- Fixed header with back button
-- Page content (formatted text)
-- Page dots at bottom
-- Page number ("Page X of 25")
-- Attribution: "Adapted from Malankara Library"
-
-### Behavior
-- **Swipe only** navigation (no prev/next buttons)
-- Page flip animation
-- No scroll within pages
-- Back button returns to Prepare
+- **Instagram-Style Dots**: Centered row of max 5 status dots with progressive scaling.
+- **Stats**: Current page progress (e.g. "1 / 25") right-aligned.
+- **Back Button**: Wide 120px footprint on the left side of the footer.
+- **Behavior**: Swipe-only navigation with haptic/visual feedback.

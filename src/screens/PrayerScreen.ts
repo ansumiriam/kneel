@@ -20,14 +20,14 @@ export function renderPrayerScreen(): HTMLElement {
   const prayer = currentPrayer === 'before' ? PRAYER_BEFORE_CONFESSION : ACT_OF_CONTRITION;
 
   container.innerHTML = `
-    <header class="prayer-header">
-      <button class="btn-back" id="back-btn" aria-label="Go back">← Back</button>
-      <h1 class="prayer-title">${prayer.title}</h1>
-    </header>
-
     <main class="prayer-content">
+      <h1 class="prayer-title">${prayer.title}</h1>
       <div class="prayer-text">${formatPrayerText(prayer.content)}</div>
     </main>
+
+    <footer class="screen-footer prayer-footer">
+      <button class="btn btn--secondary" id="back-btn">← Back</button>
+    </footer>
   `;
 
   // Navigation

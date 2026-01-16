@@ -83,7 +83,7 @@ kneel/
 │   │   ├── router.ts       # Simple screen routing
 │   │   └── swipe.ts        # Swipe gesture detection
 │   ├── styles/
-│   │   └── main.css        # All styles (~1150 lines)
+│   │   └── main.css        # All styles (~1350 lines)
 │   ├── types.ts            # TypeScript interfaces
 │   ├── app.ts              # Main app logic
 │   └── main.ts             # Entry point

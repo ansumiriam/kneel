@@ -4,6 +4,7 @@
  */
 
 import type { Sin, AppState } from '../types';
+import { getDaysSinceConfession as calculateDays } from '../utils/date';
 
 const STORAGE_KEY = 'kneel_data';
 
@@ -191,18 +192,14 @@ export function setColorTaggingEnabled(enabled: boolean): void {
     localStorage.setItem(COLOR_TAGGING_KEY, enabled ? 'true' : 'false');
 }
 
+
+
 /**
  * Calculate days since last confession
  */
 export function getDaysSinceConfession(): number | null {
     const dateStr = getLastConfessionDate();
-    if (!dateStr) return null;
-
-    const confessionDate = new Date(dateStr);
-    const today = new Date();
-    const diffTime = today.getTime() - confessionDate.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    return calculateDays(dateStr);
 }
 
 // === Color Labels ===
