@@ -15,12 +15,17 @@ export function renderLockScreen(): HTMLElement {
       <img src="assets/unlock-bg.png" alt="Sacred Art" class="lock-image" />
     </div>
     <div class="lock-content">
-      <h1 class="lock-title">Kneel</h1>
-      <p class="lock-subtitle">Private reflection space</p>
-      <button class="btn btn--primary lock-button" id="unlock-btn">
-        Unlock
-      </button>
-      <p class="lock-error" id="lock-error" hidden></p>
+      <div class="lock-title-group">
+        <h1 class="lock-title">Kneel</h1>
+      </div>
+      
+      <div class="lock-actions">
+        <p class="lock-subtitle">Private reflection space</p>
+        <button class="btn btn--primary lock-button" id="unlock-btn">
+          Unlock
+        </button>
+        <p class="lock-error" id="lock-error" hidden></p>
+      </div>
     </div>
   `;
 
