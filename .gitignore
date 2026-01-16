@@ -18,6 +18,3 @@ Thumbs.db
 # Environment
 .env
 .env.local
-
-# Agent handoff (local only)
-docs/HANDOFF.md
