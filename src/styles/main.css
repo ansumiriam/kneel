@@ -1387,35 +1387,48 @@ body {
   z-index: 3;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   text-align: center;
-  padding: calc(var(--space-2xl) + env(safe-area-inset-top)) var(--space-xl) calc(var(--space-2xl) + env(safe-area-inset-bottom));
+  padding: env(safe-area-inset-top) var(--space-xl) env(safe-area-inset-bottom);
   color: white;
   pointer-events: none;
-  /* Let clicks pass to button */
 }
 
-.lock-title-group,
-.lock-actions {
+.lock-title-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   pointer-events: auto;
-  /* Re-enable clicks for interactive areas */
+}
+
+.lock-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: auto;
 }
 
 .lock-title {
-  font-size: 2.75rem;
+  font-family: "Georgia", serif;
+  font-size: 3.5rem;
   font-weight: 300;
-  letter-spacing: 0.4em;
-  margin-bottom: var(--space-xs);
+  letter-spacing: 0.6em;
+  margin-right: -0.6em;
+  /* Correction for letter-spacing to center properly */
+  margin-bottom: 0;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
   text-transform: uppercase;
+  color: var(--accent);
 }
 
 .lock-subtitle {
-  font-size: var(--font-size-sm);
+  font-size: 0.9rem;
   opacity: 0.6;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 1);
   font-weight: 300;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--space-lg);
 }
 
 .lock-button {
