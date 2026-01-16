@@ -75,7 +75,7 @@ export function renderHomeScreen(): HTMLElement {
   // Build days text if enabled
   let daysText = '';
   if (showReminder && daysSince !== null && daysSince > 0) {
-    daysText = ` (${daysSince} day${daysSince !== 1 ? 's' : ''})`;
+    daysText = ` (${daysSince} day${daysSince !== 1 ? 's' : ''} ago)`;
   }
 
   container.innerHTML = `
