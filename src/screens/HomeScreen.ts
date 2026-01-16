@@ -84,7 +84,7 @@ export function renderHomeScreen(): HTMLElement {
         <div class="confession-date">
           <span class="confession-label">Last Confession</span>
           <div class="confession-value confession-value--clickable" id="date-trigger">
-            <span id="date-display">${formatDate(lastDate)}${daysText}</span>
+            <span id="date-display">${formatDate(lastDate)} ✏️${daysText}</span>
           </div>
           <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
         </div>
