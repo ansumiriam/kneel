@@ -7,10 +7,13 @@ import { authenticate } from '../services/auth';
 import { navigateTo } from '../utils/router';
 
 export function renderLockScreen(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'screen screen--lock';
+  const container = document.createElement('div');
+  container.className = 'screen screen--lock';
 
-    container.innerHTML = `
+  container.innerHTML = `
+    <div class="lock-visual">
+      <img src="assets/unlock-bg.png" alt="Sacred Art" class="lock-image" />
+    </div>
     <div class="lock-content">
       <h1 class="lock-title">Kneel</h1>
       <p class="lock-subtitle">Private reflection space</p>
@@ -21,32 +24,32 @@ export function renderLockScreen(): HTMLElement {
     </div>
   `;
 
-    // Handle unlock
-    const unlockBtn = container.querySelector('#unlock-btn') as HTMLButtonElement;
-    const errorMsg = container.querySelector('#lock-error') as HTMLParagraphElement;
+  // Handle unlock
+  const unlockBtn = container.querySelector('#unlock-btn') as HTMLButtonElement;
+  const errorMsg = container.querySelector('#lock-error') as HTMLParagraphElement;
 
-    unlockBtn.addEventListener('click', async () => {
-        unlockBtn.disabled = true;
-        unlockBtn.textContent = 'Authenticating...';
-        errorMsg.hidden = true;
+  unlockBtn.addEventListener('click', async () => {
+    unlockBtn.disabled = true;
+    unlockBtn.textContent = 'Authenticating...';
+    errorMsg.hidden = true;
 
-        try {
-            const success = await authenticate();
-            if (success) {
-                navigateTo('privacy-check');
-            } else {
-                errorMsg.textContent = 'Authentication failed. Please try again.';
-                errorMsg.hidden = false;
-                unlockBtn.disabled = false;
-                unlockBtn.textContent = 'Unlock';
-            }
-        } catch (err) {
-            errorMsg.textContent = 'An error occurred. Please try again.';
-            errorMsg.hidden = false;
-            unlockBtn.disabled = false;
-            unlockBtn.textContent = 'Unlock';
-        }
-    });
+    try {
+      const success = await authenticate();
+      if (success) {
+        navigateTo('privacy-check');
+      } else {
+        errorMsg.textContent = 'Authentication failed. Please try again.';
+        errorMsg.hidden = false;
+        unlockBtn.disabled = false;
+        unlockBtn.textContent = 'Unlock';
+      }
+    } catch (err) {
+      errorMsg.textContent = 'An error occurred. Please try again.';
+      errorMsg.hidden = false;
+      unlockBtn.disabled = false;
+      unlockBtn.textContent = 'Unlock';
+    }
+  });
 
-    return container;
+  return container;
 }

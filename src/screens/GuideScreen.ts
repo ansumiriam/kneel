@@ -5,6 +5,7 @@
 
 import { navigateTo } from '../utils/router';
 import { PREPARATION_GUIDE_PAGES } from '../content/prayers';
+import { addSwipeHandler } from '../utils/swipe';
 
 let currentPage = 0;
 
@@ -47,39 +48,22 @@ export function renderGuideScreen(): HTMLElement {
             navigateTo('prepare');
         });
 
-        // Swipe support
-        setupSwipe(container.querySelector('#guide-main') as HTMLElement);
-    };
-
-    const setupSwipe = (element: HTMLElement) => {
-        let startX = 0;
-        let startY = 0;
-
-        element.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        }, { passive: true });
-
-        element.addEventListener('touchend', (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const endY = e.changedTouches[0].clientY;
-            const diffX = endX - startX;
-            const diffY = Math.abs(endY - startY);
-            const totalPages = PREPARATION_GUIDE_PAGES.length;
-
-            // Only trigger if horizontal swipe is dominant
-            if (Math.abs(diffX) > 50 && diffY < 100) {
-                if (diffX > 0 && currentPage > 0) {
-                    // Swipe right = previous page
-                    currentPage--;
-                    renderPage('right');
-                } else if (diffX < 0 && currentPage < totalPages - 1) {
-                    // Swipe left = next page
+        // Swipe support using utility
+        const mainEl = container.querySelector('#guide-main') as HTMLElement;
+        addSwipeHandler(mainEl, {
+            onSwipeLeft: () => {
+                if (currentPage < totalPages - 1) {
                     currentPage++;
                     renderPage('left');
                 }
+            },
+            onSwipeRight: () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    renderPage('right');
+                }
             }
-        }, { passive: true });
+        });
     };
 
     renderPage();

@@ -6,13 +6,13 @@ export default defineConfig({
     plugins: [
         VitePWA({
             registerType: 'autoUpdate',
-            includeAssets: ['icons/*.png'],
+            includeAssets: ['icons/*.png', 'assets/*.png'],
             manifest: {
                 name: 'Kneel',
                 short_name: 'Kneel',
                 description: 'Private tracking between confessions',
-                theme_color: '#5a6e7a',
-                background_color: '#fafafa',
+                theme_color: '#00a884',
+                background_color: '#1a1a1a',
                 display: 'standalone',
                 icons: [
                     {
