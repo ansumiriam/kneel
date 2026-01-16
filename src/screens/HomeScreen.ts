@@ -28,14 +28,7 @@ function formatDate(dateStr: string | null): string {
   }
 }
 
-/**
- * Get reminder level based on days (for progressive color)
- */
-function getReminderLevel(days: number): 'calm' | 'gentle' | 'warm' {
-  if (days <= 7) return 'calm';
-  if (days <= 14) return 'gentle';
-  return 'warm';
-}
+
 
 /**
  * Get CSS class for sin color
@@ -79,15 +72,10 @@ export function renderHomeScreen(): HTMLElement {
   const colorLabels = getColorLabels();
   const colorTaggingEnabled = getColorTaggingEnabled();
 
-  // Build reminder HTML if enabled
-  let reminderHtml = '';
+  // Build days text if enabled
+  let daysText = '';
   if (showReminder && daysSince !== null && daysSince > 0) {
-    const level = getReminderLevel(daysSince);
-    reminderHtml = `
-      <div class="reminder reminder--${level}">
-        <span class="reminder-days">${daysSince} day${daysSince !== 1 ? 's' : ''} since last confession</span>
-      </div>
-    `;
+    daysText = ` (${daysSince} day${daysSince !== 1 ? 's' : ''})`;
   }
 
   container.innerHTML = `
@@ -96,10 +84,9 @@ export function renderHomeScreen(): HTMLElement {
         <div class="confession-date">
           <span class="confession-label">Last Confession</span>
           <div class="confession-value confession-value--clickable" id="date-trigger">
-            <span id="date-display">${formatDate(lastDate)}</span>
+            <span id="date-display">${formatDate(lastDate)}${daysText}</span>
           </div>
           <input type="date" id="date-input" class="date-input" value="${lastDate || ''}" hidden />
-          ${reminderHtml}
         </div>
       </div>
     </header>
