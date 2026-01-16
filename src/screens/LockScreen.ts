@@ -11,12 +11,14 @@ export function renderLockScreen(): HTMLElement {
   container.className = 'screen screen--lock';
 
   container.innerHTML = `
-    <div class="lock-visual">
-      <img src="assets/unlock-bg.png" alt="Sacred Art" class="lock-image" />
-    </div>
+    <div class="lock-visual"></div>
     <div class="lock-content">
       <div class="lock-title-group">
         <h1 class="lock-title">Kneel</h1>
+      </div>
+      
+      <div class="lock-image-container">
+        <img src="assets/unlock-bg.png" alt="Sacred Art" class="lock-image" />
       </div>
       
       <div class="lock-actions">
