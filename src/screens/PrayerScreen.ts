@@ -20,7 +20,7 @@ export function renderPrayerScreen(): HTMLElement {
   const prayer = currentPrayer === 'before' ? PRAYER_BEFORE_CONFESSION : ACT_OF_CONTRITION;
 
   container.innerHTML = `
-    <main class="prayer-content">
+    <main class="scroll-area prayer-content">
       <h1 class="prayer-title">${prayer.title}</h1>
       <div class="prayer-text">${formatPrayerText(prayer.content)}</div>
     </main>

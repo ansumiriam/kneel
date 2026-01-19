@@ -15,9 +15,8 @@ export function renderSettingsScreen(): HTMLElement {
   const colorTaggingEnabled = getColorTaggingEnabled();
 
   container.innerHTML = `
-    <div class="settings-spacer"></div>
-
-    <main class="settings-content">
+    <main class="scroll-area settings-content">
+      <div class="settings-spacer"></div>
       <h1 class="settings-title">Settings</h1>
       
       <div class="settings-item">

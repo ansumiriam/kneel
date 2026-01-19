@@ -24,7 +24,7 @@ export function renderEditSinScreen(): HTMLElement {
   const currentText = sin?.text || '';
 
   container.innerHTML = `
-    <main class="add-content">
+    <main class="scroll-area add-content">
       <h1 class="add-title">Edit Entry</h1>
       <textarea 
         class="add-textarea" 

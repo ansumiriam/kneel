@@ -12,7 +12,7 @@ export function renderPrepareScreen(): HTMLElement {
   container.className = 'screen screen--prepare';
 
   container.innerHTML = `
-    <main class="prepare-content">
+    <main class="scroll-area prepare-content">
       <h1 class="prepare-title">Prepare</h1>
       
       <div class="prepare-card" id="prayer-before">

@@ -88,24 +88,52 @@ body {
   line-height: var(--line-height);
   color: var(--text-primary);
   background: var(--bg-primary);
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  /* Lock body */
+  position: fixed;
+  /* Prevent scroll/bounce on mobile */
+  overscroll-behavior: none;
 }
 
 #app {
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 /* === Screen Layout === */
 .screen {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100%;
+  width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  /* Individual screens are fixed */
+}
+
+/* Scroll Area for internal content */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: var(--space-lg);
+  overscroll-behavior-y: contain;
+}
+
+/* Hide scrollbar for cleaner look if desired, or keep for accessibility */
+.scroll-area::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-area::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
 }
 
 /* === Buttons === */

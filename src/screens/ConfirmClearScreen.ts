@@ -15,7 +15,7 @@ export function renderConfirmClearScreen(): HTMLElement {
   const today = getTodayISO();
 
   container.innerHTML = `
-    <div class="confirm-content">
+    <main class="scroll-area confirm-content">
       <div class="confirm-icon">✓</div>
       <h1 class="confirm-title">Ready for a fresh start?</h1>
       <p class="confirm-subtitle">
@@ -32,7 +32,7 @@ export function renderConfirmClearScreen(): HTMLElement {
         <button class="btn btn--secondary" id="cancel-btn">Cancel</button>
         <button class="btn btn--primary" id="confirm-btn">Confirm</button>
       </div>
-    </div>
+    </main>
   `;
 
   // Handle cancel

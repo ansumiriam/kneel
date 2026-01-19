@@ -12,7 +12,7 @@ export function renderAddSinScreen(): HTMLElement {
   container.className = 'screen screen--add';
 
   container.innerHTML = `
-    <main class="add-content">
+    <main class="scroll-area add-content">
       <h1 class="add-title">Add Entry</h1>
       <textarea 
         class="add-textarea" 

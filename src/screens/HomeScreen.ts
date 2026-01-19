@@ -76,7 +76,7 @@ export function renderHomeScreen(): HTMLElement {
       </div>
     </header>
 
-    <main class="home-content">
+    <main class="scroll-area home-content">
       ${sins.length === 0
       ? `<div class="empty-state">
              <p>No entries yet. Take your time.</p>
