@@ -3,7 +3,7 @@
  * User preferences including theme toggle
  */
 
-import { getTheme, setTheme, getShowReminder, setShowReminder, getColorTaggingEnabled, setColorTaggingEnabled } from '../services/storage';
+import { getTheme, setTheme, getShowReminder, setShowReminder } from '../services/storage';
 import { navigateTo } from '../utils/router';
 
 export function renderSettingsScreen(): HTMLElement {
@@ -12,7 +12,6 @@ export function renderSettingsScreen(): HTMLElement {
 
   const currentTheme = getTheme();
   const showReminder = getShowReminder();
-  const colorTaggingEnabled = getColorTaggingEnabled();
 
   container.innerHTML = `
     <main class="scroll-area settings-content">
@@ -40,17 +39,6 @@ export function renderSettingsScreen(): HTMLElement {
           <span class="toggle-slider"></span>
         </label>
       </div>
-
-      <div class="settings-item">
-        <div class="settings-label">
-          <span class="settings-name">Color Code Entry</span>
-          <span class="settings-desc">Long press entries to add color tags</span>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="color-toggle" ${colorTaggingEnabled ? 'checked' : ''} />
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
     </main>
 
     <footer class="screen-footer settings-footer">
@@ -75,12 +63,6 @@ export function renderSettingsScreen(): HTMLElement {
   const reminderToggle = container.querySelector('#reminder-toggle') as HTMLInputElement;
   reminderToggle.addEventListener('change', () => {
     setShowReminder(reminderToggle.checked);
-  });
-
-  // Handle color tagging toggle
-  const colorToggle = container.querySelector('#color-toggle') as HTMLInputElement;
-  colorToggle.addEventListener('change', () => {
-    setColorTaggingEnabled(colorToggle.checked);
   });
 
   return container;

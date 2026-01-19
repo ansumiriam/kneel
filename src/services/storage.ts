@@ -99,13 +99,12 @@ export function restoreSin(sin: Sin): void {
 /**
  * Update a sin's properties
  */
-export function updateSin(id: string, updates: Partial<Pick<Sin, 'text' | 'color'>>): Sin | null {
+export function updateSin(id: string, updates: Partial<Pick<Sin, 'text'>>): Sin | null {
     const state = getState();
     const sin = state.sins.find(s => s.id === id);
     if (!sin) return null;
 
     if (updates.text !== undefined) sin.text = updates.text;
-    if (updates.color !== undefined) sin.color = updates.color;
 
     saveState(state);
     return sin;
@@ -173,24 +172,6 @@ export function setShowReminder(show: boolean): void {
     localStorage.setItem(REMINDER_KEY, show ? 'true' : 'false');
 }
 
-// === Color Tagging ===
-
-const COLOR_TAGGING_KEY = 'kneel_color_tagging';
-
-/**
- * Get color tagging preference (disabled by default)
- */
-export function getColorTaggingEnabled(): boolean {
-    const stored = localStorage.getItem(COLOR_TAGGING_KEY);
-    return stored === 'true'; // Default to disabled
-}
-
-/**
- * Set color tagging preference
- */
-export function setColorTaggingEnabled(enabled: boolean): void {
-    localStorage.setItem(COLOR_TAGGING_KEY, enabled ? 'true' : 'false');
-}
 
 
 
@@ -202,46 +183,3 @@ export function getDaysSinceConfession(): number | null {
     return calculateDays(dateStr);
 }
 
-// === Color Labels ===
-
-const COLOR_LABELS_KEY = 'kneel_color_labels';
-
-export interface ColorLabels {
-    [key: string]: string;
-    rose: string;
-    amber: string;
-    sage: string;
-    sky: string;
-    lavender: string;
-}
-
-const DEFAULT_COLOR_LABELS: ColorLabels = {
-    rose: 'Repetitive',
-    amber: 'Important',
-    sage: 'Resolved',
-    sky: 'Reflect',
-    lavender: 'Other'
-};
-
-/**
- * Get color labels
- */
-export function getColorLabels(): ColorLabels {
-    const stored = localStorage.getItem(COLOR_LABELS_KEY);
-    if (stored) {
-        try {
-            return { ...DEFAULT_COLOR_LABELS, ...JSON.parse(stored) };
-        } catch {
-            // Invalid JSON
-        }
-    }
-    return DEFAULT_COLOR_LABELS;
-}
-
-/**
- * Set color labels
- */
-export function setColorLabels(labels: Partial<ColorLabels>): void {
-    const current = getColorLabels();
-    localStorage.setItem(COLOR_LABELS_KEY, JSON.stringify({ ...current, ...labels }));
-}

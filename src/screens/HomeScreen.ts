@@ -3,10 +3,9 @@
  * Main screen with confession date, sin list, and actions
  */
 
-import type { SinColor } from '../types';
-import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, updateSin, getColorLabels, getColorTaggingEnabled } from '../services/storage';
+import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin } from '../services/storage';
 import { navigateTo } from '../utils/router';
-import { showToast, showUndoToast } from '../services/toast';
+import { showUndoToast } from '../services/toast';
 import { addSwipeHandler } from '../utils/swipe';
 import { setEditingSinId } from './EditSinScreen';
 import { formatDate } from '../utils/date';
@@ -15,36 +14,6 @@ import { formatDate } from '../utils/date';
 
 
 
-/**
- * Get CSS class for sin color
- */
-function getColorClass(color?: SinColor): string {
-  if (!color || color === 'none') return '';
-  return `sin-item--${color}`;
-}
-
-/**
- * Build color picker HTML with selected indicator
- */
-function buildColorPicker(currentColor: SinColor | undefined, colorLabels: { [key: string]: string }): string {
-  const colors: SinColor[] = ['none', 'rose', 'amber', 'sage', 'sky', 'lavender'];
-  const selectedColor = currentColor || 'none';
-
-  return `
-    <div class="sin-item-actions" hidden>
-      <div class="color-picker-row">
-        ${colors.map(color => `
-          <button class="color-btn ${color !== 'none' ? `color-btn--${color}` : ''} ${selectedColor === color ? 'color-btn--selected' : ''}" 
-                  data-color="${color}" 
-                  title="${color === 'none' ? 'No color' : colorLabels[color] || color}">
-            ${color === 'none' ? '○' : '●'}
-          </button>
-        `).join('')}
-        <button class="color-btn color-btn--close" title="Close">✕</button>
-      </div>
-    </div>
-  `;
-}
 
 export function renderHomeScreen(): HTMLElement {
   const container = document.createElement('div');
@@ -54,8 +23,6 @@ export function renderHomeScreen(): HTMLElement {
   const lastDate = getLastConfessionDate();
   const daysSince = getDaysSinceConfession();
   const showReminder = getShowReminder();
-  const colorLabels = getColorLabels();
-  const colorTaggingEnabled = getColorTaggingEnabled();
 
   // Build days text if enabled
   let daysText = '';
@@ -83,15 +50,14 @@ export function renderHomeScreen(): HTMLElement {
            </div>`
       : `<ul class="sin-list" id="sin-list">
              ${sins.map(sin => `
-               <li class="sin-item ${getColorClass(sin.color)}" data-id="${sin.id}" data-color="${sin.color || 'none'}">
+               <li class="sin-item" data-id="${sin.id}">
                  <div class="sin-item-content">
                    <span class="sin-text">${escapeHtml(sin.text)}</span>
                  </div>
-                 ${colorTaggingEnabled ? buildColorPicker(sin.color, colorLabels) : ''}
                </li>
              `).join('')}
            </ul>
-           <p class="swipe-hint">Swipe left to edit, right to delete${colorTaggingEnabled ? '. Long press for colors.' : ''}</p>`
+           <p class="swipe-hint">Swipe left to edit, right to delete</p>`
     }
     </main>
 
@@ -131,18 +97,11 @@ export function renderHomeScreen(): HTMLElement {
     dateTrigger.hidden = false;
   });
 
-  // Helper to close all color pickers
-  const closeAllPickers = () => {
-    container.querySelectorAll('.sin-item-actions').forEach(el => {
-      (el as HTMLElement).hidden = true;
-    });
-  };
 
   // Set up handlers for each sin item
   const sinItems = container.querySelectorAll('.sin-item');
   sinItems.forEach(item => {
     const sinId = (item as HTMLElement).dataset.id!;
-    const actionsDiv = item.querySelector('.sin-item-actions') as HTMLElement | null;
 
     // Swipe handlers
     addSwipeHandler(item as HTMLElement, {
@@ -164,65 +123,9 @@ export function renderHomeScreen(): HTMLElement {
       }
     });
 
-    // Long press for color picker (only if enabled)
-    if (colorTaggingEnabled && actionsDiv) {
-      let longPressTimer: number | null = null;
-
-      const handleTouchStart = () => {
-        longPressTimer = window.setTimeout(() => {
-          // Close other pickers first
-          closeAllPickers();
-          // Show this picker
-          actionsDiv.hidden = false;
-        }, 500); // 500ms for long press
-      };
-
-      const handleTouchEnd = () => {
-        if (longPressTimer) {
-          clearTimeout(longPressTimer);
-          longPressTimer = null;
-        }
-      };
-
-      item.addEventListener('touchstart', handleTouchStart, { passive: true });
-      item.addEventListener('touchend', handleTouchEnd, { passive: true });
-      item.addEventListener('touchmove', handleTouchEnd, { passive: true });
-
-      // Close button handler
-      const closeBtn = actionsDiv.querySelector('.color-btn--close');
-      closeBtn?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        actionsDiv.hidden = true;
-      });
-
-      // Color button handlers
-      const colorBtns = actionsDiv.querySelectorAll('.color-btn:not(.color-btn--close)');
-      colorBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const color = (btn as HTMLElement).dataset.color as SinColor;
-          updateSin(sinId, { color });
-
-          // Update UI immediately
-          item.className = `sin-item ${getColorClass(color)}`;
-          (item as HTMLElement).dataset.color = color;
-
-          // Update selected indicator
-          actionsDiv.querySelectorAll('.color-btn').forEach(b => b.classList.remove('color-btn--selected'));
-          btn.classList.add('color-btn--selected');
-
-          // Close picker after selection
-          actionsDiv.hidden = true;
-          showToast('Color updated');
-        });
-      });
-    }
-
     // Tap to expand/collapse long text
     const textSpan = item.querySelector('.sin-text') as HTMLElement;
     textSpan.addEventListener('click', (e) => {
-      // Don't expand if color actions are visible
-      if (actionsDiv && !actionsDiv.hidden) return;
       e.stopPropagation();
       item.classList.toggle('sin-item--expanded');
     });
