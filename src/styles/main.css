@@ -251,6 +251,7 @@ body {
 /* === Privacy Check Screen === */
 .screen--privacy {
   justify-content: flex-end;
+  align-items: center;
   padding-bottom: var(--space-2xl);
 }
 
