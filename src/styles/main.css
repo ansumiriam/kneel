@@ -985,10 +985,6 @@ body {
   font-size: var(--font-size-sm);
 }
 
-/* Adjust home footer for bottom nav */
-.home-footer {
-  bottom: 60px;
-}
 
 /* =========================
    Prepare Screen
