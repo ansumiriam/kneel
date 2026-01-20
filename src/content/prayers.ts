@@ -70,11 +70,8 @@ export const PREPARATION_GUIDE_PAGES = [
 4. Honour your father and mother
 5. You shall not kill
 6. You shall not commit adultery
-7. You shall not steal`
-    },
-    {
-        title: "Ten Commandments (cont.)",
-        content: `8. You shall not bear false witness against your neighbour
+7. You shall not steal
+8. You shall not bear false witness against your neighbour
 9. You shall not covet your neighbour's wife
 10. You shall not covet your neighbour's goods
 
