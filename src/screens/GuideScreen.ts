@@ -42,7 +42,6 @@ export function renderGuideScreen(): HTMLElement {
       <footer class="screen-footer guide-footer">
         <button class="btn btn--secondary guide-back-btn" id="back-btn">← Back</button>
         <div class="guide-nav">
-          <button class="btn-link guide-reset-btn" id="first-page-btn">First page</button>
           <div class="guide-dots">
             ${generateDots(currentPage, totalPages)}
           </div>
@@ -65,14 +64,6 @@ export function renderGuideScreen(): HTMLElement {
         // Back button handler
         container.querySelector('#back-btn')?.addEventListener('click', () => {
             navigateTo('prepare');
-        });
-
-        // First page handler
-        container.querySelector('#first-page-btn')?.addEventListener('click', () => {
-            if (currentPage !== 0) {
-                currentPage = 0;
-                renderPage('right');
-            }
         });
 
         // Make an entry handler

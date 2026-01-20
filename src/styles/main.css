@@ -1127,41 +1127,26 @@ body {
 }
 
 .guide-action-area {
-  margin-top: var(--space-xl);
-  padding: var(--space-md) 0;
+  margin-top: var(--space-md);
+  padding: var(--space-sm) 0;
   display: flex;
   justify-content: center;
 }
 
 .btn--wide {
   width: 100%;
-  max-width: 20rem;
+  max-width: 18rem;
 }
 
 .btn-icon-plus {
   margin-right: var(--space-sm);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
-.btn-link {
-  background: none;
-  border: none;
-  color: var(--accent);
-  font-size: 11px;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-
-.btn-link:hover {
-  opacity: 1;
-}
-
-.guide-reset-btn {
-  margin-bottom: 4px;
+.btn--primary.btn--wide {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
 }
 
 /* Guide Footer with dots */
