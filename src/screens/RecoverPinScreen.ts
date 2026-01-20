@@ -7,17 +7,17 @@ import { getAuthSettings, verifySecurityAnswer, setPin } from '../services/stora
 import { navigateTo } from '../utils/router';
 
 export function renderRecoverPinScreen(): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'screen screen--recover-pin';
+  const container = document.createElement('div');
+  container.className = 'screen screen--recover-pin';
 
-    const settings = getAuthSettings();
-    let step = 1; // 1: Answer Question, 2: Set New PIN, 3: Confirm New PIN
-    let newPin = '';
-    let confirmPin = '';
+  const settings = getAuthSettings();
+  let step = 1; // 1: Answer Question, 2: Set New PIN, 3: Confirm New PIN
+  let newPin = '';
+  let confirmPin = '';
 
-    const renderContent = () => {
-        if (step === 1) {
-            container.innerHTML = `
+  const renderContent = () => {
+    if (step === 1) {
+      container.innerHTML = `
         <div class="auth-container">
           <h1 class="auth-title">Recover PIN</h1>
           <p class="auth-subtitle">Answer your security question to reset</p>
@@ -31,8 +31,8 @@ export function renderRecoverPinScreen(): HTMLElement {
           </div>
         </div>
       `;
-        } else if (step === 2) {
-            container.innerHTML = `
+    } else if (step === 2) {
+      container.innerHTML = `
         <div class="auth-container">
           <h1 class="auth-title">New PIN</h1>
           <p class="auth-subtitle">Set a new 4-digit PIN</p>
@@ -49,8 +49,8 @@ export function renderRecoverPinScreen(): HTMLElement {
           </div>
         </div>
       `;
-        } else {
-            container.innerHTML = `
+    } else {
+      container.innerHTML = `
         <div class="auth-container">
           <h1 class="auth-title">Confirm New PIN</h1>
           <p class="auth-subtitle">Please re-enter your new PIN</p>
@@ -67,69 +67,82 @@ export function renderRecoverPinScreen(): HTMLElement {
           </div>
         </div>
       `;
-        }
+    }
 
-        attachListeners();
-    };
+    attachListeners();
+  };
 
-    const attachListeners = () => {
-        // Step 1: Verify Answer
-        container.querySelector('#verify-recovery-btn')?.addEventListener('click', () => {
-            const a = (container.querySelector('#recovery-a') as HTMLInputElement).value;
-            const errorMsg = container.querySelector('#recovery-error') as HTMLParagraphElement;
+  const attachListeners = () => {
+    // Step 1: Verify Answer
+    container.querySelector('#verify-recovery-btn')?.addEventListener('click', () => {
+      const a = (container.querySelector('#recovery-a') as HTMLInputElement).value;
+      const errorMsg = container.querySelector('#recovery-error') as HTMLParagraphElement;
 
-            if (verifySecurityAnswer(a)) {
-                step = 2;
+      if (verifySecurityAnswer(a)) {
+        step = 2;
+        renderContent();
+      } else {
+        errorMsg.textContent = 'Incorrect answer. Please try again.';
+        errorMsg.hidden = false;
+      }
+    });
+
+    container.querySelector('#back-to-lock-btn')?.addEventListener('click', () => {
+      navigateTo('lock');
+    });
+
+    // Step 2 & 3: Keypad for new PIN
+    container.querySelectorAll('.keypad-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = (btn as HTMLButtonElement).dataset.key;
+        if (key === '⌫') {
+          if (step === 2) newPin = newPin.slice(0, -1);
+          if (step === 3) confirmPin = confirmPin.slice(0, -1);
+          renderContent();
+        } else if ((step === 2 && newPin.length < 4) || (step === 3 && confirmPin.length < 4)) {
+          if (step === 2) newPin += key;
+          else confirmPin += key;
+
+          renderContent();
+
+          if ((step === 2 && newPin.length === 4) || (step === 3 && confirmPin.length === 4)) {
+            setTimeout(() => {
+              if (step === 2) {
+                step = 3;
                 renderContent();
-            } else {
-                errorMsg.textContent = 'Incorrect answer. Please try again.';
-                errorMsg.hidden = false;
-            }
-        });
-
-        container.querySelector('#back-to-lock-btn')?.addEventListener('click', () => {
-            navigateTo('lock');
-        });
-
-        // Step 2 & 3: Keypad for new PIN
-        container.querySelectorAll('.keypad-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const key = (btn as HTMLButtonElement).dataset.key;
-                if (key === '⌫') {
-                    if (step === 2) newPin = newPin.slice(0, -1);
-                    if (step === 3) confirmPin = confirmPin.slice(0, -1);
-                    renderContent();
-                } else if ((step === 2 && newPin.length < 4) || (step === 3 && confirmPin.length < 4)) {
-                    if (step === 2) newPin += key;
-                    else confirmPin += key;
-
-                    renderContent();
-
-                    if ((step === 2 && newPin.length === 4) || (step === 3 && confirmPin.length === 4)) {
-                        setTimeout(() => {
-                            if (step === 2) {
-                                step = 3;
-                                renderContent();
-                            } else if (step === 3) {
-                                if (newPin === confirmPin) {
-                                    setPin(newPin);
-                                    alert('PIN reset successful!');
-                                    navigateTo('lock');
-                                } else {
-                                    alert('PINs do not match. Please try again.');
-                                    newPin = '';
-                                    confirmPin = '';
-                                    step = 2;
-                                    renderContent();
-                                }
-                            }
-                        }, 200);
-                    }
+              } else if (step === 3) {
+                if (newPin === confirmPin) {
+                  setPin(newPin);
+                  // Show success message
+                  container.innerHTML = `
+                                        <div class="auth-container">
+                                            <h1 class="auth-title">Success</h1>
+                                            <p class="auth-subtitle">Your PIN has been reset successfully.</p>
+                                            <button class="btn btn--primary btn--wide" id="success-done-btn">Continue</button>
+                                        </div>
+                                    `;
+                  container.querySelector('#success-done-btn')?.addEventListener('click', () => {
+                    navigateTo('lock');
+                  });
+                } else {
+                  newPin = '';
+                  confirmPin = '';
+                  step = 2;
+                  renderContent();
+                  const errorMsg = container.querySelector('#recover-error-msg') || document.createElement('p');
+                  errorMsg.id = 'recover-error-msg';
+                  errorMsg.className = 'auth-error';
+                  errorMsg.textContent = 'PINs do not match. Please try again.';
+                  container.querySelector('.auth-subtitle')?.after(errorMsg);
                 }
-            });
-        });
-    };
+              }
+            }, 200);
+          }
+        }
+      });
+    });
+  };
 
-    renderContent();
-    return container;
+  renderContent();
+  return container;
 }

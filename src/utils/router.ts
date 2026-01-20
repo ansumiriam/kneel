@@ -35,7 +35,7 @@ registerScreen('recover-pin', renderRecoverPinScreen);
 /**
  * Navigate to a screen with optional state
  */
-export function navigateTo(screenId: ScreenId, state: any = null): void {
+export function navigateTo(screenId: ScreenId, state: any = null, shouldPush: boolean = true): void {
     const render = routes.get(screenId);
     if (!render) {
         console.error(`Screen not found: ${screenId}`);
@@ -50,11 +50,26 @@ export function navigateTo(screenId: ScreenId, state: any = null): void {
 
     navigationState = state;
 
+    // Handle history
+    if (shouldPush) {
+        history.pushState({ screenId, state }, '', '');
+    }
+
     // Clear and render new screen
     app.innerHTML = '';
     app.appendChild(render());
     currentScreen = screenId;
 }
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.screenId) {
+        navigateTo(event.state.screenId, event.state.state, false);
+    } else {
+        // Default to lock screen if no state
+        navigateTo('lock', null, false);
+    }
+});
 
 /**
  * Get the current navigation state

@@ -1,25 +1,94 @@
-import { getAuthSettings, verifyPin } from './storage';
+import { getAuthSettings, verifyPin, setCredentialId } from './storage';
 
 /**
  * Check if biometric authentication is available
  */
-export function isBiometricAvailable(): boolean {
-    return !!window.PublicKeyCredential;
+export async function isBiometricAvailable(): Promise<boolean> {
+    if (typeof window.PublicKeyCredential === 'undefined') return false;
+
+    try {
+        return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    } catch {
+        return false;
+    }
 }
 
 /**
- * Attempt biometric authentication
+ * Register the device for biometric authentication
+ * Returns true if registration succeeds
+ */
+export async function registerBiometrics(): Promise<boolean> {
+    try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+
+        const userID = 'kneel-user-' + Math.random().toString(36).substring(2, 11);
+
+        const createCredentialOptions: CredentialCreationOptions = {
+            publicKey: {
+                challenge,
+                rp: { name: "Kneel" },
+                user: {
+                    id: new TextEncoder().encode(userID),
+                    name: "user@kneel.local",
+                    displayName: "Kneel User"
+                },
+                pubKeyCredParams: [{ alg: -7, type: "public-key" }], // ES256
+                authenticatorSelection: {
+                    authenticatorAttachment: "platform",
+                    userVerification: "required",
+                    requireResidentKey: false
+                },
+                timeout: 60000
+            }
+        };
+
+        const credential = await navigator.credentials.create(createCredentialOptions) as PublicKeyCredential;
+        if (credential) {
+            const rawId = credential.rawId;
+            const idString = btoa(String.fromCharCode(...new Uint8Array(rawId)));
+            setCredentialId(idString);
+            return true;
+        }
+        return false;
+    } catch (err) {
+        console.error('Biometric registration failed:', err);
+        return false;
+    }
+}
+
+/**
+ * Attempt biometric authentication using WebAuthn
  * Returns true if authentication succeeds
  */
 export async function authenticateBiometric(): Promise<boolean> {
     const settings = getAuthSettings();
-    if (settings.method !== 'biometric') return false;
+    if (settings.method !== 'biometric' || !settings.credentialId) return false;
 
-    // Placeholder for actual WebAuthn credential assertion
-    // In a real PWA context, this would involve navigator.credentials.get()
-    return new Promise((resolve) => {
-        setTimeout(() => resolve(true), 1000); // Simulate delay
-    });
+    try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+
+        const binaryId = Uint8Array.from(atob(settings.credentialId), c => c.charCodeAt(0));
+
+        const getAssertionOptions: CredentialRequestOptions = {
+            publicKey: {
+                challenge,
+                allowCredentials: [{
+                    id: binaryId,
+                    type: "public-key"
+                }],
+                userVerification: "required",
+                timeout: 60000
+            }
+        };
+
+        const assertion = await navigator.credentials.get(getAssertionOptions);
+        return !!assertion;
+    } catch (err) {
+        console.error('Biometric authentication failed:', err);
+        return false;
+    }
 }
 
 /**

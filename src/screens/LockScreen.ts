@@ -1,6 +1,6 @@
 import { navigateTo } from '../utils/router';
 import { getAuthSettings, verifyPin } from '../services/storage';
-import { authenticateBiometric } from '../services/auth';
+import { authenticateBiometric, isBiometricAvailable } from '../services/auth';
 
 export function renderLockScreen(): HTMLElement {
   const settings = getAuthSettings();
@@ -16,8 +16,10 @@ export function renderLockScreen(): HTMLElement {
 
   let currentPin = '';
 
-  const renderContent = () => {
-    if (settings.method === 'biometric') {
+  const renderContent = async () => {
+    const biometricSupported = await isBiometricAvailable();
+
+    if (settings.method === 'biometric' && biometricSupported) {
       container.innerHTML = `
         <div class="auth-container">
           <div class="lock-image-container">
@@ -62,8 +64,10 @@ export function renderLockScreen(): HTMLElement {
         navigateTo('privacy-check');
       } else {
         const errorMsg = container.querySelector('#lock-error') as HTMLElement;
-        errorMsg.textContent = 'Biometric authentication failed.';
-        errorMsg.hidden = false;
+        if (errorMsg) {
+          errorMsg.textContent = 'Biometric authentication failed.';
+          errorMsg.hidden = false;
+        }
       }
     });
 
@@ -89,8 +93,10 @@ export function renderLockScreen(): HTMLElement {
                 navigateTo('privacy-check');
               } else {
                 const errorMsg = container.querySelector('#lock-error') as HTMLElement;
-                errorMsg.textContent = 'Incorrect PIN. Try again.';
-                errorMsg.hidden = false;
+                if (errorMsg) {
+                  errorMsg.textContent = 'Incorrect PIN. Try again.';
+                  errorMsg.hidden = false;
+                }
                 currentPin = '';
                 setTimeout(renderContent, 1000);
               }

@@ -34,7 +34,8 @@ function getState(): AppState {
         authMethod: 'pin',
         pin: null,
         securityQuestion: null,
-        securityAnswer: null
+        securityAnswer: null,
+        credentialId: null
     };
 }
 
@@ -232,8 +233,15 @@ export function getAuthSettings() {
     return {
         method: state.authMethod,
         isPinSet: !!state.pin,
-        question: state.securityQuestion
+        question: state.securityQuestion,
+        credentialId: state.credentialId
     };
+}
+
+export function setCredentialId(id: string | null): void {
+    const state = getState();
+    state.credentialId = id;
+    saveState(state);
 }
 
 export function setAuthMethod(method: 'pin' | 'biometric'): void {

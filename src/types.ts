@@ -19,6 +19,7 @@ export interface AppState {
     pin: string | null;
     securityQuestion: string | null;
     securityAnswer: string | null;
+    credentialId: string | null;
 }
 
 /**

@@ -5,19 +5,20 @@
 
 import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getAuthSettings, setAuthMethod } from '../services/storage';
 import { navigateTo } from '../utils/router';
-import { isBiometricAvailable } from '../services/auth';
+import { isBiometricAvailable, registerBiometrics } from '../services/auth';
 
 export function renderSettingsScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--settings';
 
-  const currentTheme = getTheme();
-  const showReminder = getShowReminder();
-  const currentLanguage = getLanguage();
-  const authSettings = getAuthSettings();
-  const biometricPossible = isBiometricAvailable();
+  const render = async () => {
+    const currentTheme = getTheme();
+    const showReminder = getShowReminder();
+    const currentLanguage = getLanguage();
+    const authSettings = getAuthSettings();
+    const biometricPossible = await isBiometricAvailable();
 
-  container.innerHTML = `
+    container.innerHTML = `
     <main class="scroll-area settings-content">
       <div class="settings-spacer"></div>
       <h1 class="settings-title">Settings</h1>
@@ -85,47 +86,65 @@ export function renderSettingsScreen(): HTMLElement {
     </footer>
   `;
 
-  // Handle back navigation
-  container.querySelector('#back-btn')?.addEventListener('click', () => {
-    navigateTo('home');
-  });
+    setupEventListeners();
+  };
 
-  // Handle theme toggle
-  const themeToggle = container.querySelector('#theme-toggle') as HTMLInputElement;
-  themeToggle.addEventListener('change', () => {
-    const newTheme = themeToggle.checked ? 'dark' : 'light';
-    setTheme(newTheme);
-    applyTheme(newTheme);
-  });
+  const setupEventListeners = () => {
+    // Handle back navigation
+    container.querySelector('#back-btn')?.addEventListener('click', () => {
+      navigateTo('home');
+    });
 
-  // Handle reminder toggle
-  const reminderToggle = container.querySelector('#reminder-toggle') as HTMLInputElement;
-  reminderToggle.addEventListener('change', () => {
-    setShowReminder(reminderToggle.checked);
-  });
+    // Handle theme toggle
+    const themeToggle = container.querySelector('#theme-toggle') as HTMLInputElement;
+    themeToggle?.addEventListener('change', () => {
+      const newTheme = themeToggle.checked ? 'dark' : 'light';
+      setTheme(newTheme);
+      applyTheme(newTheme);
+    });
 
-  // Handle language selection
-  container.querySelector('#lang-en')?.addEventListener('click', () => {
-    setLanguage('en');
-    navigateTo('settings');
-  });
+    // Handle reminder toggle
+    const reminderToggle = container.querySelector('#reminder-toggle') as HTMLInputElement;
+    reminderToggle?.addEventListener('change', () => {
+      setShowReminder(reminderToggle.checked);
+    });
 
-  container.querySelector('#lang-ml')?.addEventListener('click', () => {
-    setLanguage('ml');
-    navigateTo('settings');
-  });
+    // Handle language selection
+    container.querySelector('#lang-en')?.addEventListener('click', () => {
+      setLanguage('en');
+      navigateTo('settings');
+    });
 
-  // Handle biometric toggle
-  const biometricToggle = container.querySelector('#biometric-toggle') as HTMLInputElement;
-  biometricToggle?.addEventListener('change', () => {
-    setAuthMethod(biometricToggle.checked ? 'biometric' : 'pin');
-  });
+    container.querySelector('#lang-ml')?.addEventListener('click', () => {
+      setLanguage('ml');
+      navigateTo('settings');
+    });
 
-  // Handle change PIN
-  container.querySelector('#change-pin-btn')?.addEventListener('click', () => {
-    navigateTo('setup-pin');
-  });
+    // Handle biometric toggle
+    const biometricToggle = container.querySelector('#biometric-toggle') as HTMLInputElement;
+    biometricToggle?.addEventListener('change', async () => {
+      if (biometricToggle.checked) {
+        const success = await registerBiometrics();
+        if (success) {
+          setAuthMethod('biometric');
+        } else {
+          // Registration failed or cancelled, revert toggle
+          biometricToggle.checked = false;
+          setAuthMethod('pin');
+          alert('Biometric registration failed or was cancelled.');
+        }
+      } else {
+        setAuthMethod('pin');
+      }
+    });
 
+    // Handle change PIN
+    container.querySelector('#change-pin-btn')?.addEventListener('click', () => {
+      navigateTo('setup-pin');
+    });
+  };
+
+  render();
   return container;
 }
 
