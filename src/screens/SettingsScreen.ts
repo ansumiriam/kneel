@@ -3,7 +3,7 @@
  * User preferences including theme toggle
  */
 
-import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getAuthSettings } from '../services/storage';
+import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage } from '../services/storage';
 import { navigateTo } from '../utils/router';
 
 export function renderSettingsScreen(): HTMLElement {
@@ -14,7 +14,6 @@ export function renderSettingsScreen(): HTMLElement {
     const currentTheme = getTheme();
     const showReminder = getShowReminder();
     const currentLanguage = getLanguage();
-    const authSettings = getAuthSettings();
 
     container.innerHTML = `
     <main class="scroll-area settings-content">

@@ -1,4 +1,4 @@
-import { getAuthSettings, verifyPin } from './storage';
+import { verifyPin } from './storage';
 
 /**
  * Verify PIN entry
