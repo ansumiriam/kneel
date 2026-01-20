@@ -129,6 +129,19 @@ export function incrementSinCount(id: string): Sin | null {
     return sin;
 }
 
+/**
+ * Reset the repeat count of a sin
+ */
+export function resetSinCount(id: string): Sin | null {
+    const state = getState();
+    const sin = state.sins.find(s => s.id === id);
+    if (!sin) return null;
+
+    delete sin.count;
+    saveState(state);
+    return sin;
+}
+
 // === Last Confession Date ===
 
 /**

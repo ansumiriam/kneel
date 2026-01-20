@@ -3,7 +3,7 @@
  * Main screen with confession date, sin list, and actions
  */
 
-import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, incrementSinCount } from '../services/storage';
+import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, incrementSinCount, resetSinCount } from '../services/storage';
 import { navigateTo } from '../utils/router';
 import { showUndoToast } from '../services/toast';
 import { addSwipeHandler } from '../utils/swipe';
@@ -104,10 +104,46 @@ export function renderHomeScreen(): HTMLElement {
   sinItems.forEach(item => {
     const sinId = (item as HTMLElement).dataset.id!;
 
-    // Repeat button handler
+    // Repeat button handler with long press support
     const repeatBtn = item.querySelector('.repeat-btn') as HTMLButtonElement;
+    let longPressTimer: number | null = null;
+    let isLongPress = false;
+
+    const startLongPress = () => {
+      isLongPress = false;
+      longPressTimer = window.setTimeout(() => {
+        isLongPress = true;
+        const updated = resetSinCount(sinId);
+        if (updated) {
+          repeatBtn.classList.remove('repeat-btn--active');
+          const countSpan = repeatBtn.querySelector('.repeat-count');
+          if (countSpan) countSpan.remove();
+          // Haptic feedback if available
+          if ('vibrate' in navigator) navigator.vibrate(50);
+        }
+      }, 600); // 600ms for long press
+    };
+
+    const cancelLongPress = () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    };
+
+    repeatBtn?.addEventListener('mousedown', startLongPress);
+    repeatBtn?.addEventListener('touchstart', startLongPress, { passive: true });
+    repeatBtn?.addEventListener('mouseup', cancelLongPress);
+    repeatBtn?.addEventListener('touchend', cancelLongPress);
+    repeatBtn?.addEventListener('mouseleave', cancelLongPress);
+
     repeatBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
+      if (isLongPress) {
+        isLongPress = false;
+        return;
+      }
+
       const updatedSin = incrementSinCount(sinId);
       if (updatedSin) {
         // Update the specific button UI
