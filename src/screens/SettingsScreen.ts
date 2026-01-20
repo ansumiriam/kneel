@@ -3,20 +3,18 @@
  * User preferences including theme toggle
  */
 
-import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getAuthSettings, setAuthMethod } from '../services/storage';
+import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getAuthSettings } from '../services/storage';
 import { navigateTo } from '../utils/router';
-import { isBiometricAvailable, registerBiometrics } from '../services/auth';
 
 export function renderSettingsScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--settings';
 
-  const render = async () => {
+  const render = () => {
     const currentTheme = getTheme();
     const showReminder = getShowReminder();
     const currentLanguage = getLanguage();
     const authSettings = getAuthSettings();
-    const biometricPossible = await isBiometricAvailable();
 
     container.innerHTML = `
     <main class="scroll-area settings-content">
@@ -60,17 +58,6 @@ export function renderSettingsScreen(): HTMLElement {
 
       <div class="settings-section">
         <h2 class="settings-section-title">Security</h2>
-        <div class="settings-item">
-          <div class="settings-label">
-            <span class="settings-name">Biometric Unlock</span>
-            <span class="settings-desc">${biometricPossible ? 'Use FaceID/Fingerprint' : 'Not available on this device'}</span>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="biometric-toggle" ${authSettings.method === 'biometric' ? 'checked' : ''} ${!biometricPossible ? 'disabled' : ''} />
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        
         <div class="settings-item" id="change-pin-item">
           <div class="settings-label">
             <span class="settings-name">Change PIN</span>
@@ -118,24 +105,6 @@ export function renderSettingsScreen(): HTMLElement {
     container.querySelector('#lang-ml')?.addEventListener('click', () => {
       setLanguage('ml');
       navigateTo('settings');
-    });
-
-    // Handle biometric toggle
-    const biometricToggle = container.querySelector('#biometric-toggle') as HTMLInputElement;
-    biometricToggle?.addEventListener('change', async () => {
-      if (biometricToggle.checked) {
-        const success = await registerBiometrics();
-        if (success) {
-          setAuthMethod('biometric');
-        } else {
-          // Registration failed or cancelled, revert toggle
-          biometricToggle.checked = false;
-          setAuthMethod('pin');
-          alert('Biometric registration failed or was cancelled.');
-        }
-      } else {
-        setAuthMethod('pin');
-      }
     });
 
     // Handle change PIN

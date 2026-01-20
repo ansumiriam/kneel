@@ -15,11 +15,10 @@ export interface AppState {
     lastConfessionDate: string | null; // ISO date string
     sins: Sin[];
     language: 'en' | 'ml';
-    authMethod: 'pin' | 'biometric';
+    authMethod: 'pin';
     pin: string | null;
     securityQuestion: string | null;
     securityAnswer: string | null;
-    credentialId: string | null;
 }
 
 /**
