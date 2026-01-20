@@ -27,7 +27,7 @@ export function renderAddSinScreen(): HTMLElement {
     </main>
 
     <footer class="screen-footer add-footer">
-      <button class="btn btn--secondary" id="back-btn">← Back</button>
+      <button class="btn btn--secondary" id="back-btn">Cancel</button>
       <button class="btn btn--primary" id="save-btn">Save</button>
     </footer>
   `;
