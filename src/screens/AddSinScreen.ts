@@ -4,12 +4,15 @@
  */
 
 import { addSin } from '../services/storage';
-import { navigateTo } from '../utils/router';
+import { navigateTo, getNavigationState, clearNavigationState } from '../utils/router';
 import { showToast } from '../services/toast';
 
 export function renderAddSinScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--add';
+
+  const navState = getNavigationState();
+  const returnTo = navState?.from || 'home';
 
   container.innerHTML = `
     <main class="scroll-area add-content">
@@ -38,7 +41,8 @@ export function renderAddSinScreen(): HTMLElement {
     if (text) {
       addSin(text);
       showToast('Entry saved');
-      navigateTo('home');
+      clearNavigationState();
+      navigateTo(returnTo);
     } else {
       textarea.focus();
       textarea.classList.add('shake');
@@ -49,7 +53,10 @@ export function renderAddSinScreen(): HTMLElement {
   saveBtn.addEventListener('click', handleSave);
 
   // Handle back
-  container.querySelector('#back-btn')?.addEventListener('click', () => navigateTo('home'));
+  container.querySelector('#back-btn')?.addEventListener('click', () => {
+    clearNavigationState();
+    navigateTo(returnTo);
+  });
 
   // Handle Enter key (Ctrl+Enter to save)
   textarea.addEventListener('keydown', (e) => {

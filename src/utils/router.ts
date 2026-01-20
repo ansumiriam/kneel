@@ -9,6 +9,7 @@ type RenderFunction = () => HTMLElement;
 
 const routes: Map<ScreenId, RenderFunction> = new Map();
 let currentScreen: ScreenId | null = null;
+let navigationState: any = null;
 
 /**
  * Register a screen renderer
@@ -18,9 +19,9 @@ export function registerScreen(id: ScreenId, render: RenderFunction): void {
 }
 
 /**
- * Navigate to a screen
+ * Navigate to a screen with optional state
  */
-export function navigateTo(screenId: ScreenId): void {
+export function navigateTo(screenId: ScreenId, state: any = null): void {
     const render = routes.get(screenId);
     if (!render) {
         console.error(`Screen not found: ${screenId}`);
@@ -33,10 +34,26 @@ export function navigateTo(screenId: ScreenId): void {
         return;
     }
 
+    navigationState = state;
+
     // Clear and render new screen
     app.innerHTML = '';
     app.appendChild(render());
     currentScreen = screenId;
+}
+
+/**
+ * Get the current navigation state
+ */
+export function getNavigationState(): any {
+    return navigationState;
+}
+
+/**
+ * Clear the navigation state
+ */
+export function clearNavigationState(): void {
+    navigationState = null;
 }
 
 /**

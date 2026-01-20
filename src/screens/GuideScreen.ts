@@ -7,9 +7,19 @@ import { navigateTo } from '../utils/router';
 import { PREPARATION_GUIDE_PAGES } from '../content/prayers';
 import { addSwipeHandler } from '../utils/swipe';
 
-let currentPage = 0;
+const GUIDE_PAGE_KEY = 'kneel_guide_current_page';
+
+function getStoredPage(): number {
+    const saved = localStorage.getItem(GUIDE_PAGE_KEY);
+    return saved ? parseInt(saved, 10) : 0;
+}
+
+function setStoredPage(page: number): void {
+    localStorage.setItem(GUIDE_PAGE_KEY, page.toString());
+}
 
 export function renderGuideScreen(): HTMLElement {
+    let currentPage = getStoredPage();
     const container = document.createElement('div');
     container.className = 'screen screen--guide';
 
@@ -21,11 +31,18 @@ export function renderGuideScreen(): HTMLElement {
       <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="guide-main">
         <h2 class="guide-page-title">${page.title}</h2>
         <div class="guide-text">${formatGuideText(page.content)}</div>
+        
+        <div class="guide-action-area">
+          <button class="btn btn--primary btn--wide" id="make-entry-btn">
+            <span class="btn-icon-plus">＋</span> Make an entry
+          </button>
+        </div>
       </main>
 
       <footer class="screen-footer guide-footer">
         <button class="btn btn--secondary guide-back-btn" id="back-btn">← Back</button>
         <div class="guide-nav">
+          <button class="btn-link guide-reset-btn" id="first-page-btn">First page</button>
           <div class="guide-dots">
             ${generateDots(currentPage, totalPages)}
           </div>
@@ -33,6 +50,9 @@ export function renderGuideScreen(): HTMLElement {
         <span class="guide-page-num">${currentPage + 1} &thinsp;/&thinsp; ${totalPages}</span>
       </footer>
     `;
+
+        // Save current page
+        setStoredPage(currentPage);
 
         // Remove animation class after it completes
         setTimeout(() => {
@@ -44,8 +64,20 @@ export function renderGuideScreen(): HTMLElement {
 
         // Back button handler
         container.querySelector('#back-btn')?.addEventListener('click', () => {
-            currentPage = 0;
             navigateTo('prepare');
+        });
+
+        // First page handler
+        container.querySelector('#first-page-btn')?.addEventListener('click', () => {
+            if (currentPage !== 0) {
+                currentPage = 0;
+                renderPage('right');
+            }
+        });
+
+        // Make an entry handler
+        container.querySelector('#make-entry-btn')?.addEventListener('click', () => {
+            navigateTo('add-sin', { from: 'guide' });
         });
 
         // Swipe support using utility
