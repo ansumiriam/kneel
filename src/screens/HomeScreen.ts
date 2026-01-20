@@ -3,17 +3,12 @@
  * Main screen with confession date, sin list, and actions
  */
 
-import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin } from '../services/storage';
+import { getSins, getLastConfessionDate, setLastConfessionDate, getDaysSinceConfession, getShowReminder, deleteSin, restoreSin, incrementSinCount } from '../services/storage';
 import { navigateTo } from '../utils/router';
 import { showUndoToast } from '../services/toast';
 import { addSwipeHandler } from '../utils/swipe';
 import { setEditingSinId } from './EditSinScreen';
 import { formatDate } from '../utils/date';
-
-
-
-
-
 
 export function renderHomeScreen(): HTMLElement {
   const container = document.createElement('div');
@@ -52,7 +47,13 @@ export function renderHomeScreen(): HTMLElement {
              ${sins.map(sin => `
                <li class="sin-item" data-id="${sin.id}">
                  <div class="sin-item-content">
-                   <span class="sin-text">${escapeHtml(sin.text)}</span>
+                   <div class="sin-item-left">
+                     <span class="sin-text">${escapeHtml(sin.text)}</span>
+                   </div>
+                   <button class="repeat-btn ${sin.count ? 'repeat-btn--active' : ''}" data-id="${sin.id}">
+                     <span class="repeat-icon">↺</span>
+                     ${sin.count ? `<span class="repeat-count">${sin.count}</span>` : ''}
+                   </button>
                  </div>
                </li>
              `).join('')}
@@ -102,6 +103,24 @@ export function renderHomeScreen(): HTMLElement {
   const sinItems = container.querySelectorAll('.sin-item');
   sinItems.forEach(item => {
     const sinId = (item as HTMLElement).dataset.id!;
+
+    // Repeat button handler
+    const repeatBtn = item.querySelector('.repeat-btn') as HTMLButtonElement;
+    repeatBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const updatedSin = incrementSinCount(sinId);
+      if (updatedSin) {
+        // Update the specific button UI
+        repeatBtn.classList.add('repeat-btn--active');
+        let countSpan = repeatBtn.querySelector('.repeat-count');
+        if (!countSpan) {
+          countSpan = document.createElement('span');
+          countSpan.className = 'repeat-count';
+          repeatBtn.appendChild(countSpan);
+        }
+        countSpan.textContent = updatedSin.count?.toString() || '';
+      }
+    });
 
     // Swipe handlers
     addSwipeHandler(item as HTMLElement, {

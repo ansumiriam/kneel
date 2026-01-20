@@ -409,7 +409,52 @@ body {
 
 .sin-item-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.sin-item-left {
+  flex: 1;
+}
+
+.repeat-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.repeat-btn:active {
+  transform: scale(0.95);
+}
+
+.repeat-btn--active {
+  background: rgba(160, 64, 64, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+[data-theme="dark"] .repeat-btn--active {
+  background: rgba(0, 168, 132, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.repeat-icon {
+  font-size: 1.1rem;
+}
+
+.repeat-count {
+  font-weight: 600;
 }
 
 .sin-text {
@@ -426,7 +471,6 @@ body {
   line-clamp: unset;
   overflow: visible;
 }
-
 
 /* Swipe Hint */
 .swipe-hint {
