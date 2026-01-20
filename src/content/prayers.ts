@@ -73,9 +73,11 @@ export const PREPARATION_GUIDE_PAGES = [
 7. You shall not steal
 8. You shall not bear false witness against your neighbour
 9. You shall not covet your neighbour's wife
-10. You shall not covet your neighbour's goods
-
-**These ten commandments can be summarised into two:**
+10. You shall not covet your neighbour's goods`
+    },
+    {
+        title: "Commandment Summary",
+        content: `**These ten commandments can be summarised into two:**
 
 1. Love God above all.
 2. Love one another as yourself.`
