@@ -19,6 +19,7 @@ graph TD
     H --> I[9. Prayer]
     H --> J[10. Guide]
     D & E & F & G & H --> C
+    J --> D
     I & J --> H
 ```
 
@@ -46,8 +47,8 @@ graph TD
 │ Jan 16, 2026 ✏️ (4 days ago)    │
 ├────────────────────────────────┤
 │                                │
-│  • Entry 1 (Rose)              │
-│  • Entry 2 (Sage)              │
+│  • Entry 1            [ ↺ 3 ]  │
+│  • Entry 2            [ ↺ ]    │
 │  • Entry 3                     │
 │  ...                           │
 │                                │
@@ -69,8 +70,9 @@ graph TD
 ### Interactions
 - **Swipe left** on entry → Edit
 - **Swipe right** on entry → Delete (with undo toast)
-- **Tap** entry → Expand/collapse text
-- **Long press** entry → Color picker (when enabled)
+- **Tap text** → Expand/collapse text
+- **Tap ↺** → Increment habit counter
+- **Long press ↺** → Reset counter
 
 ---
 
@@ -79,8 +81,8 @@ graph TD
 **Purpose**: Input or modify free-text reflections.
 
 ### Layout
-- **Reachability**: Fixed footer containing **Back** (Left) and **Save** (Right).
-- **Back Button**: Standardized 120px wide touch target.
+- **Reachability**: Fixed footer containing **Cancel** (Left) and **Save** (Right).
+- **Cancel Button**: Standardized 120px wide touch target.
 
 ---
 
@@ -129,10 +131,15 @@ graph TD
 
 ## 10. Guide Screen
 
-**Purpose**: 25-page swipeable examination of conscience.
+**Purpose**: Multi-page examination of conscience.
 
 ### Elements
-- **Instagram-Style Dots**: Centered row of max 5 status dots with progressive scaling.
-- **Stats**: Current page progress (e.g. "1 / 25") right-aligned.
+- **Instagram-Style Dots**: Centered row of max 5 status dots showing progress.
+- **Stats**: Current page progress (e.g. "1 / 10").
+- **Make an Entry Button**: Large compact button on each page to record thoughts immediately.
 - **Back Button**: Wide 120px footprint on the left side of the footer.
-- **Behavior**: Swipe-only navigation with haptic/visual feedback.
+
+### Behavior
+- **Swipe navigation**: Horizontal swipe to move between pages.
+- **Persistence**: Re-opening the guide returns to the last viewed page.
+- **Contextual Add**: Using "Make an entry" returns the user to the exact same page after saving.

@@ -63,9 +63,8 @@ A non-judgmental inline visual cue showing time since last confession in parenth
 ## 5. Add Entry
 
 ### Requirements
-- Free-text input only.
-- Fixed footer with "Back" and "Save" buttons.
-- Save locally immediately.
+- **Reachability**: Fixed footer with "Cancel" and "Save" buttons.
+- **Workflow**: Save locally immediately and return to previous screen (Home or Guide).
 
 ---
 
@@ -74,34 +73,15 @@ A non-judgmental inline visual cue showing time since last confession in parenth
 ### Interactions
 | Gesture | Action |
 |---------|--------|
-| Tap | Expand/collapse entry text |
+| Tap text | Expand/collapse entry text |
+| Tap ↺ icon | Increment repeat counter (starts at 1) |
+| Long press ↺ | Reset repeat counter |
 | Swipe left | Navigate to Edit screen |
 | Swipe right | Delete with undo toast |
-| Long press | Open color picker (when enabled) |
 
 ---
 
-## 7. Color Tagging
-
-Optional feature to categorize entries with pastel colors.
-
-### Available Colors
-| Color | Label |
-|-------|-------|
-| Rose 🌹 | Repetitive |
-| Amber 🔶 | Important |
-| Sage 🌿 | Resolved |
-| Sky 🩵 | Reflect |
-| Lavender 💜 | Other |
-
-### Behavior
-- Disabled by default (enable in Settings).
-- Long-press entry to open color picker.
-- Colors show as left border + gradient background.
-
----
-
-## 8. "Confessed?" Ritual (Clear Entries)
+## 7. "Confessed?" Ritual (Clear Entries)
 
 Replaces the standard "Clear All" with a meaningful transition.
 
@@ -115,7 +95,7 @@ Replaces the standard "Clear All" with a meaningful transition.
 
 ---
 
-## 9. Theme Support
+## 8. Theme Support
 
 ### Options
 - **Dark mode** (Default, WhatsApp Green accent)
@@ -126,7 +106,7 @@ Replaces the standard "Clear All" with a meaningful transition.
 
 ---
 
-## 10. Prepare Section
+## 9. Prepare Section
 
 Accessible from the Home footer via the 📖 **Prepare** button.
 
@@ -135,18 +115,20 @@ Accessible from the Home footer via the 📖 **Prepare** button.
 - **Act of Contrition**: Read-only text.
 - **Preparation Guide**: 25-page swipeable examination of conscience.
 
-### Swipe Guide Features (One-Handed)
+### Guide Features (Optimized for Use)
 - **Wide Back Button**: Standard 120px footprint.
 - **Instagram-Style Dots**: Max 5 dots visible with progressive scaling/fading.
 - **Page Stats**: Current page vs total (e.g., "1 / 25") right-aligned.
+- **Persistence**: Remembers exact current page using local storage.
+- **Make an Entry**: "Make an entry" button on every page to quickly record a reflection.
+- **Contextual Return**: Returning from "Add Entry" brings the user back to the exact guide page they left.
 
 ---
 
-## 11. Settings
+## 10. Settings
 
 ### Available Options
 | Setting | Default | Description |
 |---------|---------|-------------|
 | Dark Mode | On | Light/dark theme toggle |
 | Gentle Reminder | On | Show days-since indicator |
-| Color Tagging | Off | Enable long-press color picker |
