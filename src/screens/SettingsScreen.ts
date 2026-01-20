@@ -3,7 +3,7 @@
  * User preferences including theme toggle
  */
 
-import { getTheme, setTheme, getShowReminder, setShowReminder } from '../services/storage';
+import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage } from '../services/storage';
 import { navigateTo } from '../utils/router';
 
 export function renderSettingsScreen(): HTMLElement {
@@ -12,6 +12,7 @@ export function renderSettingsScreen(): HTMLElement {
 
   const currentTheme = getTheme();
   const showReminder = getShowReminder();
+  const currentLanguage = getLanguage();
 
   container.innerHTML = `
     <main class="scroll-area settings-content">
@@ -39,6 +40,16 @@ export function renderSettingsScreen(): HTMLElement {
           <span class="toggle-slider"></span>
         </label>
       </div>
+
+      <div class="settings-item settings-item--col">
+        <div class="settings-label">
+          <span class="settings-name">Language (Content)</span>
+        </div>
+        <div class="segment-control">
+          <button class="segment-btn ${currentLanguage === 'en' ? 'segment-btn--active' : ''}" id="lang-en">English</button>
+          <button class="segment-btn ${currentLanguage === 'ml' ? 'segment-btn--active' : ''}" id="lang-ml">മലയാളം</button>
+        </div>
+      </div>
     </main>
 
     <footer class="screen-footer settings-footer">
@@ -63,6 +74,17 @@ export function renderSettingsScreen(): HTMLElement {
   const reminderToggle = container.querySelector('#reminder-toggle') as HTMLInputElement;
   reminderToggle.addEventListener('change', () => {
     setShowReminder(reminderToggle.checked);
+  });
+
+  // Handle language selection
+  container.querySelector('#lang-en')?.addEventListener('click', () => {
+    setLanguage('en');
+    navigateTo('settings');
+  });
+
+  container.querySelector('#lang-ml')?.addEventListener('click', () => {
+    setLanguage('ml');
+    navigateTo('settings');
   });
 
   return container;

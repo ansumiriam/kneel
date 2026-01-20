@@ -4,7 +4,8 @@
  */
 
 import { navigateTo } from '../utils/router';
-import { ATTRIBUTION } from '../content/prayers';
+import { CONTENT } from '../content/prayers';
+import { getLanguage } from '../services/storage';
 import { setCurrentPrayer } from './PrayerScreen';
 
 export function renderPrepareScreen(): HTMLElement {
@@ -71,8 +72,8 @@ export function renderPrepareScreen(): HTMLElement {
       </div>
 
       <div class="prepare-attribution">
-        <span class="attribution-text">Source: ${ATTRIBUTION.source}</span>
-        <a href="${ATTRIBUTION.url}" target="_blank" class="attribution-link">View Full PDF</a>
+        <span class="attribution-text">Source: ${CONTENT[getLanguage()].attribution.source}</span>
+        <a href="${CONTENT[getLanguage()].attribution.url}" target="_blank" class="attribution-link">View Full PDF</a>
       </div>
     </main>
 

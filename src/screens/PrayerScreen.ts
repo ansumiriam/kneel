@@ -4,7 +4,8 @@
  */
 
 import { navigateTo } from '../utils/router';
-import { PRAYER_BEFORE_CONFESSION, ACT_OF_CONTRITION } from '../content/prayers';
+import { CONTENT } from '../content/prayers';
+import { getLanguage } from '../services/storage';
 
 type PrayerType = 'before' | 'contrition';
 let currentPrayer: PrayerType = 'before';
@@ -17,12 +18,14 @@ export function renderPrayerScreen(): HTMLElement {
   const container = document.createElement('div');
   container.className = 'screen screen--prayer';
 
-  const prayer = currentPrayer === 'before' ? PRAYER_BEFORE_CONFESSION : ACT_OF_CONTRITION;
+  const lang = getLanguage();
+  const content = CONTENT[lang];
+  const prayer = currentPrayer === 'before' ? content.prayerBefore : content.actOfContrition;
 
   container.innerHTML = `
-    <main class="scroll-area prayer-content">
+    <main class="scroll-area prayer-content" lang="${lang}">
       <h1 class="prayer-title">${prayer.title}</h1>
-      <div class="prayer-text">${formatPrayerText(prayer.content)}</div>
+      <div class="prayer-text" lang="${lang}">${formatPrayerText(prayer.content)}</div>
     </main>
 
     <footer class="screen-footer prayer-footer">
@@ -43,6 +46,10 @@ export function renderPrayerScreen(): HTMLElement {
  */
 function formatPrayerText(text: string): string {
   return text.split('\n\n').map(para => {
+    // Detect headings (paragraphs wrapped in **)
+    if (para.startsWith('**') && para.endsWith('**')) {
+      return `<h3 class="content-heading">${para.replace(/\*\*/g, '')}</h3>`;
+    }
     // Bold text
     para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     // Italic text

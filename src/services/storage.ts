@@ -29,7 +29,8 @@ function getState(): AppState {
     }
     return {
         lastConfessionDate: null,
-        sins: []
+        sins: [],
+        language: 'en'
     };
 }
 
@@ -202,6 +203,24 @@ export function getShowReminder(): boolean {
  */
 export function setShowReminder(show: boolean): void {
     localStorage.setItem(REMINDER_KEY, show ? 'true' : 'false');
+}
+
+// === Language ===
+
+/**
+ * Get current language (default to English)
+ */
+export function getLanguage(): 'en' | 'ml' {
+    return getState().language || 'en';
+}
+
+/**
+ * Set current language
+ */
+export function setLanguage(lang: 'en' | 'ml'): void {
+    const state = getState();
+    state.language = lang;
+    saveState(state);
 }
 
 

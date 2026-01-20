@@ -828,6 +828,55 @@ body {
   outline-offset: 2px;
 }
 
+/* === Segment Control (Language Toggle) === */
+.settings-item--col {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.segment-control {
+  display: flex;
+  width: 100%;
+  background: var(--bg-primary);
+  padding: 4px;
+  border-radius: calc(var(--border-radius) + 4px);
+  border: 1px solid var(--border);
+}
+
+.segment-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  border-radius: var(--border-radius);
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.segment-btn--active {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+:root:not([data-theme="dark"]) .segment-btn--active {
+  color: white;
+}
+
+/* Malayalam Script Optimization */
+[lang="ml"] {
+  line-height: 1.8;
+  font-size: 1.05em;
+}
+
+.prayer-text:lang(ml),
+.guide-text:lang(ml) {
+  line-height: 2;
+}
+
 /* === Toast Notifications === */
 .toast-container {
   position: fixed;
@@ -1085,6 +1134,25 @@ body {
 
 .prayer-text p {
   margin-bottom: var(--space-md);
+}
+
+.content-heading {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  letter-spacing: 0.02em;
+}
+
+.content-heading:first-child {
+  margin-top: 0;
+}
+
+/* Malayalam Heading Adjustments */
+[lang="ml"] .content-heading {
+  font-size: 1.1em;
+  line-height: 1.4;
 }
 
 /* =========================

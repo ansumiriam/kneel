@@ -14,6 +14,7 @@ export interface Sin {
 export interface AppState {
     lastConfessionDate: string | null; // ISO date string
     sins: Sin[];
+    language: 'en' | 'ml';
 }
 
 /**

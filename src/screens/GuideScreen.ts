@@ -4,7 +4,8 @@
  */
 
 import { navigateTo } from '../utils/router';
-import { PREPARATION_GUIDE_PAGES } from '../content/prayers';
+import { CONTENT } from '../content/prayers';
+import { getLanguage } from '../services/storage';
 import { addSwipeHandler } from '../utils/swipe';
 
 const GUIDE_PAGE_KEY = 'kneel_guide_current_page';
@@ -19,18 +20,20 @@ function setStoredPage(page: number): void {
 }
 
 export function renderGuideScreen(): HTMLElement {
+    const lang = getLanguage();
+    const pages = CONTENT[lang].guide;
     let currentPage = getStoredPage();
     const container = document.createElement('div');
     container.className = 'screen screen--guide';
 
     const renderPage = (direction: 'left' | 'right' | 'none' = 'none') => {
-        const page = PREPARATION_GUIDE_PAGES[currentPage];
-        const totalPages = PREPARATION_GUIDE_PAGES.length;
+        const page = pages[currentPage];
+        const totalPages = pages.length;
 
         container.innerHTML = `
-      <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="guide-main">
+      <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="guide-main" lang="${lang}">
         <h2 class="guide-page-title">${page.title}</h2>
-        <div class="guide-text">${formatGuideText(page.content)}</div>
+        <div class="guide-text" lang="${lang}">${formatGuideText(page.content)}</div>
         
         <div class="guide-action-area">
           <button class="btn btn--primary btn--wide" id="make-entry-btn">
@@ -100,7 +103,11 @@ function formatGuideText(text: string): string {
     return text
         .split('\n\n')
         .map(para => {
-            // Bold text
+            // Detect headings (paragraphs wrapped in **)
+            if (para.startsWith('**') && para.endsWith('**')) {
+                return `<h3 class="content-heading">${para.replace(/\*\*/g, '')}</h3>`;
+            }
+            // Bold text (inline)
             para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
             // Italic text
             para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
