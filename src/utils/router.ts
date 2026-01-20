@@ -4,6 +4,12 @@
  */
 
 import type { ScreenId } from '../types';
+import { renderSettingsScreen } from '../screens/SettingsScreen';
+import { renderPrepareScreen } from '../screens/PrepareScreen';
+import { renderPrayerScreen } from '../screens/PrayerScreen';
+import { renderGuideScreen } from '../screens/GuideScreen';
+import { renderSetupPinScreen } from '../screens/SetupPinScreen';
+import { renderRecoverPinScreen } from '../screens/RecoverPinScreen';
 
 type RenderFunction = () => HTMLElement;
 
@@ -17,6 +23,14 @@ let navigationState: any = null;
 export function registerScreen(id: ScreenId, render: RenderFunction): void {
     routes.set(id, render);
 }
+
+// Register all screens
+registerScreen('settings', renderSettingsScreen);
+registerScreen('prepare', renderPrepareScreen);
+registerScreen('prayer', renderPrayerScreen);
+registerScreen('guide', renderGuideScreen);
+registerScreen('setup-pin', renderSetupPinScreen);
+registerScreen('recover-pin', renderRecoverPinScreen);
 
 /**
  * Navigate to a screen with optional state

@@ -15,6 +15,10 @@ export interface AppState {
     lastConfessionDate: string | null; // ISO date string
     sins: Sin[];
     language: 'en' | 'ml';
+    authMethod: 'pin' | 'biometric';
+    pin: string | null;
+    securityQuestion: string | null;
+    securityAnswer: string | null;
 }
 
 /**
@@ -38,4 +42,6 @@ export type ScreenId =
     | 'settings'
     | 'prepare'
     | 'prayer'
-    | 'guide';
+    | 'guide'
+    | 'setup-pin'
+    | 'recover-pin';

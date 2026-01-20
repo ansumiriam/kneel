@@ -30,7 +30,11 @@ function getState(): AppState {
     return {
         lastConfessionDate: null,
         sins: [],
-        language: 'en'
+        language: 'en',
+        authMethod: 'pin',
+        pin: null,
+        securityQuestion: null,
+        securityAnswer: null
     };
 }
 
@@ -221,6 +225,43 @@ export function setLanguage(lang: 'en' | 'ml'): void {
     const state = getState();
     state.language = lang;
     saveState(state);
+}
+
+export function getAuthSettings() {
+    const state = getState();
+    return {
+        method: state.authMethod,
+        isPinSet: !!state.pin,
+        question: state.securityQuestion
+    };
+}
+
+export function setAuthMethod(method: 'pin' | 'biometric'): void {
+    const state = getState();
+    state.authMethod = method;
+    saveState(state);
+}
+
+export function setPin(pin: string): void {
+    const state = getState();
+    state.pin = pin;
+    saveState(state);
+}
+
+export function verifyPin(input: string): boolean {
+    return getState().pin === input;
+}
+
+export function setSecurityQuestion(question: string, answer: string): void {
+    const state = getState();
+    state.securityQuestion = question;
+    state.securityAnswer = answer.toLowerCase().trim();
+    saveState(state);
+}
+
+export function verifySecurityAnswer(answer: string): boolean {
+    const state = getState();
+    return state.securityAnswer === answer.toLowerCase().trim();
 }
 
 
