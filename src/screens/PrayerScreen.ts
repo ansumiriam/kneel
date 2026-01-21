@@ -96,10 +96,26 @@ function formatPrayerText(text: string): string {
     if (trimmed.startsWith('**') && trimmed.endsWith('**')) {
       return `<h3 class="content-heading">${trimmed.replace(/\*\*/g, '')}</h3>`;
     }
+
     // Bold text
     para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     // Italic text
     para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+    // Bullet list items
+    if (para.startsWith('• ')) {
+      const items = para.split('\n').map(item => `<li>${item.replace('• ', '')}</li>`).join('');
+      return `<ul>${items}</ul>`;
+    }
+
+    // Numbered list items (1. 2. 3. etc.)
+    if (/^\d+\.\s/.test(para)) {
+      const firstMatch = para.match(/^(\d+)\.\s/);
+      const startNum = firstMatch ? firstMatch[1] : '1';
+      const items = para.split('\n').map(item => `<li>${item.replace(/^\d+\.\s/, '')}</li>`).join('');
+      return `<ol start="${startNum}">${items}</ol>`;
+    }
+
     return `<p>${para}</p>`;
   }).join('');
 }

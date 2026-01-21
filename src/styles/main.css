@@ -1704,12 +1704,15 @@ body {
 }
 
 .guide-text ul,
-.guide-text ol {
+.guide-text ol,
+.prayer-text ul,
+.prayer-text ol {
   margin-left: 1.5em;
   margin-bottom: 1em;
 }
 
-.guide-text li {
+.guide-text li,
+.prayer-text li {
   margin-bottom: 0.5em;
 }
 
