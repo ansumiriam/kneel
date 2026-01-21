@@ -34,7 +34,7 @@ export function renderPrayerScreen(): HTMLElement {
 
     container.innerHTML = `
       <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="prayer-main" lang="${lang}">
-        <h1 class="prayer-title">${prayer.title}</h1>
+        ${currentPage === 0 ? `<h1 class="prayer-title">${prayer.title}</h1>` : ''}
         <div class="prayer-text" lang="${lang}">${formatPrayerText(pageContent)}</div>
       </main>
 

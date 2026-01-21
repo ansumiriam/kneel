@@ -609,9 +609,7 @@ body {
 
 
 /* Prayer Footer */
-.prayer-footer {
-  justify-content: center;
-}
+
 
 
 
@@ -1405,13 +1403,7 @@ body {
 }
 
 /* Guide Footer with dots */
-.guide-footer {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding-top: 4px;
-  padding-bottom: calc(4px + env(safe-area-inset-bottom));
-}
+/* Guide Footer with dots - Merged with .prayer-footer below */
 
 /* Standard Footer Back Button */
 .settings-footer #back-btn,
@@ -1682,11 +1674,20 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+.guide-footer,
+.prayer-footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding-top: 4px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
+}
+
 .guide-page-title,
 .prayer-title {
   font-size: var(--font-size-xl);
   font-weight: 600;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
   color: var(--accent);
 }
 

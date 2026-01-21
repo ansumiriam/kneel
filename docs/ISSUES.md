@@ -13,6 +13,9 @@ Use this document to track known bugs, feature requests, and planned improvement
 ### UI & Layout
 - [ ] **"Make an Entry" Button:** The button is identifying as not visible on several pages.
 - [ ] **PDF Link Visibility:** The "Full view PDF" link is not visible and requires scrolling to see (should be in viewport).
+- [x] **Duplicate Headings:** The big heading is repeated on both pages for prayers (e.g., Prayer Before Confession).
+- [x] **Back Button Position:** Back button is not positioned correctly in the footer.
+- [x] **Guide Layout:** Too much space after heading, text cut off (not paginated correcty), and "Make an Entry" button hidden.
 
 ### Logic
 - [ ] **PDF Link Incorrect:** The PDF link points to the Malayalam PDF even when the language is set to English.
