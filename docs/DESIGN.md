@@ -62,18 +62,6 @@ A neutral, spiritually grounded palette optimized for OLED screens.
 }
 ```
 
-### Color Tags (Pastel)
-
-For optional entry categorization:
-
-| Color | Hex | Label (Customizable) |
-|-------|-----|-------|
-| Rose | `#e8a0a0` | Repetitive |
-| Amber | `#d4a574` | Important |
-| Sage | `#a8c4a8` | Resolved |
-| Sky | `#a0c4d4` | Reflect |
-| Lavender | `#c4a8d4` | Other |
-
 ---
 
 ## Typography
@@ -111,9 +99,10 @@ The "Confessed?" flow is treated as a ritualistic fresh start:
 ## Layout Principles
 
 1. **Mobile-first** — Design for phone screens first.
-2. **Full-height screens** — Each screen fills the viewport.
-3. **Centered content** — Max-width ~28rem for readability.
-4. **Generous whitespace** — Use `padding-bottom` to prevent content overlap with fixed footers.
+2. **Fixed Viewport (Zero-Scroll)** — The `body` is fixed to prevent browser chrome logic (pull-to-refresh, bar hiding) from interfering.
+3. **Internal Scrolling** — Content areas use `overflow-y: auto` within the fixed frame.
+4. **Centered content** — Max-width ~28rem for readability.
+5. **Generous whitespace** — Use `padding-bottom` to prevent content overlap with fixed footers.
 
 ---
 

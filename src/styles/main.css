@@ -1149,10 +1149,25 @@ body {
   margin-top: 0;
 }
 
-/* Malayalam Heading Adjustments */
+/* Malayalam Typography Optimization */
+[lang="ml"] {
+  line-height: 2;
+  /* Increased for Malayalam descenders/ascenders */
+  font-family: 'Meera', 'Kartika', 'Noto Sans Malayalam', sans-serif;
+  letter-spacing: 0;
+  /* Ligatures work better without custom letter-spacing */
+}
+
 [lang="ml"] .content-heading {
-  font-size: 1.1em;
-  line-height: 1.4;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-top: var(--space-xl);
+  font-weight: 600;
+}
+
+[lang="ml"] p,
+[lang="ml"] li {
+  margin-bottom: 1.2rem;
 }
 
 /* =========================

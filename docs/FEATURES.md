@@ -4,19 +4,19 @@ Detailed breakdown of all features in Kneel.
 
 ---
 
-## 1. Biometric / Device Authentication
+## 1. PIN Authentication
 
-> ⚠️ **Implementation Note**: This feature will be implemented last, after core testing is complete.
+> ⚠️ **Implementation Note**: Simple 4-digit PIN stored locally.
 
 ### Requirements
-- App must lock on launch
-- Use device biometric or system authentication
-- If authentication fails, app does not open
+- App requires PIN on launch.
+- If PIN is not set, user is prompted to create one.
+- 4-digit numeric keypad interface.
+- Includes "Forgot PIN" flow (data reset/recovery).
 
 ### Technical Approach
-- WebAuthn API for biometric credentials
-- Fallback to device passcode if biometric unavailable
-- Requires HTTPS in production (localhost allowed for dev)
+- Stored in LocalStorage (hashed/plain comparison for MVP).
+- Blocks access to all content until verified.
 
 ---
 
@@ -106,14 +106,27 @@ Replaces the standard "Clear All" with a meaningful transition.
 
 ---
 
-## 9. Prepare Section
+## 9. Bilingual Content Support
+
+### Options
+- **English** (Default)
+- **Malayalam** (Available via Settings)
+
+### Implementation
+- Toggles prayer text and guide content.
+- Supports native rendering with correct ligatures.
+- UI labels remain in English for navigation clarity.
+
+---
+
+## 10. Prepare Section
 
 Accessible from the Home footer via the 📖 **Prepare** button.
 
 ### Contents
-- **Prayer Before Confession**: Read-only text.
-- **Act of Contrition**: Read-only text.
-- **Preparation Guide**: 25-page swipeable examination of conscience.
+- **Prayer Before Confession**: Read-only text (Bilingual).
+- **Act of Contrition**: Read-only text (Bilingual).
+- **Preparation Guide**: 25-page swipeable examination of conscience (Bilingual).
 
 ### Guide Features (Optimized for Use)
 - **Wide Back Button**: Standard 120px footprint.
@@ -125,10 +138,12 @@ Accessible from the Home footer via the 📖 **Prepare** button.
 
 ---
 
-## 10. Settings
+## 11. Settings
 
 ### Available Options
 | Setting | Default | Description |
 |---------|---------|-------------|
 | Dark Mode | On | Light/dark theme toggle |
 | Gentle Reminder | On | Show days-since indicator |
+| Language | English | Content language toggle |
+| Security | - | Change PIN option |

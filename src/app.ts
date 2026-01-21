@@ -14,6 +14,8 @@ import { renderSettingsScreen, initTheme } from './screens/SettingsScreen';
 import { renderPrepareScreen } from './screens/PrepareScreen';
 import { renderPrayerScreen } from './screens/PrayerScreen';
 import { renderGuideScreen } from './screens/GuideScreen';
+import { renderSetupPinScreen } from './screens/SetupPinScreen';
+import { renderRecoverPinScreen } from './screens/RecoverPinScreen';
 
 /**
  * Initialize the application
@@ -33,6 +35,8 @@ export function initApp(): void {
     registerScreen('prepare', renderPrepareScreen);
     registerScreen('prayer', renderPrayerScreen);
     registerScreen('guide', renderGuideScreen);
+    registerScreen('setup-pin', renderSetupPinScreen);
+    registerScreen('recover-pin', renderRecoverPinScreen);
 
     // Start at lock screen
     navigateTo('lock');

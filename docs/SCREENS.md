@@ -8,7 +8,7 @@ Kneel has **10 screens** organized into core flows and auxiliary sections.
 
 ```mermaid
 graph TD
-    A[1. Lock Screen] -->|Auth Success| B[2. Privacy Check]
+    A[1. Lock Screen] -->|PIN / Auth| B[2. Privacy Check]
     B -->|Yes| C[3. Home Screen]
     B -->|Later| A
     C --> D[4. Add Sin]
@@ -27,7 +27,7 @@ graph TD
 
 ## 1. Lock / Auth Screen
 
-**Purpose**: Secure app access with device authentication.
+**Purpose**: Secure app access with PIN authentication.
 
 ---
 
@@ -104,8 +104,16 @@ graph TD
 **Purpose**: Configure app preferences with one-handed reachability.
 
 ### Elements
-- **Layout**: Uses a flexible spacer to push toggle items toward the lower half of the screen.
+- **Layout**: Uses a flexible spacer to push items toward the lower half of the screen.
 - **Back Button**: Standardized 120px wide button, centered at the bottom.
+
+### Settings Sections
+- **General**:
+  - **Dark Mode**: Toggle.
+  - **Gentle Reminder**: Toggle.
+  - **Language**: Segmented control (English / മലയാളം).
+- **Security**:
+  - **Change PIN**: Action to update security code.
 
 ---
 
@@ -121,7 +129,7 @@ graph TD
 
 ## 9. Prayer Screen
 
-**Purpose**: Read-only text display.
+**Purpose**: Read-only text display (Bilingual).
 
 ### Elements
 - **Layout**: Full-height scrollable text.
