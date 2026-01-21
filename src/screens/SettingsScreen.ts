@@ -46,7 +46,8 @@ export function renderSettingsScreen(): HTMLElement {
 
         <div class="settings-item settings-item--col">
           <div class="settings-label">
-            <span class="settings-name">Language (Content)</span>
+            <span class="settings-name">Set Prayer Language</span>
+            <span class="settings-desc">The user can prefer to use confession guide in the following languages.</span>
           </div>
           <div class="segment-control">
             <button class="segment-btn ${currentLanguage === 'en' ? 'segment-btn--active' : ''}" id="lang-en">English</button>

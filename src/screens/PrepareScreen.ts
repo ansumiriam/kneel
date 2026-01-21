@@ -67,14 +67,15 @@ export function renderPrepareScreen(): HTMLElement {
           <p class="about-text about-text--muted">
             Built with love for the faithful. Privacy is sacred.
           </p>
+          <div class="prepare-attribution">
+            <span class="attribution-text">Source: ${CONTENT[getLanguage()].attribution.source}</span>
+            <a href="${CONTENT[getLanguage()].attribution.url}" target="_blank" class="attribution-link">View Full PDF</a>
+          </div>
           <button class="btn btn--secondary about-close" id="about-close">Close</button>
         </div>
       </div>
 
-      <div class="prepare-attribution">
-        <span class="attribution-text">Source: ${CONTENT[getLanguage()].attribution.source}</span>
-        <a href="${CONTENT[getLanguage()].attribution.url}" target="_blank" class="attribution-link">View Full PDF</a>
-      </div>
+
     </main>
 
     <footer class="screen-footer prepare-footer">
