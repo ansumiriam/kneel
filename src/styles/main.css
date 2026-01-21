@@ -1733,3 +1733,50 @@ body {
   padding-bottom: 6rem;
   /* Ensure button clears footer */
 }
+
+/* === Book Mode Layout === */
+.book-wrapper {
+  flex: 1;
+  overflow: hidden;
+  /* Hide other pages */
+  position: relative;
+  width: 100%;
+  padding: 0 var(--space-lg);
+  /* Padding belongs on the wrapper */
+  height: 100%;
+  /* Must define height for columns to trigger */
+}
+
+.book-content {
+  height: 100%;
+  /* Columns */
+  column-fill: auto;
+  column-gap: calc(var(--space-2xl) * 1);
+  column-width: auto;
+  columns: calc(100vw - var(--space-lg) * 2) auto;
+
+  /* Typography inherit */
+  font-size: var(--font-size-lg);
+  line-height: 1.8;
+  color: var(--text-primary);
+
+  /* Perf */
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.book-content p {
+  margin-bottom: 1em;
+  /* Allow breaking inside paragraphs for long text */
+  break-inside: auto;
+  orphans: 2;
+  widows: 2;
+}
+
+.book-content h1,
+.book-content h2,
+.book-content h3 {
+  break-after: avoid;
+  margin-top: 0;
+  padding-top: var(--space-lg);
+}
