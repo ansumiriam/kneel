@@ -16,6 +16,7 @@ Use this document to track known bugs, feature requests, and planned improvement
 - [x] **Duplicate Headings:** The big heading is repeated on both pages for prayers (e.g., Prayer Before Confession).
 - [x] **Back Button Position:** Back button is not positioned correctly in the footer.
 - [x] **Guide Layout:** Too much space after heading, text cut off (not paginated correcty), and "Make an Entry" button hidden.
+- [x] **Content Clipping:** Prayer Before Confession (Malayalam) content is clipped and not flowing to next page.
 
 ### Logic
 - [ ] **PDF Link Incorrect:** The PDF link points to the Malayalam PDF even when the language is set to English.
