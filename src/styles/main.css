@@ -1752,8 +1752,8 @@ body {
   /* Columns */
   column-fill: auto;
   column-gap: calc(var(--space-2xl) * 1);
-  column-width: auto;
-  columns: calc(100vw - var(--space-lg) * 2) auto;
+  column-width: 100%;
+  column-count: auto;
 
   /* Typography inherit */
   font-size: var(--font-size-lg);

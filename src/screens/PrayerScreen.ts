@@ -64,10 +64,11 @@ export function renderPrayerScreen(): HTMLElement {
     if (!wrapper || !contentEl) return;
 
     // Width of one "page" (the wrapper's viewable area)
-    pageWidth = wrapper.clientWidth;
+    // Use contentEl width because wrapper includes padding which distorts column alignment
+    pageWidth = contentEl.clientWidth;
     // Gap defined in CSS (needs to match or be retrieved) - getting from computed style
     const style = window.getComputedStyle(contentEl);
-    gap = parseFloat(style.columnGap) || 0;
+    gap = parseFloat(style.columnGap) || 32;
 
     // Total scroll width tells us how many columns were generated
     const scrollW = contentEl.scrollWidth;
