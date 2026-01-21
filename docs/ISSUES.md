@@ -15,7 +15,7 @@ Use this document to track known bugs, feature requests, and planned improvement
 - [ ] **PDF Link Visibility:** The "Full view PDF" link is not visible and requires scrolling to see (should be in viewport).
 - [x] **Duplicate Headings:** The big heading is repeated on both pages for prayers (e.g., Prayer Before Confession).
 - [x] **Back Button Position:** Back button is not positioned correctly in the footer.
-- [x] **Guide Layout:** Too much space after heading, text cut off (not paginated correcty), and "Make an Entry" button hidden.
+- [x] **Guide Layout:** "Make an Entry" button hidden due to clipping/footer overlap. Guide content clipping issues.
 - [x] **Content Clipping:** Prayer Before Confession (Malayalam) content is clipped and not flowing to next page.
 
 ### Logic
