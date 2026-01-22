@@ -54,17 +54,17 @@
   --text-secondary: #a0a0a0;
   --text-muted: #707070;
 
-  --accent: #4F1C51;
-  --accent-light: #6a2c6d;
-  --accent-dark: #3a153c;
+  --accent: #DCA06D;
+  --accent-light: #E5B585;
+  --accent-dark: #C08555;
 
   --border: #3a3a3a;
-  --focus: #4F1C51;
+  --focus: #DCA06D;
   --error: #e07070;
 }
 
 [data-theme="dark"] .btn--primary {
-  color: #ffffff;
+  color: #1a1a1a;
   font-weight: 600;
 }
 
@@ -1734,7 +1734,7 @@ body {
   height: 56px;
   border-radius: 50%;
   background-color: var(--accent);
-  color: #ffffff;
+  color: #1a1a1a;
   border: none;
   font-size: 2rem;
   display: flex;
