@@ -1752,7 +1752,7 @@ body {
   /* Columns */
   column-fill: auto;
   column-gap: calc(var(--space-2xl) * 1);
-  column-width: 100%;
+  column-width: calc(100% - 2px);
   column-count: auto;
 
   /* Typography inherit */
@@ -1769,8 +1769,9 @@ body {
   margin-bottom: 1em;
   /* Allow breaking inside paragraphs for long text */
   break-inside: auto;
-  orphans: 2;
-  widows: 2;
+  orphans: 1;
+  widows: 1;
+  word-wrap: break-word;
 }
 
 .book-content h1,
