@@ -34,13 +34,9 @@ export function renderGuideScreen(): HTMLElement {
       <main class="guide-content ${direction !== 'none' ? `page-flip--${direction}` : ''}" id="guide-main" lang="${lang}">
         <h2 class="guide-page-title">${page.title}</h2>
         <div class="guide-text" lang="${lang}">${formatGuideText(page.content)}</div>
-        
-        <div class="guide-action-area">
-          <button class="btn btn--primary btn--wide" id="make-entry-btn">
-            <span class="btn-icon-plus">＋</span> Make an entry
-          </button>
-        </div>
       </main>
+
+      <button class="fab-btn" id="fab-add-entry" aria-label="Make an entry">＋</button>
 
       <footer class="screen-footer guide-footer">
         <button class="btn btn--secondary guide-back-btn" id="back-btn">← Back</button>
@@ -69,8 +65,8 @@ export function renderGuideScreen(): HTMLElement {
             navigateTo('prepare');
         });
 
-        // Make an entry handler
-        container.querySelector('#make-entry-btn')?.addEventListener('click', () => {
+        // Make an entry handler (FAB)
+        container.querySelector('#fab-add-entry')?.addEventListener('click', () => {
             navigateTo('add-sin', { from: 'guide' });
         });
 

@@ -1724,14 +1724,35 @@ body {
   margin-bottom: var(--space-sm);
 }
 
-.guide-action-area {
-  margin-top: auto;
-  /* Push to bottom of content if possible */
-  padding-top: var(--space-xl);
+/* FAB styles */
+.fab-btn {
+  position: absolute;
+  bottom: calc(var(--space-xl) + 60px);
+  /* Position above footer */
+  right: var(--space-lg);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  color: var(--bg-primary);
+  border: none;
+  font-size: 2rem;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding-bottom: 6rem;
-  /* Ensure button clears footer */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fab-btn:active {
+  transform: scale(0.95);
+}
+
+.guide-content {
+  padding-bottom: 8rem;
+  /* Ensure content clears FAB */
 }
 
 /* === Book Mode Layout === */
