@@ -56,9 +56,8 @@ export function renderPrepareScreen(): HTMLElement {
             Your entries stay on your device — no accounts, no sync, no cloud.
           </p>
           <p class="about-text">
-            <strong>The idea:</strong> Many of us forget what to confess by the time we reach 
-            the confessional. This app is a quiet place to jot things down as they come to mind, 
-            without judgment or tracking.
+            <strong>Why I built this:</strong> I often found myself forgetting what I wanted to confess by the time I reached 
+            the confessional. This app is a quiet space to gather those thoughts—so you can unburden your mind before unburdening your soul.
           </p>
           <p class="about-text">
             <strong>After confession,</strong> clear your entries with a single tap. 
