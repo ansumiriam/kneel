@@ -1797,8 +1797,34 @@ body {
 
 .book-content h1,
 .book-content h2,
-.book-content h3 {
-  break-after: avoid;
-  margin-top: 0;
-  padding-top: var(--space-lg);
+
+/* === Add Screen === */
+.screen--add {
+  height: 100vh;
+  /* Fallback */
+  height: 100dvh;
+  /* Dynamic viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+.add-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  /* Ensure text doesn't hide behind footer */
+  padding-bottom: 2rem;
+}
+
+.add-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  padding-bottom: max(var(--space-md), env(safe-area-inset-bottom));
+  background-color: var(--bg-primary);
+  /* Cover content behind */
+  border-top: 1px solid var(--border);
+  z-index: 10;
 }
