@@ -52,7 +52,6 @@ export function renderHomeScreen(): HTMLElement {
                    </div>
                    <button class="repeat-btn ${sin.count ? 'repeat-btn--active' : ''}" data-id="${sin.id}">
                      <span class="repeat-icon">↺</span>
-                     ${sin.count ? `<span class="repeat-count">${sin.count}</span>` : ''}
                    </button>
                  </div>
                </li>
@@ -104,57 +103,27 @@ export function renderHomeScreen(): HTMLElement {
   sinItems.forEach(item => {
     const sinId = (item as HTMLElement).dataset.id!;
 
-    // Repeat button handler with long press support
+    // Repeat button toggle handler
     const repeatBtn = item.querySelector('.repeat-btn') as HTMLButtonElement;
-    let longPressTimer: number | null = null;
-    let isLongPress = false;
-
-    const startLongPress = () => {
-      isLongPress = false;
-      longPressTimer = window.setTimeout(() => {
-        isLongPress = true;
-        const updated = resetSinCount(sinId);
-        if (updated) {
-          repeatBtn.classList.remove('repeat-btn--active');
-          const countSpan = repeatBtn.querySelector('.repeat-count');
-          if (countSpan) countSpan.remove();
-          // Haptic feedback if available
-          if ('vibrate' in navigator) navigator.vibrate(50);
-        }
-      }, 600); // 600ms for long press
-    };
-
-    const cancelLongPress = () => {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-      }
-    };
-
-    repeatBtn?.addEventListener('mousedown', startLongPress);
-    repeatBtn?.addEventListener('touchstart', startLongPress, { passive: true });
-    repeatBtn?.addEventListener('mouseup', cancelLongPress);
-    repeatBtn?.addEventListener('touchend', cancelLongPress);
-    repeatBtn?.addEventListener('mouseleave', cancelLongPress);
 
     repeatBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (isLongPress) {
-        isLongPress = false;
-        return;
-      }
+      const isActive = repeatBtn.classList.contains('repeat-btn--active');
 
-      const updatedSin = incrementSinCount(sinId);
-      if (updatedSin) {
-        // Update the specific button UI
-        repeatBtn.classList.add('repeat-btn--active');
-        let countSpan = repeatBtn.querySelector('.repeat-count');
-        if (!countSpan) {
-          countSpan = document.createElement('span');
-          countSpan.className = 'repeat-count';
-          repeatBtn.appendChild(countSpan);
+      if (isActive) {
+        // Toggle OFF
+        const updated = resetSinCount(sinId);
+        if (updated) {
+          repeatBtn.classList.remove('repeat-btn--active');
+          if ('vibrate' in navigator) navigator.vibrate(50);
         }
-        countSpan.textContent = updatedSin.count?.toString() || '';
+      } else {
+        // Toggle ON
+        const updated = incrementSinCount(sinId);
+        if (updated) {
+          repeatBtn.classList.add('repeat-btn--active');
+          if ('vibrate' in navigator) navigator.vibrate(50);
+        }
       }
     });
 
