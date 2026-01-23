@@ -56,12 +56,17 @@ export function renderPrepareScreen(): HTMLElement {
             Your entries stay on your device — no accounts, no sync, no cloud.
           </p>
           <p class="about-text">
-            <strong>Why I built this:</strong> I often found myself forgetting what I wanted to confess by the time I reached 
-            the confessional. This app is a quiet space to gather those thoughts—so you can unburden your mind before unburdening your soul.
+            On a daily basis, I realize and regret certain things I’ve done. But if I don’t write them down, 
+            I often forget them by the time I prepare for confession—whether it’s at the end of the month or even after a few months. 
+            Then, only the major sins stand out in my mind, and those are the ones I confess.
           </p>
           <p class="about-text">
-            <strong>After confession,</strong> clear your entries with a single tap. 
-            The app updates your confession date and gives you a fresh start.
+            God, in His mercy, has given us the beautiful opportunity to confess, be forgiven, and grow in purity. 
+            But if I miss even the smaller sins I struggle with, I know I’m still far from the holiness I’m called to.
+          </p>
+          <p class="about-text">
+            That’s why I created this app—to note down what I want to confess, and to keep track of the date of my last confession. 
+            I truly hope it helps you as much as it has helped me.
           </p>
           <p class="about-text about-text--muted">
             Built with love for the faithful. Privacy is sacred.
