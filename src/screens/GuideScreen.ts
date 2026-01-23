@@ -3,7 +3,7 @@
  * Swipeable preparation guide pages with page flip animation
  */
 
-import { navigateTo } from '../utils/router';
+import { navigateTo, getNavigationState } from '../utils/router';
 import { CONTENT } from '../content/prayers';
 import { getLanguage } from '../services/storage';
 import { addSwipeHandler } from '../utils/swipe';
@@ -20,6 +20,13 @@ function setStoredPage(page: number): void {
 }
 
 export function renderGuideScreen(): HTMLElement {
+    const navState = getNavigationState();
+
+    // Reset to page 1 unless returning from "Add Entry" (which sets from: 'add-sin')
+    if (navState?.from !== 'add-sin') {
+        setStoredPage(0);
+    }
+
     const lang = getLanguage();
     const pages = CONTENT[lang].guide;
     let currentPage = getStoredPage();

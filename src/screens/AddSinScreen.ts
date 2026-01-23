@@ -41,8 +41,13 @@ export function renderAddSinScreen(): HTMLElement {
     if (text) {
       addSin(text);
       showToast('Entry saved');
-      clearNavigationState();
-      navigateTo(returnTo);
+
+      if (returnTo === 'guide') {
+        navigateTo('guide', { from: 'add-sin' });
+      } else {
+        clearNavigationState();
+        navigateTo(returnTo);
+      }
     } else {
       textarea.focus();
       textarea.classList.add('shake');
@@ -54,8 +59,12 @@ export function renderAddSinScreen(): HTMLElement {
 
   // Handle back
   container.querySelector('#back-btn')?.addEventListener('click', () => {
-    clearNavigationState();
-    navigateTo(returnTo);
+    if (returnTo === 'guide') {
+      navigateTo('guide', { from: 'add-sin' });
+    } else {
+      clearNavigationState();
+      navigateTo(returnTo);
+    }
   });
 
   // Handle Enter key (Ctrl+Enter to save)
