@@ -633,7 +633,7 @@ Amen.`
         ],
         attribution: {
             source: "Confession Assistant — Malankara Library",
-            url: "https://malankaralibrary.com/book/details/2277/Kumbasara_Sahayi_%E0%B4%95%E0%B5%81%E0%B4%AE%E0%B5%8D%E0%B4%AA%E0%B4%B8%E0%B4%BE%E0%B4%B0_%E0%B4%B8%E0%B4%B9%E0%B4%BE%E0%B4%AF%E0%B4%BF_Confession_Assistant_"
+            url: "https://malankaralibrary.com/ImageUpload/90afdf9b66b4123508f43d356cb84c95.pdf"
         }
     }
 };
