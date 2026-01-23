@@ -40,6 +40,14 @@ export function renderPrepareScreen(): HTMLElement {
         </div>
       </div>
 
+      <div class="prepare-card" id="source-pdf">
+        <span class="prepare-icon">📄</span>
+        <div class="prepare-card-text">
+          <span class="prepare-card-title">View Source PDF</span>
+          <span class="prepare-card-desc">Based on '${CONTENT[getLanguage()].attribution.source}'</span>
+        </div>
+      </div>
+
       <div class="prepare-card prepare-card--help" id="about-app">
         <span class="prepare-icon">❓</span>
         <div class="prepare-card-text">
@@ -71,10 +79,7 @@ export function renderPrepareScreen(): HTMLElement {
           <p class="about-text about-text--muted">
             Built with love for the faithful. Privacy is sacred.
           </p>
-          <div class="prepare-attribution">
-            <span class="attribution-text">Source: ${CONTENT[getLanguage()].attribution.source}</span>
-            <a href="${CONTENT[getLanguage()].attribution.url}" target="_blank" class="attribution-link">View Full PDF</a>
-          </div>
+          
           <button class="btn btn--secondary about-close" id="about-close">Close</button>
         </div>
       </div>
@@ -105,6 +110,10 @@ export function renderPrepareScreen(): HTMLElement {
 
   container.querySelector('#prep-guide')?.addEventListener('click', () => {
     navigateTo('guide');
+  });
+
+  container.querySelector('#source-pdf')?.addEventListener('click', () => {
+    window.open(CONTENT[getLanguage()].attribution.url, '_blank');
   });
 
   // About panel
