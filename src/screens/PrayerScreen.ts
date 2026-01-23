@@ -161,8 +161,10 @@ export function renderPrayerScreen(): HTMLElement {
  * Format prayer text with line breaks and markdown-like syntax
  */
 function formatPrayerText(text: string): string {
-  return text.split('\n\n').map(para => {
+  // Split by double newline (robust for keys and OS differences)
+  return text.split(/\r?\n\s*\r?\n/).map(para => {
     const trimmed = para.trim();
+    if (!trimmed) return ''; // Skip empty
     // Detect headings (paragraphs wrapped in **)
     if (trimmed.startsWith('**') && trimmed.endsWith('**')) {
       return `<h3 class="content-heading">${trimmed.replace(/\*\*/g, '')}</h3>`;
