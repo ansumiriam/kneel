@@ -120,6 +120,8 @@ body {
 /* Scroll Area for internal content */
 .scroll-area {
   flex: 1;
+  min-height: 0;
+  /* Critical for mobile flex scrolling */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: var(--space-lg);
@@ -1327,6 +1329,7 @@ body {
 
 .guide-content {
   flex: 1;
+  min-height: 0;
   padding: 0 var(--space-lg);
   padding-top: calc(60px + env(safe-area-inset-top));
   overflow-y: auto;
@@ -1804,6 +1807,7 @@ body {
 /* === Book Mode Layout === */
 .book-wrapper {
   flex: 1;
+  min-height: 0;
   overflow: hidden;
   /* Hide other pages */
   position: relative;
