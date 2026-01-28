@@ -1842,7 +1842,12 @@ body {
 }
 
 .book-content h1,
-.book-content h2,
+.book-content h2 {
+  column-span: all;
+  -webkit-column-span: all;
+  margin-top: 0;
+  margin-bottom: var(--space-lg);
+}
 
 /* === Add Screen === */
 .screen--add {
