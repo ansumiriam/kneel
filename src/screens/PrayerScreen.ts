@@ -38,8 +38,10 @@ export function renderPrayerScreen(): HTMLElement {
   container.innerHTML = `
     <main class="book-wrapper" id="book-wrapper">
        <div class="book-content" id="book-content" lang="${lang}">
-         <h1 class="prayer-title">${prayer.title}</h1>
-         ${formatPrayerText(fullText)}
+         <h1 class="prayer-title" id="prayer-title">${prayer.title}</h1>
+         <div id="prayer-body">
+            ${formatPrayerText(fullText)}
+         </div>
        </div>
     </main>
 
@@ -55,6 +57,7 @@ export function renderPrayerScreen(): HTMLElement {
   // Elements
   const wrapper = container.querySelector('#book-wrapper') as HTMLElement;
   const contentEl = container.querySelector('#book-content') as HTMLElement;
+
   const dotsContainer = container.querySelector('#dots-container') as HTMLElement;
   const pageIndicator = container.querySelector('#page-indicator') as HTMLElement;
   const navContainer = container.querySelector('#nav-container') as HTMLElement;
@@ -72,6 +75,9 @@ export function renderPrayerScreen(): HTMLElement {
       return;
     }
 
+    // Force column width to match page width exactly to prevent misalignment
+    contentEl.style.columnWidth = `${pageWidth}px`;
+
     // Gap defined in CSS
     const style = window.getComputedStyle(contentEl);
     gap = parseFloat(style.columnGap) || 32;
@@ -79,9 +85,12 @@ export function renderPrayerScreen(): HTMLElement {
     // Total scroll width
     const scrollW = contentEl.scrollWidth;
 
+    // Debug Info (Temporary)
+    // titleEl.textContent = `${prayer.title} (L:${fullText.length} W:${pageWidth} SW:${scrollW})`;
+
     // Calculate total pages
     // Ensure we handle single page correctly
-    if (scrollW <= pageWidth + 5) { // 5px tolerance
+    if (scrollW <= pageWidth + 10) { // 10px tolerance
       totalPages = 1;
     } else {
       totalPages = Math.ceil((scrollW + gap) / (pageWidth + gap));
@@ -93,6 +102,7 @@ export function renderPrayerScreen(): HTMLElement {
     updateUI();
   };
 
+  // Update UI function
   const updateUI = () => {
     // 1. Transform content to show current page
     const offset = currentPage * (pageWidth + gap);
@@ -119,6 +129,9 @@ export function renderPrayerScreen(): HTMLElement {
 
   // Initial Calculation
   requestAnimationFrame(calculateLayout);
+
+  // Resize Listener
+  window.addEventListener('resize', calculateLayout);
 
   // Cleanup listener on simple "unmount" check? 
   // In a real framework we'd return a cleanup fn. Here we rely on GC or full page reload/router replacement.
@@ -164,35 +177,46 @@ export function renderPrayerScreen(): HTMLElement {
  * Format prayer text with line breaks and markdown-like syntax
  */
 function formatPrayerText(text: string): string {
-  // Split by double newline (robust for keys and OS differences)
-  return text.split(/\r?\n\s*\r?\n/).map(para => {
+  if (!text) return '<p>No content available.</p>';
+
+  // Normalize line endings and split by double newlines
+  const paragraphs = text.replace(/\r\n/g, '\n').split(/\n\s*\n/);
+
+  return paragraphs.map(para => {
     const trimmed = para.trim();
     if (!trimmed) return ''; // Skip empty
+
     // Detect headings (paragraphs wrapped in **)
-    if (trimmed.startsWith('**') && trimmed.endsWith('**')) {
+    if (trimmed.startsWith('**') && trimmed.endsWith('**') && trimmed.length > 4) {
       return `<h3 class="content-heading">${trimmed.replace(/\*\*/g, '')}</h3>`;
     }
 
     // Bold text
-    para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    let content = trimmed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     // Italic text
-    para = para.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    content = content.replace(/\*(.+?)\*/g, '<em>$1</em>');
 
     // Bullet list items
-    if (para.startsWith('• ')) {
-      const items = para.split('\n').map(item => `<li>${item.replace('• ', '')}</li>`).join('');
-      return `<ul>${items}</ul>`;
+    if (content.startsWith('• ') || content.includes('\n• ')) {
+      const items = content.split('\n').filter(l => l.trim().startsWith('• '));
+      // If majority of lines are bullets, treat as list
+      if (items.length > 0) {
+        const listItems = items.map(item => `<li>${item.replace('• ', '')}</li>`).join('');
+        return `<ul>${listItems}</ul>`;
+      }
     }
 
     // Numbered list items (1. 2. 3. etc.)
-    if (/^\d+\.\s/.test(para)) {
-      const firstMatch = para.match(/^(\d+)\.\s/);
-      const startNum = firstMatch ? firstMatch[1] : '1';
-      const items = para.split('\n').map(item => `<li>${item.replace(/^\d+\.\s/, '')}</li>`).join('');
-      return `<ol start="${startNum}">${items}</ol>`;
+    if (/^\d+\.\s/.test(content)) {
+      // Simple heuristic: if it starts with number, treat whole block as item or list?
+      // For now, wrap in p, assuming <br> might be needed if multiple lines?
+      // Better: just p works for single items.
     }
 
-    return `<p>${para}</p>`;
+    // Replace single newlines with <br> within a paragraph
+    content = content.replace(/\n/g, '<br>');
+
+    return `<p>${content}</p>`;
   }).join('');
 }
 
