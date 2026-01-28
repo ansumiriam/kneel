@@ -64,35 +64,37 @@ export function renderPrayerScreen(): HTMLElement {
     if (!wrapper || !contentEl) return;
 
     // Width of one "page" (the wrapper's viewable area)
-    // Use contentEl width because wrapper includes padding which distorts column alignment
     pageWidth = contentEl.clientWidth;
-    // Gap defined in CSS (needs to match or be retrieved) - getting from computed style
+
+    // Safety check - if not visible yet
+    if (pageWidth === 0) {
+      requestAnimationFrame(calculateLayout);
+      return;
+    }
+
+    // Gap defined in CSS
     const style = window.getComputedStyle(contentEl);
     gap = parseFloat(style.columnGap) || 32;
 
-    // Total scroll width tells us how many columns were generated
+    // Total scroll width
     const scrollW = contentEl.scrollWidth;
 
-    // Approximate total pages (Scroll Width + Gap) / (Page Width + Gap) ?
-    // Actually, scrollWidth includes the total width of columns + gaps.
-    // If we have 2 columns: width + gap + width.
-    // So totalPages = Math.round((scrollW + gap) / (pageWidth + gap))
+    // Calculate total pages
+    // Ensure we handle single page correctly
+    if (scrollW <= pageWidth + 5) { // 5px tolerance
+      totalPages = 1;
+    } else {
+      totalPages = Math.ceil((scrollW + gap) / (pageWidth + gap));
+    }
 
-    // A simpler heuristic that works for CSS columns:
-    // Page 1 is always visibly rendered.
-    // If scrollWidth > pageWidth, we have overflow.
-    totalPages = Math.ceil((scrollW + gap) / (pageWidth + gap));
-
-    // Clamp current page
-    if (currentPage >= totalPages) currentPage = totalPages - 1;
+    // Update state
+    if (currentPage >= totalPages) currentPage = Math.max(0, totalPages - 1);
 
     updateUI();
   };
 
   const updateUI = () => {
     // 1. Transform content to show current page
-    // We translate negative X. 
-    // Distance = currentPage * (pageWidth + gap)
     const offset = currentPage * (pageWidth + gap);
     contentEl.style.transform = `translateX(-${offset}px)`;
 
@@ -107,15 +109,16 @@ export function renderPrayerScreen(): HTMLElement {
     }
   };
 
-  // Initial Calculation (Needs brief delay for DOM paint)
-  setTimeout(() => {
-    calculateLayout();
-    // Double check after font load or further render?
-    setTimeout(calculateLayout, 100);
-  }, 50);
+  // Resize Observer for robust layout handling
+  const resizeObserver = new ResizeObserver(() => {
+    requestAnimationFrame(calculateLayout);
+  });
 
-  // Resize Listener
-  window.addEventListener('resize', calculateLayout);
+  // Start observing
+  resizeObserver.observe(wrapper);
+
+  // Initial Calculation
+  requestAnimationFrame(calculateLayout);
 
   // Cleanup listener on simple "unmount" check? 
   // In a real framework we'd return a cleanup fn. Here we rely on GC or full page reload/router replacement.
