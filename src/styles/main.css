@@ -1625,8 +1625,8 @@ body {
 
 .guide-content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  /* Simpler layout for scrolling */
   min-height: 0;
   /* Critical for scrolling in flex parent */
   overflow-y: auto;
