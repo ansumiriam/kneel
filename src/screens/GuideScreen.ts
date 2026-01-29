@@ -27,7 +27,7 @@ export function renderGuideScreen(): HTMLElement {
     };
 
     container.innerHTML = `
-      <main class="guide-content" id="guide-main">
+      <main class="guide-content scroll-area" id="guide-main">
         ${renderSections()}
       </main>
 
