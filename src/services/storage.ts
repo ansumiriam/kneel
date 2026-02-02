@@ -209,6 +209,29 @@ export function setShowReminder(show: boolean): void {
     localStorage.setItem(REMINDER_KEY, show ? 'true' : 'false');
 }
 
+// === Prayer Visibility ===
+
+const PRAYER_BEFORE_KEY = 'kneel_show_prayer_before';
+const ACT_CONTRITION_KEY = 'kneel_show_act_contrition';
+
+export function getShowPrayerBefore(): boolean {
+    const stored = localStorage.getItem(PRAYER_BEFORE_KEY);
+    return stored !== 'false'; // Default true
+}
+
+export function setShowPrayerBefore(show: boolean): void {
+    localStorage.setItem(PRAYER_BEFORE_KEY, show ? 'true' : 'false');
+}
+
+export function getShowActOfContrition(): boolean {
+    const stored = localStorage.getItem(ACT_CONTRITION_KEY);
+    return stored !== 'false'; // Default true
+}
+
+export function setShowActOfContrition(show: boolean): void {
+    localStorage.setItem(ACT_CONTRITION_KEY, show ? 'true' : 'false');
+}
+
 // === Language ===
 
 /**

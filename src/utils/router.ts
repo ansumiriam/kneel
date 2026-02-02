@@ -1,93 +1,38 @@
-/**
- * Simple Router
- * Handles screen navigation without external dependencies
- */
-
+import { route } from 'preact-router';
 import type { ScreenId } from '../types';
-import { renderSettingsScreen } from '../screens/SettingsScreen';
-import { renderPrepareScreen } from '../screens/PrepareScreen';
-import { renderPrayerScreen } from '../screens/PrayerScreen';
-import { renderGuideScreen } from '../screens/GuideScreen';
-import { renderSetupPinScreen } from '../screens/SetupPinScreen';
-import { renderRecoverPinScreen } from '../screens/RecoverPinScreen';
 
-type RenderFunction = () => HTMLElement;
-
-const routes: Map<ScreenId, RenderFunction> = new Map();
-let currentScreen: ScreenId | null = null;
 let navigationState: any = null;
 
-/**
- * Register a screen renderer
- */
-export function registerScreen(id: ScreenId, render: RenderFunction): void {
-    routes.set(id, render);
-}
+// Map screen IDs to their route paths
+const screenPaths: Record<ScreenId, string> = {
+    'lock': '/',
+    'home': '/home',
+    'privacy-check': '/privacy-check',
+    'add-sin': '/add-sin',
+    'edit-sin': '/edit-sin',
+    'confirm-clear': '/confirm-clear',
+    'settings': '/settings',
+    'prepare': '/prepare',
+    'prayer': '/prayer',
+    'guide': '/guide',
+    'setup-pin': '/setup-pin',
+    'recover-pin': '/recover-pin'
+};
 
-// Register all screens
-registerScreen('settings', renderSettingsScreen);
-registerScreen('prepare', renderPrepareScreen);
-registerScreen('prayer', renderPrayerScreen);
-registerScreen('guide', renderGuideScreen);
-registerScreen('setup-pin', renderSetupPinScreen);
-registerScreen('recover-pin', renderRecoverPinScreen);
-
-/**
- * Navigate to a screen with optional state
- */
 export function navigateTo(screenId: ScreenId, state: any = null, shouldPush: boolean = true): void {
-    const render = routes.get(screenId);
-    if (!render) {
-        console.error(`Screen not found: ${screenId}`);
-        return;
-    }
-
-    const app = document.getElementById('app');
-    if (!app) {
-        console.error('App container not found');
-        return;
-    }
-
     navigationState = state;
-
-    // Handle history
-    if (shouldPush) {
-        history.pushState({ screenId, state }, '', '');
+    const path = screenPaths[screenId];
+    if (path) {
+        route(path, !shouldPush);
+    } else {
+        console.error(`Unknown screen ID: ${screenId}`);
     }
-
-    // Clear and render new screen
-    app.innerHTML = '';
-    app.appendChild(render());
-    currentScreen = screenId;
 }
 
-// Handle browser back/forward buttons
-window.addEventListener('popstate', (event) => {
-    if (event.state && event.state.screenId) {
-        navigateTo(event.state.screenId, event.state.state, false);
-    } else {
-        // Default to lock screen if no state
-        navigateTo('lock', null, false);
-    }
-});
-
-/**
- * Get the current navigation state
- */
 export function getNavigationState(): any {
     return navigationState;
 }
 
-/**
- * Clear the navigation state
- */
 export function clearNavigationState(): void {
     navigationState = null;
-}
-
-/**
- * Get the current screen ID
- */
-export function getCurrentScreen(): ScreenId | null {
-    return currentScreen;
 }
