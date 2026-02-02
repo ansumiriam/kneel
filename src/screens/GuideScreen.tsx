@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
 import { getLanguage } from '../services/storage';
-import { CONTENT } from '../content/prayers';
+import { CONTENT, GuidePage } from '../content/prayers';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Plus } from 'lucide-react';
 
 export function GuideScreen() {
-    const [sections, setSections] = useState<any[]>([]);
+    const [sections, setSections] = useState<GuidePage[]>([]);
 
     useEffect(() => {
         const lang = getLanguage();
@@ -46,7 +46,6 @@ export function GuideScreen() {
                 ))}
             </main>
 
-            {/* FAB */}
             {/* Footer Action */}
             <footer className="p-4 bg-background border-t border-border z-10">
                 <Button

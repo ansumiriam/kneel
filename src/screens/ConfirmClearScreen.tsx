@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 export function ConfirmClearScreen() {
     const today = getTodayISO();
     const [date, setDate] = useState(today);
+    const [calendarOpen, setCalendarOpen] = useState(false);
 
     const handleConfirm = () => {
         clearSins();
@@ -44,7 +45,7 @@ export function ConfirmClearScreen() {
                     <label htmlFor="date" className="text-sm font-medium">
                         Date of Confession
                     </label>
-                    <Popover>
+                    <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                         <PopoverTrigger asChild>
                             <Button
                                 variant={"outline"}
@@ -61,7 +62,12 @@ export function ConfirmClearScreen() {
                             <Calendar
                                 mode="single"
                                 selected={date ? new Date(date) : undefined}
-                                onSelect={(d) => d && setDate(format(d, 'yyyy-MM-dd'))}
+                                onSelect={(d) => {
+                                    if (d) {
+                                        setDate(format(d, 'yyyy-MM-dd'));
+                                        setCalendarOpen(false);
+                                    }
+                                }}
                                 disabled={(date) => date > new Date()}
                                 initialFocus
                             />

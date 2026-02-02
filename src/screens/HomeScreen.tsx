@@ -32,6 +32,8 @@ export function HomeScreen() {
     const [lastDate, setLastDate] = useState<string | null>(null);
     const [daysSince, setDaysSince] = useState<number | null>(null);
     const [showReminder, setShowReminder] = useState(true);
+    const [calendarOpen, setCalendarOpen] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
     // Load data on mount and focus
     const loadData = () => {
@@ -70,10 +72,18 @@ export function HomeScreen() {
     };
 
     const handleDelete = (id: string) => {
-        const deleted = deleteSin(id);
-        if (deleted) {
-            setSins(getSins());
-            // TODO: Toast with undo
+        if (deleteConfirm === id) {
+            // Confirmed - actually delete
+            const deleted = deleteSin(id);
+            if (deleted) {
+                setSins(getSins());
+            }
+            setDeleteConfirm(null);
+        } else {
+            // First click - ask for confirmation
+            setDeleteConfirm(id);
+            // Auto-clear after 3 seconds
+            setTimeout(() => setDeleteConfirm(prev => prev === id ? null : prev), 3000);
         }
     };
 
@@ -82,7 +92,7 @@ export function HomeScreen() {
 
             {/* Header */}
             <header className="px-6 py-6 pb-2">
-                <Popover>
+                <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
@@ -113,6 +123,7 @@ export function HomeScreen() {
                             onSelect={(date) => {
                                 if (date) {
                                     handleDateChange(format(date, 'yyyy-MM-dd'));
+                                    setCalendarOpen(false);
                                 }
                             }}
                             disabled={(date) => date > new Date()}
@@ -159,7 +170,12 @@ export function HomeScreen() {
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="w-10 h-10 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                                        className={cn(
+                                            "w-10 h-10 rounded-full transition-colors",
+                                            deleteConfirm === sin.id
+                                                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                                : "text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                        )}
                                         onClick={(e: any) => {
                                             e.stopPropagation();
                                             handleDelete(sin.id);

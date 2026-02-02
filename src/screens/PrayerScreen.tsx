@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'preact/hooks';
 import { navigateTo, getNavigationState } from '../utils/router';
 import { getLanguage } from '../services/storage';
-import { CONTENT } from '../content/prayers';
+import { CONTENT, Prayer } from '../content/prayers';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export function PrayerScreen() {
-    const [content, setContent] = useState<any>(null);
+    const [content, setContent] = useState<Prayer | null>(null);
     const [formattedHtml, setFormattedHtml] = useState('');
 
     // Initial load
