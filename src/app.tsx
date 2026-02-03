@@ -16,6 +16,8 @@ import { RecoverPinScreen } from './screens/RecoverPinScreen';
 import { GuideScreen } from './screens/GuideScreen';
 import { PrayerScreen } from './screens/PrayerScreen';
 
+import { PWAInstaller } from './components/PWAInstaller';
+
 export function App() {
     useEffect(() => {
         // Initialize theme
@@ -42,6 +44,7 @@ export function App() {
                 <Route path={`${base}/guide`} component={GuideScreen} />
                 <Route path={`${base}/prayer`} component={PrayerScreen} />
             </Router>
+            <PWAInstaller />
         </div>
     );
 }
