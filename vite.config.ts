@@ -12,8 +12,8 @@ export default defineConfig({
         tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
-            injectRegister: 'auto',
-            includeAssets: ['icons/*.jpg', 'assets/*.{woff2,svg}'],
+            injectRegister: 'inline',
+            includeAssets: ['icons/*.png', 'assets/*.{woff2,svg}'],
             manifest: {
                 id: '/kneel/',
                 name: 'Kneel',
@@ -27,27 +27,27 @@ export default defineConfig({
                 scope: '/kneel/',
                 icons: [
                     {
-                        src: 'icons/icon-192.jpg',
+                        src: 'icons/icon-192.png',
                         sizes: '192x192',
-                        type: 'image/jpeg',
+                        type: 'image/png',
                         purpose: 'any'
                     },
                     {
-                        src: 'icons/icon-192.jpg',
+                        src: 'icons/icon-192.png',
                         sizes: '192x192',
-                        type: 'image/jpeg',
+                        type: 'image/png',
                         purpose: 'maskable'
                     },
                     {
-                        src: 'icons/icon-512.jpg',
+                        src: 'icons/icon-512.png',
                         sizes: '512x512',
-                        type: 'image/jpeg',
+                        type: 'image/png',
                         purpose: 'any'
                     },
                     {
-                        src: 'icons/icon-512.jpg',
+                        src: 'icons/icon-512.png',
                         sizes: '512x512',
-                        type: 'image/jpeg',
+                        type: 'image/png',
                         purpose: 'maskable'
                     }
                 ]
