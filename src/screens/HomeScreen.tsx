@@ -266,15 +266,13 @@ export function HomeScreen() {
 
                 <Button
                     variant="ghost"
-                    className="w-full rounded-3xl h-16 text-lg font-extrabold bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-primary/40 hover:bg-primary/15 transition-all duration-300 group relative overflow-hidden active:scale-[0.98]"
+                    className="w-full rounded-3xl h-16 text-lg font-bold bg-secondary/30 border border-border/50 hover:bg-secondary/50 hover:border-border transition-all duration-300 group active:scale-[0.98]"
                     onClick={() => navigateTo('prepare')}
                 >
                     <div className="flex items-center justify-center gap-3">
-                        <BookOpen className="w-6 h-6 text-primary transition-transform duration-300 group-hover:scale-110" />
-                        <span className="tracking-tight">Prepare</span>
+                        <BookOpen className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+                        <span className="tracking-tight text-foreground">Prepare</span>
                     </div>
-                    {/* Subtle bottom highlight */}
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </Button>
             </footer>
             {/* Undo Toast */}
