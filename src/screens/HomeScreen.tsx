@@ -319,12 +319,50 @@ function SinCard({
     return (
         <li
             className={cn(
-                "group relative flex items-start gap-3 p-4 bg-card rounded-xl border border-border transition-all duration-300",
+                "group relative flex flex-col p-3 bg-card rounded-xl border border-border transition-all duration-300",
                 isExpanded ? "shadow-md ring-1 ring-primary/5" : "shadow-sm active:scale-[0.99]"
             )}
         >
+            {/* Top Actions Row */}
+            <div className="flex items-center justify-end gap-1 mb-1 border-b border-border/30 pb-1.5 -mx-1">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                        "h-7 px-2 rounded-md transition-all duration-300 text-[9px] font-bold uppercase tracking-wider bg-transparent",
+                        sin.isRepeated
+                            ? "text-destructive hover:text-destructive hover:bg-destructive/10"
+                            : "text-muted-foreground/30 hover:text-primary hover:bg-muted"
+                    )}
+                    onClick={onToggleRepeated}
+                >
+                    repeated
+                </Button>
+
+                <div className="flex items-center gap-0.5">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-8 h-8 rounded-full text-muted-foreground/50 hover:text-primary hover:bg-primary/10"
+                        onClick={() => navigateTo('edit-sin', { sinId: sin.id })}
+                    >
+                        <Pencil className="w-3.5 h-3.5" />
+                    </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-8 h-8 rounded-full text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10"
+                        onClick={onDelete}
+                    >
+                        <Trash2 className="w-3.5 h-3.5" />
+                    </Button>
+                </div>
+            </div>
+
+            {/* Content Area */}
             <div
-                className="flex-1 min-w-0 cursor-pointer py-1"
+                className="cursor-pointer py-1 px-1"
                 onClick={onToggleExpand}
             >
                 <div className="relative">
@@ -340,41 +378,6 @@ function SinCard({
                         <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-card to-transparent pointer-events-none" />
                     )}
                 </div>
-            </div>
-
-            {/* Actions Container */}
-            <div className="flex flex-col gap-2 shrink-0 border-l border-border/50 pl-3">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-9 h-9 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10"
-                    onClick={() => navigateTo('edit-sin', { sinId: sin.id })}
-                >
-                    <Pencil className="w-4 h-4" />
-                </Button>
-
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className={cn(
-                        "h-8 px-2 rounded-lg transition-all duration-300 text-[10px] font-bold uppercase tracking-wider bg-transparent",
-                        sin.isRepeated
-                            ? "text-destructive hover:text-destructive hover:bg-destructive/10"
-                            : "text-muted-foreground/30 hover:text-primary hover:bg-muted"
-                    )}
-                    onClick={onToggleRepeated}
-                >
-                    repeated
-                </Button>
-
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-9 h-9 rounded-full text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10"
-                    onClick={onDelete}
-                >
-                    <Trash2 className="w-4.5 h-4.5" />
-                </Button>
             </div>
         </li>
     );
