@@ -193,25 +193,15 @@ export function setShowReminder(show: boolean): void {
 
 // === Prayer Visibility ===
 
-const PRAYER_BEFORE_KEY = 'kneel_show_prayer_before';
-const ACT_CONTRITION_KEY = 'kneel_show_act_contrition';
+const SHOW_PRAYERS_KEY = 'kneel_show_prayers';
 
-export function getShowPrayerBefore(): boolean {
-    const stored = localStorage.getItem(PRAYER_BEFORE_KEY);
-    return stored !== 'false'; // Default true
+export function getShowPrayers(): boolean {
+    const stored = localStorage.getItem(SHOW_PRAYERS_KEY);
+    return stored === 'true'; // Default false
 }
 
-export function setShowPrayerBefore(show: boolean): void {
-    localStorage.setItem(PRAYER_BEFORE_KEY, show ? 'true' : 'false');
-}
-
-export function getShowActOfContrition(): boolean {
-    const stored = localStorage.getItem(ACT_CONTRITION_KEY);
-    return stored !== 'false'; // Default true
-}
-
-export function setShowActOfContrition(show: boolean): void {
-    localStorage.setItem(ACT_CONTRITION_KEY, show ? 'true' : 'false');
+export function setShowPrayers(show: boolean): void {
+    localStorage.setItem(SHOW_PRAYERS_KEY, show ? 'true' : 'false');
 }
 
 // === Language ===

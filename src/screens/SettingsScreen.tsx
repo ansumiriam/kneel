@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
-import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getShowPrayerBefore, setShowPrayerBefore, getShowActOfContrition, setShowActOfContrition } from '../services/storage';
+import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getShowPrayers, setShowPrayers } from '../services/storage';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Moon, Sun, Bell, Globe, Lock, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,15 +9,13 @@ export function SettingsScreen() {
     const [theme, setAppTheme] = useState<'light' | 'dark'>('dark');
     const [showReminder, setAppShowReminder] = useState(true);
     const [language, setAppLanguage] = useState<'en' | 'ml'>('en');
-    const [showPrayerBefore, setAppShowPrayerBefore] = useState(true);
-    const [showActOfContrition, setAppShowActOfContrition] = useState(true);
+    const [showPrayers, setAppShowPrayers] = useState(false);
 
     useEffect(() => {
         setAppTheme(getTheme());
         setAppShowReminder(getShowReminder());
         setAppLanguage(getLanguage());
-        setAppShowPrayerBefore(getShowPrayerBefore());
-        setAppShowActOfContrition(getShowActOfContrition());
+        setAppShowPrayers(getShowPrayers());
     }, []);
 
     const handleThemeToggle = () => {
@@ -33,16 +31,10 @@ export function SettingsScreen() {
         setShowReminder(newVal);
     };
 
-    const handlePrayerBeforeToggle = () => {
-        const newVal = !showPrayerBefore;
-        setAppShowPrayerBefore(newVal);
-        setShowPrayerBefore(newVal);
-    };
-
-    const handleActOfContritionToggle = () => {
-        const newVal = !showActOfContrition;
-        setAppShowActOfContrition(newVal);
-        setShowActOfContrition(newVal);
+    const handlePrayersToggle = () => {
+        const newVal = !showPrayers;
+        setAppShowPrayers(newVal);
+        setShowPrayers(newVal);
     };
 
     const handleLanguageChange = (lang: 'en' | 'ml') => {
@@ -97,22 +89,11 @@ export function SettingsScreen() {
                         <div className="flex items-center gap-3">
                             <BookOpen className="w-5 h-5" />
                             <div>
-                                <div className="font-medium">Prayer Before Confession</div>
+                                <div className="font-medium">Show Prayers</div>
                                 <div className="text-xs text-muted-foreground">Show in Prepare list</div>
                             </div>
                         </div>
-                        <Switch checked={showPrayerBefore} onChange={handlePrayerBeforeToggle} />
-                    </div>
-
-                    <div className="flex items-center justify-between p-4 bg-card rounded-xl border border-border">
-                        <div className="flex items-center gap-3">
-                            <BookOpen className="w-5 h-5" />
-                            <div>
-                                <div className="font-medium">Act of Contrition</div>
-                                <div className="text-xs text-muted-foreground">Show in Prepare list</div>
-                            </div>
-                        </div>
-                        <Switch checked={showActOfContrition} onChange={handleActOfContritionToggle} />
+                        <Switch checked={showPrayers} onChange={handlePrayersToggle} />
                     </div>
 
                     {/* Language */}

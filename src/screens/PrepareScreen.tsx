@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
-import { getLanguage, getShowPrayerBefore, getShowActOfContrition } from '../services/storage';
+import { getLanguage, getShowPrayers } from '../services/storage';
 import { CONTENT } from '../content/prayers';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Info, FileText, Heart, BookOpen, Hand } from 'lucide-react';
@@ -11,8 +11,7 @@ export function PrepareScreen() {
     const content = CONTENT[language];
     const [showAbout, setShowAbout] = useState(false);
 
-    const showPrayerBefore = getShowPrayerBefore();
-    const showActOfContrition = getShowActOfContrition();
+    const showPrayers = getShowPrayers();
 
     const handleBack = () => {
         navigateTo('home');
@@ -48,8 +47,7 @@ export function PrepareScreen() {
             action: () => window.open(content.attribution.url, '_blank')
         }
     ].filter(item => {
-        if (item.id === 'prayer-before') return showPrayerBefore;
-        if (item.id === 'act-contrition') return showActOfContrition;
+        if (item.id === 'prayer-before' || item.id === 'act-contrition') return showPrayers;
         return true;
     });
 
