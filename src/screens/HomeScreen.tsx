@@ -6,7 +6,6 @@ import {
     Check,
     BookOpen,
     Settings as SettingsIcon,
-    Layers,
     Pencil,
     Trash2,
     CalendarIcon,
@@ -201,44 +200,20 @@ export function HomeScreen() {
                         <p className="text-lg">No entries yet. Take your time.</p>
                     </div>
                 ) : (
-                    <div className="space-y-6 pb-20">
-                        {/* Recurring Section */}
-                        {sins.some(s => s.isRepeated) && (
-                            <section className="space-y-3">
-                                <h2 className="text-[11px] font-bold text-primary/60 uppercase tracking-[0.2em] px-2">Recurring Patterns</h2>
-                                <ul className="space-y-3">
-                                    {sins.filter(s => s.isRepeated).map(sin => (
-                                        <SinCard
-                                            key={sin.id}
-                                            sin={sin}
-                                            isExpanded={expandedIds.has(sin.id)}
-                                            onToggleExpand={() => toggleExpand(sin.id)}
-                                            onToggleRepeated={(e) => handleToggleRepeated(e, sin.id)}
-                                            onDelete={(e) => handleDelete(sin.id, e)}
-                                        />
-                                    ))}
-                                </ul>
-                            </section>
-                        )}
-
-                        {/* General Section */}
-                        <section className="space-y-3">
-                            {sins.some(s => s.isRepeated) && (
-                                <h2 className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-[0.2em] px-2">General</h2>
-                            )}
-                            <ul className="space-y-3">
-                                {sins.filter(s => !s.isRepeated).map(sin => (
-                                    <SinCard
-                                        key={sin.id}
-                                        sin={sin}
-                                        isExpanded={expandedIds.has(sin.id)}
-                                        onToggleExpand={() => toggleExpand(sin.id)}
-                                        onToggleRepeated={(e) => handleToggleRepeated(e, sin.id)}
-                                        onDelete={(e) => handleDelete(sin.id, e)}
-                                    />
-                                ))}
-                            </ul>
-                        </section>
+                    <div className="space-y-3 pb-20 mt-2">
+                        {[...sins]
+                            .sort((a, b) => (a.isRepeated === b.isRepeated ? 0 : a.isRepeated ? -1 : 1))
+                            .map(sin => (
+                                <SinCard
+                                    key={sin.id}
+                                    sin={sin}
+                                    isExpanded={expandedIds.has(sin.id)}
+                                    onToggleExpand={() => toggleExpand(sin.id)}
+                                    onToggleRepeated={(e) => handleToggleRepeated(e, sin.id)}
+                                    onDelete={(e) => handleDelete(sin.id, e)}
+                                />
+                            ))
+                        }
                     </div>
                 )}
             </main>
@@ -380,17 +355,16 @@ function SinCard({
 
                 <Button
                     variant="ghost"
-                    size="icon"
+                    size="sm"
                     className={cn(
-                        "w-9 h-9 rounded-xl transition-all duration-300",
+                        "h-8 px-2 rounded-lg transition-all duration-300 text-[10px] font-bold uppercase tracking-wider bg-transparent",
                         sin.isRepeated
-                            ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
-                            : "text-muted-foreground/50 hover:text-primary hover:bg-muted"
+                            ? "text-destructive hover:text-destructive hover:bg-destructive/10"
+                            : "text-muted-foreground/30 hover:text-primary hover:bg-muted"
                     )}
                     onClick={onToggleRepeated}
-                    title={sin.isRepeated ? "Marked as recurring" : "Mark as recurring"}
                 >
-                    <Layers className={cn("w-4.5 h-4.5 transition-transform", sin.isRepeated && "scale-110")} />
+                    repeated
                 </Button>
 
                 <Button
