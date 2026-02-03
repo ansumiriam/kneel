@@ -5,7 +5,7 @@ export interface Sin {
     id: string;
     text: string;
     createdAt: number; // For ordering only, not displayed
-    count?: number;
+    isRepeated?: boolean;
 }
 
 /**

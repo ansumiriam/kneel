@@ -116,33 +116,15 @@ export function updateSin(id: string, updates: Partial<Pick<Sin, 'text'>>): Sin 
 }
 
 /**
- * Increment the repeat count of a sin
+ * Toggle the repeated status of a sin
  */
-export function incrementSinCount(id: string): Sin | null {
+export function toggleSinRepeated(id: string): Sin | null {
     const state = getState();
     const sin = state.sins.find(s => s.id === id);
     if (!sin) return null;
 
-    // Start at 1 if it's the first click
-    if (!sin.count) {
-        sin.count = 1;
-    } else {
-        sin.count++;
-    }
+    sin.isRepeated = !sin.isRepeated;
 
-    saveState(state);
-    return sin;
-}
-
-/**
- * Reset the repeat count of a sin
- */
-export function resetSinCount(id: string): Sin | null {
-    const state = getState();
-    const sin = state.sins.find(s => s.id === id);
-    if (!sin) return null;
-
-    delete sin.count;
     saveState(state);
     return sin;
 }

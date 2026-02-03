@@ -6,7 +6,8 @@ import {
     Check,
     BookOpen,
     Settings as SettingsIcon,
-    RotateCcw,
+    Layers,
+    Pencil,
     Trash2,
     CalendarIcon
 } from 'lucide-react';
@@ -18,8 +19,7 @@ import {
     getShowReminder,
     deleteSin,
     restoreSin,
-    incrementSinCount,
-    resetSinCount,
+    toggleSinRepeated,
 } from '../services/storage';
 import { formatDate } from '../utils/date';
 import { cn } from '@/lib/utils';
@@ -36,6 +36,7 @@ export function HomeScreen() {
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [lastDeleted, setLastDeleted] = useState<Sin | null>(null);
     const [showUndo, setShowUndo] = useState(false);
+    const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
     // Load data on mount and focus
     const loadData = () => {
@@ -62,15 +63,23 @@ export function HomeScreen() {
         }
     };
 
-    const toggleRepeat = (e: Event, id: string, count: number | undefined) => {
+    const handleToggleRepeated = (e: Event, id: string) => {
         e.stopPropagation();
-        if (count) {
-            resetSinCount(id);
-        } else {
-            incrementSinCount(id);
-        }
-        setSins(getSins()); // Refresh list
+        toggleSinRepeated(id);
+        setSins(getSins());
         if (navigator.vibrate) navigator.vibrate(50);
+    };
+
+    const toggleExpand = (id: string) => {
+        setExpandedIds(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) {
+                next.delete(id);
+            } else {
+                next.add(id);
+            }
+            return next;
+        });
     };
 
     const handleDelete = (id: string, e: Event) => {
@@ -145,51 +154,51 @@ export function HomeScreen() {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto px-4 py-2 space-y-3 hide-scrollbar">
+            <main className="flex-1 overflow-y-auto px-4 py-2 hide-scrollbar">
                 {sins.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center space-y-4 opacity-50">
                         <p className="text-lg">No entries yet. Take your time.</p>
                     </div>
                 ) : (
-                    <ul className="space-y-3 pb-20">
-                        {sins.map((sin) => (
-                            <li
-                                key={sin.id}
-                                className="group relative flex items-start gap-3 p-4 bg-card rounded-xl border border-border shadow-sm active:scale-[0.99] transition-transform duration-100"
-                                onClick={() => navigateTo('edit-sin', { sinId: sin.id })}
-                            >
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-base leading-relaxed break-words whitespace-pre-wrap">
-                                        {sin.text}
-                                    </p>
-                                </div>
+                    <div className="space-y-6 pb-20">
+                        {/* Recurring Section */}
+                        {sins.some(s => s.isRepeated) && (
+                            <section className="space-y-3">
+                                <h2 className="text-[11px] font-bold text-primary/60 uppercase tracking-[0.2em] px-2">Recurring Patterns</h2>
+                                <ul className="space-y-3">
+                                    {sins.filter(s => s.isRepeated).map(sin => (
+                                        <SinCard
+                                            key={sin.id}
+                                            sin={sin}
+                                            isExpanded={expandedIds.has(sin.id)}
+                                            onToggleExpand={() => toggleExpand(sin.id)}
+                                            onToggleRepeated={(e) => handleToggleRepeated(e, sin.id)}
+                                            onDelete={(e) => handleDelete(sin.id, e)}
+                                        />
+                                    ))}
+                                </ul>
+                            </section>
+                        )}
 
-                                {/* Actions Container */}
-                                <div className="flex flex-col gap-2 shrink-0">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className={cn(
-                                            "w-10 h-10 rounded-full transition-colors",
-                                            sin.count ? "bg-primary/10 text-primary hover:bg-primary/20" : "text-muted-foreground hover:bg-muted"
-                                        )}
-                                        onClick={(e: any) => toggleRepeat(e, sin.id, sin.count)}
-                                    >
-                                        <RotateCcw className="w-5 h-5" />
-                                    </Button>
-
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="w-10 h-10 rounded-full transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                                        onClick={(e: Event) => handleDelete(sin.id, e)}
-                                    >
-                                        <Trash2 className="w-5 h-5" />
-                                    </Button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                        {/* General Section */}
+                        <section className="space-y-3">
+                            {sins.some(s => s.isRepeated) && (
+                                <h2 className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-[0.2em] px-2">General</h2>
+                            )}
+                            <ul className="space-y-3">
+                                {sins.filter(s => !s.isRepeated).map(sin => (
+                                    <SinCard
+                                        key={sin.id}
+                                        sin={sin}
+                                        isExpanded={expandedIds.has(sin.id)}
+                                        onToggleExpand={() => toggleExpand(sin.id)}
+                                        onToggleRepeated={(e) => handleToggleRepeated(e, sin.id)}
+                                        onDelete={(e) => handleDelete(sin.id, e)}
+                                    />
+                                ))}
+                            </ul>
+                        </section>
+                    </div>
                 )}
             </main>
 
@@ -248,5 +257,85 @@ export function HomeScreen() {
                 </div>
             )}
         </div>
+    );
+}
+
+function SinCard({
+    sin,
+    isExpanded,
+    onToggleExpand,
+    onToggleRepeated,
+    onDelete
+}: {
+    sin: Sin,
+    isExpanded: boolean,
+    onToggleExpand: () => void,
+    onToggleRepeated: (e: Event) => void,
+    onDelete: (e: Event) => void
+}) {
+    const isLongText = sin.text.length > 100; // Rough estimate for line clamping
+
+    return (
+        <li
+            className={cn(
+                "group relative flex items-start gap-3 p-4 bg-card rounded-xl border border-border transition-all duration-300",
+                isExpanded ? "shadow-md ring-1 ring-primary/5" : "shadow-sm active:scale-[0.99]"
+            )}
+        >
+            <div
+                className="flex-1 min-w-0 cursor-pointer py-1"
+                onClick={onToggleExpand}
+            >
+                <div className="relative">
+                    <p className={cn(
+                        "text-base leading-relaxed break-words whitespace-pre-wrap transition-all duration-300 select-none",
+                        !isExpanded && "line-clamp-2"
+                    )}>
+                        {sin.text}
+                    </p>
+
+                    {/* Gradient Fade for Long Text */}
+                    {!isExpanded && isLongText && (
+                        <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+                    )}
+                </div>
+            </div>
+
+            {/* Actions Container */}
+            <div className="flex flex-col gap-2 shrink-0 border-l border-border/50 pl-3">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-9 h-9 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    onClick={() => navigateTo('edit-sin', { sinId: sin.id })}
+                >
+                    <Pencil className="w-4 h-4" />
+                </Button>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className={cn(
+                        "w-9 h-9 rounded-xl transition-all duration-300",
+                        sin.isRepeated
+                            ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                            : "text-muted-foreground/50 hover:text-primary hover:bg-muted"
+                    )}
+                    onClick={onToggleRepeated}
+                    title={sin.isRepeated ? "Marked as recurring" : "Mark as recurring"}
+                >
+                    <Layers className={cn("w-4.5 h-4.5 transition-transform", sin.isRepeated && "scale-110")} />
+                </Button>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-9 h-9 rounded-full text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10"
+                    onClick={onDelete}
+                >
+                    <Trash2 className="w-4.5 h-4.5" />
+                </Button>
+            </div>
+        </li>
     );
 }
