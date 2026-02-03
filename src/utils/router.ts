@@ -19,11 +19,15 @@ const screenPaths: Record<ScreenId, string> = {
     'recover-pin': '/recover-pin'
 };
 
+const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
+
 export function navigateTo(screenId: ScreenId, state: any = null, shouldPush: boolean = true): void {
     navigationState = state;
     const path = screenPaths[screenId];
     if (path) {
-        route(path, !shouldPush);
+        // Prepend BASE_URL to the path
+        const fullPath = `${BASE_URL}${path}`;
+        route(fullPath, !shouldPush);
     } else {
         console.error(`Unknown screen ID: ${screenId}`);
     }

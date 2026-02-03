@@ -22,23 +22,25 @@ export function App() {
         initTheme();
     }, []);
 
+    const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
+
     return (
         <div className="min-h-screen bg-background text-foreground antialiased font-sans select-none">
             <Router>
-                <Route path="/" component={LockScreen} />
-                <Route path="/privacy-check" component={PrivacyCheckScreen} />
-                <Route path="/home" component={HomeScreen} />
-                <Route path="/setup-pin" component={SetupPinScreen} />
+                <Route path={`${base}/`} component={LockScreen} />
+                <Route path={`${base}/privacy-check`} component={PrivacyCheckScreen} />
+                <Route path={`${base}/home`} component={HomeScreen} />
+                <Route path={`${base}/setup-pin`} component={SetupPinScreen} />
 
-                <Route path="/add-sin" component={AddSinScreen} />
-                <Route path="/edit-sin" component={EditSinScreen} />
-                <Route path="/confirm-clear" component={ConfirmClearScreen} />
-                <Route path="/settings" component={SettingsScreen} />
-                <Route path="/prepare" component={PrepareScreen} />
-                <Route path="/recover-pin" component={RecoverPinScreen} />
+                <Route path={`${base}/add-sin`} component={AddSinScreen} />
+                <Route path={`${base}/edit-sin`} component={EditSinScreen} />
+                <Route path={`${base}/confirm-clear`} component={ConfirmClearScreen} />
+                <Route path={`${base}/settings`} component={SettingsScreen} />
+                <Route path={`${base}/prepare`} component={PrepareScreen} />
+                <Route path={`${base}/recover-pin`} component={RecoverPinScreen} />
 
-                <Route path="/guide" component={GuideScreen} />
-                <Route path="/prayer" component={PrayerScreen} />
+                <Route path={`${base}/guide`} component={GuideScreen} />
+                <Route path={`${base}/prayer`} component={PrayerScreen} />
             </Router>
         </div>
     );
