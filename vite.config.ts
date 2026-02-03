@@ -12,13 +12,14 @@ export default defineConfig({
         tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
-            injectRegister: 'auto',
+            injectRegister: 'inline',
+            includeAssets: ['icons/*.png', 'assets/*.{woff2,svg}'],
             manifest: {
                 id: '/kneel/',
                 name: 'Kneel',
                 short_name: 'Kneel',
                 description: 'Private tracking between confessions',
-                theme_color: '#DCA06D',
+                theme_color: '#1a1b1e',
                 background_color: '#1a1b1e',
                 display: 'standalone',
                 orientation: 'portrait',
@@ -54,6 +55,7 @@ export default defineConfig({
             workbox: {
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
                 navigateFallback: '/kneel/index.html',
+                cleanupOutdatedCaches: true,
             }
         })
     ],
