@@ -100,8 +100,13 @@ export function SettingsScreen() {
                     {/* Language */}
                     <div className="flex items-center justify-between p-4 bg-card rounded-xl border border-border">
                         <div className="flex items-center gap-3">
-                            <Globe className="w-5 h-5 text-muted-foreground" />
-                            <div className="font-medium text-sm">Prayer Language</div>
+                            <Globe className="w-5 h-5 text-muted-foreground shrink-0" />
+                            <div className="flex flex-col">
+                                <div className="font-medium text-sm leading-none">Prayer Language</div>
+                                <div className="text-[10px] text-muted-foreground mt-1 leading-tight">
+                                    Prayer and preparation guide language
+                                </div>
+                            </div>
                         </div>
 
                         <div className="flex bg-muted/50 p-1 rounded-lg border border-border/50">
