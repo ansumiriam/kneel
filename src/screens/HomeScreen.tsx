@@ -143,7 +143,7 @@ export function HomeScreen() {
                                     isScrolled ? "opacity-0 h-0 pointer-events-none overflow-hidden" : "opacity-100"
                                 )}>
                                     <span className="text-sm font-semibold text-primary/80 group-hover:text-primary transition-colors">
-                                        Last: {formatDate(lastDate) || "Set Date"}
+                                        Last confession: {formatDate(lastDate) || "Tap to set"}
                                     </span>
                                     {showReminder && daysSince !== null && daysSince > 0 && (
                                         <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-bold">
