@@ -97,27 +97,32 @@ export function SettingsScreen() {
                     </div>
 
                     {/* Language */}
-                    <div className="flex flex-col gap-3 p-4 bg-card rounded-xl border border-border">
+                    {/* Language */}
+                    <div className="flex items-center justify-between p-4 bg-card rounded-xl border border-border">
                         <div className="flex items-center gap-3">
-                            <Globe className="w-5 h-5" />
-                            <div className="font-medium">Prayer Language</div>
+                            <Globe className="w-5 h-5 text-muted-foreground" />
+                            <div className="font-medium text-sm">Prayer Language</div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 mt-2">
-                            <Button
-                                variant={language === 'en' ? 'default' : 'outline'}
+                        <div className="flex bg-muted/50 p-1 rounded-lg border border-border/50">
+                            <button
                                 onClick={() => handleLanguageChange('en')}
-                                className="w-full"
+                                className={cn(
+                                    "px-3 py-1.5 rounded-md text-xs font-semibold transition-all transition-duration-200",
+                                    language === 'en' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                )}
                             >
-                                English
-                            </Button>
-                            <Button
-                                variant={language === 'ml' ? 'default' : 'outline'}
+                                EN
+                            </button>
+                            <button
                                 onClick={() => handleLanguageChange('ml')}
-                                className="w-full font-serif"
+                                className={cn(
+                                    "px-3 py-1.5 rounded-md text-xs font-semibold transition-all transition-duration-200 font-serif",
+                                    language === 'ml' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                )}
                             >
-                                മലയാളം
-                            </Button>
+                                മല
+                            </button>
                         </div>
                     </div>
                 </section>
