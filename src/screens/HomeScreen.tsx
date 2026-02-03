@@ -17,6 +17,7 @@ import {
     getDaysSinceConfession,
     getShowReminder,
     deleteSin,
+    restoreSin,
     incrementSinCount,
     resetSinCount,
 } from '../services/storage';
@@ -33,7 +34,8 @@ export function HomeScreen() {
     const [daysSince, setDaysSince] = useState<number | null>(null);
     const [showReminder, setShowReminder] = useState(true);
     const [calendarOpen, setCalendarOpen] = useState(false);
-    const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+    const [lastDeleted, setLastDeleted] = useState<Sin | null>(null);
+    const [showUndo, setShowUndo] = useState(false);
 
     // Load data on mount and focus
     const loadData = () => {
@@ -71,19 +73,28 @@ export function HomeScreen() {
         if (navigator.vibrate) navigator.vibrate(50);
     };
 
-    const handleDelete = (id: string) => {
-        if (deleteConfirm === id) {
-            // Confirmed - actually delete
-            const deleted = deleteSin(id);
-            if (deleted) {
-                setSins(getSins());
-            }
-            setDeleteConfirm(null);
-        } else {
-            // First click - ask for confirmation
-            setDeleteConfirm(id);
-            // Auto-clear after 3 seconds
-            setTimeout(() => setDeleteConfirm(prev => prev === id ? null : prev), 3000);
+    const handleDelete = (id: string, e: Event) => {
+        e.stopPropagation();
+        const deleted = deleteSin(id);
+        if (deleted) {
+            setLastDeleted(deleted);
+            setShowUndo(true);
+            setSins(getSins());
+
+            // Auto-hide undo after 5 seconds
+            const timer = setTimeout(() => {
+                setShowUndo(false);
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
+    };
+
+    const handleUndo = () => {
+        if (lastDeleted) {
+            restoreSin(lastDeleted);
+            setSins(getSins());
+            setLastDeleted(null);
+            setShowUndo(false);
         }
     };
 
@@ -170,16 +181,8 @@ export function HomeScreen() {
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className={cn(
-                                            "w-10 h-10 rounded-full transition-colors",
-                                            deleteConfirm === sin.id
-                                                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                                : "text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                                        )}
-                                        onClick={(e: any) => {
-                                            e.stopPropagation();
-                                            handleDelete(sin.id);
-                                        }}
+                                        className="w-10 h-10 rounded-full transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                        onClick={(e: Event) => handleDelete(sin.id, e)}
                                     >
                                         <Trash2 className="w-5 h-5" />
                                     </Button>
@@ -228,6 +231,22 @@ export function HomeScreen() {
                     </Button>
                 </div>
             </footer>
+            {/* Undo Toast */}
+            {showUndo && (
+                <div className="fixed bottom-36 left-4 right-4 z-50 animate-in slide-in-from-bottom-4 duration-300">
+                    <div className="bg-foreground text-background rounded-xl shadow-lg p-3 px-4 flex items-center justify-between gap-4">
+                        <span className="text-sm font-medium">Deleted</span>
+                        <Button
+                            variant="link"
+                            size="sm"
+                            className="h-auto p-0 text-background font-bold underline"
+                            onClick={handleUndo}
+                        >
+                            UNDO
+                        </Button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
