@@ -9,7 +9,8 @@ import {
     Layers,
     Pencil,
     Trash2,
-    CalendarIcon
+    CalendarIcon,
+    Info
 } from 'lucide-react';
 import {
     getSins,
@@ -37,6 +38,8 @@ export function HomeScreen() {
     const [lastDeleted, setLastDeleted] = useState<Sin | null>(null);
     const [showUndo, setShowUndo] = useState(false);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+    const [showAbout, setShowAbout] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     // Load data on mount and focus
     const loadData = () => {
@@ -107,54 +110,92 @@ export function HomeScreen() {
         }
     };
 
+    const handleScroll = (e: any) => {
+        setIsScrolled(e.target.scrollTop > 20);
+    };
+
     return (
         <div className="flex flex-col h-screen max-w-md mx-auto bg-background text-foreground animate-in fade-in duration-300">
 
             {/* Header */}
-            <header className="px-6 py-6 pb-2">
-                <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            className={cn("w-full justify-start text-left font-normal p-0 h-auto hover:bg-transparent -ml-1 pl-1")}
-                        >
-                            <div className="flex flex-col space-y-1 cursor-pointer">
-                                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                                    Last Confession
-                                </span>
-                                <div className="flex items-baseline space-x-2 text-foreground">
-                                    <span className="text-2xl font-semibold">
-                                        {formatDate(lastDate) || "Tap to set date"}
+            <header className={cn(
+                "px-6 pt-8 pb-4 transition-all duration-300 border-b border-transparent",
+                isScrolled && "pt-4 pb-2 bg-background/80 backdrop-blur-md border-border sticky top-0 z-30"
+            )}>
+                <div className="flex items-start justify-between">
+                    <div className="flex flex-col">
+                        <h1 className={cn(
+                            "font-bold transition-all duration-300 tracking-tight",
+                            isScrolled ? "text-xl" : "text-3xl"
+                        )}>
+                            Kneel
+                        </h1>
+                        {!isScrolled && (
+                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.15em] mt-1 animate-in fade-in slide-in-from-left-2 duration-500">
+                                A confession assistant
+                            </p>
+                        )}
+
+                        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <PopoverTrigger asChild>
+                                <button className={cn(
+                                    "flex items-center gap-2 mt-2 text-left group transition-all duration-300",
+                                    isScrolled ? "opacity-0 h-0 pointer-events-none overflow-hidden" : "opacity-100"
+                                )}>
+                                    <span className="text-sm font-semibold text-primary/80 group-hover:text-primary transition-colors">
+                                        Last: {formatDate(lastDate) || "Set Date"}
                                     </span>
                                     {showReminder && daysSince !== null && daysSince > 0 && (
-                                        <span className="text-sm text-primary">
-                                            ({daysSince} day{daysSince !== 1 ? 's' : ''} ago)
+                                        <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-bold">
+                                            {daysSince}D
                                         </span>
                                     )}
-                                    <CalendarIcon className="h-5 w-5 opacity-50 text-foreground" />
-                                </div>
-                            </div>
+                                    <CalendarIcon className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                                </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    mode="single"
+                                    selected={lastDate ? new Date(lastDate) : undefined}
+                                    onSelect={(date) => {
+                                        if (date) {
+                                            handleDateChange(format(date, 'yyyy-MM-dd'));
+                                            setCalendarOpen(false);
+                                        }
+                                    }}
+                                    disabled={(date) => date > new Date()}
+                                    initialFocus
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="w-10 h-10 rounded-full text-muted-foreground hover:text-foreground"
+                            onClick={() => setShowAbout(true)}
+                        >
+                            <Info className="w-5 h-5" />
                         </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                            mode="single"
-                            selected={lastDate ? new Date(lastDate) : undefined}
-                            onSelect={(date) => {
-                                if (date) {
-                                    handleDateChange(format(date, 'yyyy-MM-dd'));
-                                    setCalendarOpen(false);
-                                }
-                            }}
-                            disabled={(date) => date > new Date()}
-                            initialFocus
-                        />
-                    </PopoverContent>
-                </Popover>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="w-10 h-10 rounded-full text-muted-foreground hover:text-foreground"
+                            onClick={() => navigateTo('settings')}
+                        >
+                            <SettingsIcon className="w-5 h-5" />
+                        </Button>
+                    </div>
+                </div>
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto px-4 py-2 hide-scrollbar">
+            <main
+                className="flex-1 overflow-y-auto px-4 py-2 hide-scrollbar"
+                onScroll={handleScroll}
+            >
                 {sins.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center space-y-4 opacity-50">
                         <p className="text-lg">No entries yet. Take your time.</p>
@@ -203,42 +244,33 @@ export function HomeScreen() {
             </main>
 
             {/* Footer Navigation */}
-            <footer className="p-4 grid grid-cols-2 gap-3 bg-background border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-10">
-                <Button
-                    variant="default"
-                    size="lg"
-                    className="col-span-1 rounded-2xl h-14 text-base font-semibold shadow-md"
-                    onClick={() => navigateTo('add-sin')}
-                >
-                    <Plus className="mr-2 h-5 w-5" /> Add Entry
-                </Button>
-
-                <Button
-                    variant="secondary"
-                    size="lg"
-                    className="col-span-1 rounded-2xl h-14 text-base font-medium"
-                    onClick={() => navigateTo('confirm-clear')}
-                    disabled={sins.length === 0}
-                >
-                    <Check className="mr-2 h-5 w-5" /> Confessed
-                </Button>
-
-                <div className="col-span-2 grid grid-cols-2 gap-3">
+            <footer className="p-4 flex flex-col gap-3 bg-background border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-10 transition-all duration-300">
+                <div className="grid grid-cols-2 gap-3">
                     <Button
-                        variant="outline"
-                        className="rounded-xl h-12"
-                        onClick={() => navigateTo('prepare')}
+                        variant="default"
+                        className="rounded-2xl h-14 text-base font-semibold shadow-md pr-6 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                        onClick={() => navigateTo('add-sin')}
                     >
-                        <BookOpen className="mr-2 h-4 w-4" /> Prepare
+                        <Plus className="mr-2 h-5 w-5" /> Add Entry
                     </Button>
+
                     <Button
-                        variant="ghost"
-                        className="rounded-xl h-12"
-                        onClick={() => navigateTo('settings')}
+                        variant="secondary"
+                        className="rounded-2xl h-14 text-base font-medium hover:scale-[1.02] active:scale-[0.98] transition-all"
+                        onClick={() => navigateTo('confirm-clear')}
+                        disabled={sins.length === 0}
                     >
-                        <SettingsIcon className="mr-2 h-4 w-4" /> Settings
+                        <Check className="mr-2 h-5 w-5" /> Confessed
                     </Button>
                 </div>
+
+                <Button
+                    variant="outline"
+                    className="w-full rounded-2xl h-16 text-lg font-bold bg-primary/5 border-primary/20 hover:bg-primary/10 transition-all active:scale-[0.99]"
+                    onClick={() => navigateTo('prepare')}
+                >
+                    <BookOpen className="mr-3 h-6 w-6 text-primary" /> Prepare
+                </Button>
             </footer>
             {/* Undo Toast */}
             {showUndo && (
@@ -252,6 +284,37 @@ export function HomeScreen() {
                             onClick={handleUndo}
                         >
                             UNDO
+                        </Button>
+                    </div>
+                </div>
+            )}
+            {/* About Panel (Overlay) */}
+            {showAbout && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-card w-full max-w-sm rounded-2xl border border-border shadow-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto animate-in zoom-in-95 duration-300">
+                        <div className="flex items-center justify-between mb-2">
+                            <h2 className="text-2xl font-bold tracking-tight">About Kneel</h2>
+                            <Info className="w-5 h-5 text-primary" />
+                        </div>
+
+                        <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+                            <p>
+                                <strong className="text-foreground">Kneel</strong> is a simple, private space to prepare for confession.
+                                Your entries stay on your device — no accounts, no sync, no cloud.
+                            </p>
+                            <p>
+                                I created this app for a simple reason: I often forget specific details by the time I prepare for confession. This tool helps me note them down as they happen.
+                            </p>
+                            <p>
+                                God, in His mercy, has given us the beautiful opportunity to confess, be forgiven, and grow in purity. I truly hope this app helps you on that journey.
+                            </p>
+                            <p className="text-xs pt-4 italic border-t border-border/50">
+                                Built with love for the faithful. Privacy is sacred.
+                            </p>
+                        </div>
+
+                        <Button className="w-full mt-6 rounded-xl h-12 font-semibold" onClick={() => setShowAbout(false)}>
+                            Close
                         </Button>
                     </div>
                 </div>
