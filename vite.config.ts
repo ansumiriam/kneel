@@ -12,11 +12,15 @@ export default defineConfig({
         tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
+            injectRegister: 'inline',
+            scope: '/kneel/',
             manifest: {
                 name: 'Kneel',
                 short_name: 'Kneel',
                 description: 'Private tracking between confessions',
                 theme_color: '#DCA06D',
+                start_url: '/kneel/',
+                scope: '/kneel/',
                 icons: [
                     {
                         src: 'icons/icon-192.png',
