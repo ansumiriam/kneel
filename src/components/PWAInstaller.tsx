@@ -21,56 +21,58 @@ export function PWAInstaller() {
         if (isStandaloneActive) return;
 
         const handler = (e: any) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             setDeferredPrompt(e);
-            // Show the banner
+
+            // Check if dismissed in the last 3 days
+            const lastDismissed = localStorage.getItem('pwa-prompt-dismissed');
+            const recentlyDismissed = lastDismissed && Date.now() - parseInt(lastDismissed) < 3 * 24 * 60 * 60 * 1000;
+
+            if (!recentlyDismissed) {
+                setShowBanner(true);
+            }
+        };
+
+        const triggerHandler = () => {
             setShowBanner(true);
         };
 
         window.addEventListener('beforeinstallprompt', handler);
+        window.addEventListener('trigger-pwa-install', triggerHandler);
 
         // For iOS, we can't detect "installable", so we show instructions after a delay
         if (isIOSDevice && !isStandaloneActive) {
-            const timer = setTimeout(() => {
-                setShowBanner(true);
-            }, 8000); // Show after 8 seconds
-            return () => clearTimeout(timer);
+            const lastDismissed = localStorage.getItem('pwa-prompt-dismissed');
+            const recentlyDismissed = lastDismissed && Date.now() - parseInt(lastDismissed) < 3 * 24 * 60 * 60 * 1000;
+
+            if (!recentlyDismissed) {
+                const timer = setTimeout(() => {
+                    setShowBanner(true);
+                }, 5000);
+                return () => clearTimeout(timer);
+            }
         }
 
-        return () => window.removeEventListener('beforeinstallprompt', handler);
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handler);
+            window.removeEventListener('trigger-pwa-install', triggerHandler);
+        };
     }, []);
 
     const handleInstallClick = async () => {
         if (!deferredPrompt) return;
-
-        // Show the install prompt
         deferredPrompt.prompt();
-
-        // Wait for the user to respond to the prompt
         const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User response to the install prompt: ${outcome}`);
-
-        // We've used the prompt, and can't use it again, throw it away
         setDeferredPrompt(null);
         setShowBanner(false);
     };
 
     const handleDismiss = () => {
         setShowBanner(false);
-        // Save to local storage to not show again for 3 days
         localStorage.setItem('pwa-prompt-dismissed', Date.now().toString());
     };
 
-    // Don't show if already installed or banner dismissed recently
     if (isStandalone || !showBanner) return null;
-
-    // Check if dismissed in the last 3 days
-    const lastDismissed = localStorage.getItem('pwa-prompt-dismissed');
-    if (lastDismissed && Date.now() - parseInt(lastDismissed) < 3 * 24 * 60 * 60 * 1000) {
-        return null;
-    }
 
     // iOS Specific Instructions
     if (isIOS && !deferredPrompt) {

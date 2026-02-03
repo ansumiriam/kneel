@@ -12,9 +12,9 @@ export default defineConfig({
         tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
-            injectRegister: 'inline',
-            scope: '/kneel/',
+            injectRegister: 'auto',
             manifest: {
+                id: '/kneel/',
                 name: 'Kneel',
                 short_name: 'Kneel',
                 description: 'Private tracking between confessions',
@@ -50,6 +50,10 @@ export default defineConfig({
                         purpose: 'maskable'
                     }
                 ]
+            },
+            workbox: {
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                navigateFallback: '/kneel/index.html',
             }
         })
     ],
