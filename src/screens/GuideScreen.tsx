@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
 import { getLanguage } from '../services/storage';
 import { CONTENT, GuidePage } from '../content/prayers';
@@ -7,17 +7,33 @@ import { ChevronLeft, Plus } from 'lucide-react';
 
 export function GuideScreen() {
     const [sections, setSections] = useState<GuidePage[]>([]);
+    const mainRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const lang = getLanguage();
         setSections(CONTENT[lang].guide);
-    }, []);
+
+        // Restore scroll position if returning
+        const savedScroll = sessionStorage.getItem('guide-scroll');
+        if (savedScroll && mainRef.current) {
+            // Tiny delay to ensure content is rendered
+            setTimeout(() => {
+                if (mainRef.current) {
+                    mainRef.current.scrollTop = parseInt(savedScroll, 10);
+                }
+            }, 50);
+        }
+    }, [sections]); // Re-run when sections load
 
     const handleBack = () => {
+        sessionStorage.removeItem('guide-scroll'); // Clear when exiting
         navigateTo('prepare');
     };
 
     const handleAddEntry = () => {
+        if (mainRef.current) {
+            sessionStorage.setItem('guide-scroll', mainRef.current.scrollTop.toString());
+        }
         navigateTo('add-sin', { from: 'guide' });
     };
 
@@ -33,7 +49,10 @@ export function GuideScreen() {
             </header>
 
             {/* Scrollable Content */}
-            <main className="flex-1 overflow-y-auto px-4 py-4 space-y-8 pb-24 text-lg">
+            <main
+                ref={mainRef}
+                className="flex-1 overflow-y-auto px-4 py-4 space-y-8 pb-24 text-lg"
+            >
                 {sections.map((section, idx) => (
                     <section key={idx} className="space-y-4">
                         <h2 className="text-2xl font-bold text-primary">{section.title}</h2>
