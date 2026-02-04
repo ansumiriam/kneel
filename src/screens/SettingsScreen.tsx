@@ -2,7 +2,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
 import { getTheme, setTheme, getShowReminder, setShowReminder, getLanguage, setLanguage, getShowPrayers, setShowPrayers } from '../services/storage';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, Moon, Sun, Bell, Globe, Lock, BookOpen, Smartphone } from 'lucide-react';
+import { ChevronLeft, Moon, Sun, Bell, Globe, Lock, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function SettingsScreen() {
@@ -146,27 +146,6 @@ export function SettingsScreen() {
                         </div>
                         <Button variant="secondary" size="sm" onClick={() => navigateTo('setup-pin')}>
                             Manage
-                        </Button>
-                    </div>
-
-                    <div className="flex items-center justify-between p-4 bg-primary/5 rounded-xl border border-primary/20">
-                        <div className="flex items-center gap-3">
-                            <Smartphone className="w-5 h-5 text-primary" />
-                            <div>
-                                <div className="font-medium">Install App</div>
-                                <div className="text-xs text-muted-foreground">Use offline & fast access</div>
-                            </div>
-                        </div>
-                        <Button
-                            variant="default"
-                            size="sm"
-                            className="rounded-full px-4 h-9 shadow-lg shadow-primary/20"
-                            onClick={() => {
-                                localStorage.removeItem('pwa-prompt-dismissed');
-                                window.dispatchEvent(new CustomEvent('trigger-pwa-install'));
-                            }}
-                        >
-                            Setup
                         </Button>
                     </div>
                 </section>
