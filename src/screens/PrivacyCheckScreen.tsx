@@ -4,7 +4,7 @@ import { Check, X } from 'lucide-react';
 
 export function PrivacyCheckScreen() {
     return (
-        <div className="flex flex-col h-screen max-w-md mx-auto items-center justify-center p-8 bg-background text-foreground text-center animate-in fade-in duration-500">
+        <div className="flex flex-col h-[100dvh] max-w-md mx-auto items-center justify-center p-8 bg-background text-foreground text-center animate-in fade-in duration-500">
 
             <div className="flex-1 flex flex-col items-center justify-center space-y-6">
                 <h1 className="text-4xl font-serif font-bold tracking-tight text-primary">

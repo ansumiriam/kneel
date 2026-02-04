@@ -69,7 +69,7 @@ export function RecoverPinScreen() {
     // Step 1: Security Question Form
     if (step === 1) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background text-foreground animate-in fade-in slide-in-from-bottom-4 duration-300">
+            <div className="flex flex-col items-center justify-center min-h-[100dvh] p-6 bg-background text-foreground animate-in fade-in slide-in-from-bottom-4 duration-300">
                 <div className="w-full max-w-sm space-y-6 text-center">
                     <div className="flex justify-center mb-4">
                         <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
@@ -124,7 +124,7 @@ export function RecoverPinScreen() {
     // Step 2 & 3: PIN Entry (Reused UI)
     const currentPin = step === 2 ? newPin : confirmPin;
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-background text-foreground animate-in fade-in duration-300">
+        <div className="flex flex-col items-center justify-center min-h-[100dvh] p-4 bg-background text-foreground animate-in fade-in duration-300">
             <div className="w-full max-w-sm flex flex-col items-center space-y-8">
                 <div className="text-center space-y-2">
                     <h1 className="text-3xl font-bold tracking-tight text-primary">

@@ -48,7 +48,7 @@ export function LockScreen() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-background text-foreground animate-in fade-in duration-500">
+        <div className="flex flex-col items-center justify-center min-h-[100dvh] p-4 bg-background text-foreground animate-in fade-in duration-500">
             <div className="w-full max-w-sm flex flex-col items-center space-y-8">
 
                 {/* Header */}

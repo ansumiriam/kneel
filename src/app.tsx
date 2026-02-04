@@ -27,7 +27,7 @@ export function App() {
     const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
 
     return (
-        <div className="min-h-screen bg-background text-foreground antialiased font-sans select-none">
+        <div className="h-[100dvh] overflow-hidden bg-background text-foreground antialiased font-sans select-none">
             <Router>
                 <Route path={`${base}/`} component={LockScreen} />
                 <Route path={`${base}/privacy-check`} component={PrivacyCheckScreen} />

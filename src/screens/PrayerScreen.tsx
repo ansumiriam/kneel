@@ -28,7 +28,7 @@ export function PrayerScreen() {
     if (!content) return null;
 
     return (
-        <div className="flex flex-col h-screen max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300">
+        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300">
 
             {/* Header */}
             <header className="flex items-center px-4 py-4 border-b border-border z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0">

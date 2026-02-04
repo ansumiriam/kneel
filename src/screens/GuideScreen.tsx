@@ -22,7 +22,7 @@ export function GuideScreen() {
     };
 
     return (
-        <div className="flex flex-col h-screen max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300 relative">
+        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300 relative">
 
             {/* Header */}
             <header className="flex items-center px-4 py-4 border-b border-border bg-background z-10">
