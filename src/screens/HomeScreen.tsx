@@ -126,16 +126,21 @@ export function HomeScreen() {
 
                         <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                             <PopoverTrigger asChild>
-                                <button className="flex items-center gap-2 mt-2 text-left group">
-                                    <span className="text-sm font-semibold text-primary/80 group-hover:text-primary transition-colors">
-                                        Last confession: {formatDate(lastDate) || "Tap to set"}
+                                <button className="flex flex-col items-start gap-1 mt-4 text-left group">
+                                    <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider group-hover:text-primary/80 transition-colors">
+                                        Last Confession
                                     </span>
-                                    {showReminder && daysSince !== null && daysSince > 0 && (
-                                        <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-bold">
-                                            {daysSince}D
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                                            {formatDate(lastDate) || "Tap to set date"}
                                         </span>
-                                    )}
-                                    <CalendarIcon className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                                        {showReminder && daysSince !== null && daysSince > 0 && (
+                                            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-bold">
+                                                {daysSince}D
+                                            </span>
+                                        )}
+                                        <CalendarIcon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                    </div>
                                 </button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
