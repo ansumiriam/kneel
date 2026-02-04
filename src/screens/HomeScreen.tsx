@@ -38,7 +38,6 @@ export function HomeScreen() {
     const [showUndo, setShowUndo] = useState(false);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     const [showAbout, setShowAbout] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
 
     // Load data on mount and focus
     const loadData = () => {
@@ -109,38 +108,25 @@ export function HomeScreen() {
         }
     };
 
-    const handleScroll = (e: any) => {
-        setIsScrolled(e.target.scrollTop > 20);
-    };
+
 
     return (
-        <div className="flex flex-col h-screen max-w-md mx-auto bg-background text-foreground animate-in fade-in duration-300">
+        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in fade-in duration-300 overflow-hidden">
 
             {/* Header */}
-            <header className={cn(
-                "px-6 pt-8 pb-4 transition-all duration-300 border-b border-transparent",
-                isScrolled && "pt-4 pb-2 bg-background/80 backdrop-blur-md border-border sticky top-0 z-30"
-            )}>
+            <header className="shrink-0 px-6 pt-6 pb-4 border-b border-border">
                 <div className="flex items-start justify-between">
                     <div className="flex flex-col">
-                        <h1 className={cn(
-                            "font-bold transition-all duration-300 tracking-tight",
-                            isScrolled ? "text-xl" : "text-3xl"
-                        )}>
+                        <h1 className="font-bold text-3xl tracking-tight">
                             Kneel
                         </h1>
-                        {!isScrolled && (
-                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.15em] mt-1 animate-in fade-in slide-in-from-left-2 duration-500">
-                                A confession assistant
-                            </p>
-                        )}
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.15em] mt-1">
+                            A confession assistant
+                        </p>
 
                         <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                             <PopoverTrigger asChild>
-                                <button className={cn(
-                                    "flex items-center gap-2 mt-2 text-left group transition-all duration-300",
-                                    isScrolled ? "opacity-0 h-0 pointer-events-none overflow-hidden" : "opacity-100"
-                                )}>
+                                <button className="flex items-center gap-2 mt-2 text-left group">
                                     <span className="text-sm font-semibold text-primary/80 group-hover:text-primary transition-colors">
                                         Last confession: {formatDate(lastDate) || "Tap to set"}
                                     </span>
@@ -191,16 +177,13 @@ export function HomeScreen() {
             </header>
 
             {/* Main Content */}
-            <main
-                className="flex-1 overflow-y-auto px-4 py-2 hide-scrollbar"
-                onScroll={handleScroll}
-            >
+            <main className="flex-1 overflow-y-auto px-4 py-2 hide-scrollbar">
                 {sins.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center space-y-4 opacity-50">
                         <p className="text-lg">No entries yet. Take your time.</p>
                     </div>
                 ) : (
-                    <div className="space-y-3 pb-20 mt-2">
+                    <div className="space-y-3 pb-4 mt-2">
                         {[...sins]
                             .sort((a, b) => (a.isRepeated === b.isRepeated ? 0 : a.isRepeated ? -1 : 1))
                             .map(sin => (
@@ -218,8 +201,8 @@ export function HomeScreen() {
                 )}
             </main>
 
-            {/* Footer Navigation */}
-            <footer className="p-4 flex flex-col gap-3 bg-background border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-10 transition-all duration-300">
+            {/* Footer Navigation - Fixed height, always visible */}
+            <footer className="shrink-0 p-4 flex flex-col gap-3 bg-background border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-10">
                 <div className="grid grid-cols-2 gap-3">
                     <Button
                         variant="default"
@@ -251,53 +234,57 @@ export function HomeScreen() {
                 </Button>
             </footer>
             {/* Undo Toast */}
-            {showUndo && (
-                <div className="fixed bottom-36 left-4 right-4 z-50 animate-in slide-in-from-bottom-4 duration-300">
-                    <div className="bg-foreground text-background rounded-xl shadow-lg p-3 px-4 flex items-center justify-between gap-4">
-                        <span className="text-sm font-medium">Deleted</span>
-                        <Button
-                            variant="link"
-                            size="sm"
-                            className="h-auto p-0 text-background font-bold underline"
-                            onClick={handleUndo}
-                        >
-                            UNDO
-                        </Button>
+            {
+                showUndo && (
+                    <div className="fixed bottom-36 left-4 right-4 z-50 animate-in slide-in-from-bottom-4 duration-300">
+                        <div className="bg-foreground text-background rounded-xl shadow-lg p-3 px-4 flex items-center justify-between gap-4">
+                            <span className="text-sm font-medium">Deleted</span>
+                            <Button
+                                variant="link"
+                                size="sm"
+                                className="h-auto p-0 text-background font-bold underline"
+                                onClick={handleUndo}
+                            >
+                                UNDO
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
             {/* About Panel (Overlay) */}
-            {showAbout && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-card w-full max-w-sm rounded-2xl border border-border shadow-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto animate-in zoom-in-95 duration-300">
-                        <div className="flex items-center justify-between mb-2">
-                            <h2 className="text-2xl font-bold tracking-tight">About Kneel</h2>
-                            <Info className="w-5 h-5 text-primary" />
-                        </div>
+            {
+                showAbout && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+                        <div className="bg-card w-full max-w-sm rounded-2xl border border-border shadow-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto animate-in zoom-in-95 duration-300">
+                            <div className="flex items-center justify-between mb-2">
+                                <h2 className="text-2xl font-bold tracking-tight">About Kneel</h2>
+                                <Info className="w-5 h-5 text-primary" />
+                            </div>
 
-                        <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
-                            <p>
-                                <strong className="text-foreground">Kneel</strong> is a simple, private space to prepare for confession.
-                                Your entries stay on your device — no accounts, no sync, no cloud.
-                            </p>
-                            <p>
-                                I created this app for a simple reason: I often forget specific details by the time I prepare for confession. This tool helps me note them down as they happen.
-                            </p>
-                            <p>
-                                God, in His mercy, has given us the beautiful opportunity to confess, be forgiven, and grow in purity. I truly hope this app helps you on that journey.
-                            </p>
-                            <p className="text-xs pt-4 italic border-t border-border/50">
-                                Built with love for the faithful. Privacy is sacred.
-                            </p>
-                        </div>
+                            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+                                <p>
+                                    <strong className="text-foreground">Kneel</strong> is a simple, private space to prepare for confession.
+                                    Your entries stay on your device — no accounts, no sync, no cloud.
+                                </p>
+                                <p>
+                                    I created this app for a simple reason: I often forget specific details by the time I prepare for confession. This tool helps me note them down as they happen.
+                                </p>
+                                <p>
+                                    God, in His mercy, has given us the beautiful opportunity to confess, be forgiven, and grow in purity. I truly hope this app helps you on that journey.
+                                </p>
+                                <p className="text-xs pt-4 italic border-t border-border/50">
+                                    Built with love for the faithful. Privacy is sacred.
+                                </p>
+                            </div>
 
-                        <Button className="w-full mt-6 rounded-xl h-12 font-semibold" onClick={() => setShowAbout(false)}>
-                            Close
-                        </Button>
+                            <Button className="w-full mt-6 rounded-xl h-12 font-semibold" onClick={() => setShowAbout(false)}>
+                                Close
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 }
 
