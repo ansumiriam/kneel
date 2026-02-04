@@ -9,7 +9,7 @@ Technology choices for Kneel, designed for beginners.
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | **TypeScript** | 5.x | Type-safe JavaScript (required) |
-| **Vite** | 5.x | Fast build tool & dev server |
+| **Vite** | 7.x | Fast build tool & dev server |
 | **vite-plugin-pwa** | 0.x | PWA manifest & service worker |
 | **Vanilla CSS** | - | Styling without framework overhead |
 | **pnpm** | - | Package manager |

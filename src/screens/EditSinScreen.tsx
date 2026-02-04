@@ -4,6 +4,8 @@ import { getSins, updateSin } from '../services/storage';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 
+import { showToast } from '@/services/toast';
+
 export function EditSinScreen() {
     const [text, setText] = useState('');
     const [sinId, setSinId] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export function EditSinScreen() {
     const handleSave = () => {
         if (text.trim() && sinId) {
             updateSin(sinId, { text });
-            // TODO: Toast
+            showToast('Entry updated');
             navigateTo('home');
         } else if (!text.trim()) {
             textareaRef.current?.focus();

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
 import { setPin, setSecurityQuestion } from '../services/storage';
+import { PinKeypad } from '@/components/PinKeypad';
 import { Button } from '@/components/ui/button';
-import { Delete } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function SetupPinScreen() {
@@ -159,55 +159,14 @@ export function SetupPinScreen() {
                     </p>
                 </div>
 
-                {/* PIN Display */}
-                <div className="flex gap-4 my-8">
-                    {[0, 1, 2, 3].map((index) => (
-                        <div
-                            key={index}
-                            className={cn(
-                                "w-4 h-4 rounded-full border-2 border-primary transition-all duration-300",
-                                index < currentPin.length ? "bg-primary scale-110" : "bg-transparent scale-100",
-                                error && "border-destructive"
-                            )}
-                        />
-                    ))}
-                </div>
-
-                {/* Error Message */}
-                <div className="h-6 text-sm font-medium text-destructive text-center">
-                    {error}
-                </div>
-
-                {/* Keypad */}
-                <div className="grid grid-cols-3 gap-4 w-full px-4">
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                        <Button
-                            key={num}
-                            variant="outline"
-                            className="h-16 text-2xl font-light rounded-full hover:bg-muted/50 transition-colors"
-                            onClick={() => handlePress(num)}
-                        >
-                            {num}
-                        </Button>
-                    ))}
-                    <div />
-                    <Button
-                        variant="outline"
-                        className="h-16 text-2xl font-light rounded-full hover:bg-muted/50 transition-colors"
-                        onClick={() => handlePress(0)}
-                    >
-                        0
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        className="h-16 rounded-full hover:bg-muted/50 text-muted-foreground"
-                        onClick={() => handlePress('backspace')}
-                        disabled={currentPin.length === 0}
-                    >
-                        <Delete className="w-8 h-8" />
-                    </Button>
-                </div>
+                <PinKeypad
+                    pin={currentPin}
+                    error={error}
+                    onPress={handlePress}
+                    showForgot={false}
+                />
             </div>
         </div>
+
     );
 }

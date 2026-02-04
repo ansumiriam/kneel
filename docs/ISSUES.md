@@ -19,9 +19,13 @@ Use this document to track known bugs, feature requests, and planned improvement
 - [x] **Content Clipping:** Prayer Before Confession (Malayalam) content is clipped and not flowing to next page.
 
 ### Logic
+### Logic
 - [x] **PDF Link Incorrect:** The PDF link points to the Malayalam PDF even when the language is set to English.
 - [ ] **Verify Malayalam Text Rendering:** Check for any remaining ligature issues or clipping on actual mobile devices.
 - [ ] **Safe Area Insets:** Ensure all screens respect safe area insets on iPhone.
+- [x] **PWA Install:** Fixed manifest generation by downgrading Vite to v7.
+- [x] **Layout Glitches:** Fixed footer bouncing and Prepare button visibility by enforcing `h-[100dvh]` and `shrink-0`.
+- [x] **Scroll Retention:** Preparation Guide now remembers scroll position when navigating to Add Sin screen.
 
 ## 🛠 Improvements
 

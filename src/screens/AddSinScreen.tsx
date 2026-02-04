@@ -4,6 +4,8 @@ import { addSin } from '../services/storage';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 
+import { showToast } from '@/services/toast';
+
 export function AddSinScreen() {
     const [text, setText] = useState('');
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -16,7 +18,7 @@ export function AddSinScreen() {
     const handleSave = () => {
         if (text.trim()) {
             addSin(text);
-            // TODO: Toast
+            showToast('Entry added');
 
             const navState = getNavigationState();
             const returnTo = navState?.from || 'home';
