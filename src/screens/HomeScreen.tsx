@@ -21,6 +21,7 @@ import {
     restoreSin,
     toggleSinRepeated,
 } from '../services/storage';
+import { isAuthenticated } from '../services/auth';
 import { formatDate } from '../utils/date';
 import { cn } from '@/lib/utils';
 import type { Sin } from '../types';
@@ -48,6 +49,11 @@ export function HomeScreen() {
     };
 
     useEffect(() => {
+        // Guard: bounce unauthenticated users back to lock screen
+        if (!isAuthenticated()) {
+            navigateTo('lock');
+            return;
+        }
         loadData();
 
         // Refresh when returning to screen

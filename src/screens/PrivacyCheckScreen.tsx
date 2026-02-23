@@ -1,8 +1,17 @@
+import { useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
+import { isAuthenticated } from '../services/auth';
 import { Button } from '@/components/ui/button';
 import { Check, X } from 'lucide-react';
 
 export function PrivacyCheckScreen() {
+    // Guard: if user navigated here without authenticating, send them back
+    useEffect(() => {
+        if (!isAuthenticated()) {
+            navigateTo('lock');
+        }
+    }, []);
+
     return (
         <div className="flex flex-col h-full max-w-md mx-auto items-center justify-center p-8 bg-background text-foreground text-center animate-in fade-in duration-500">
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
 import { getAuthSettings, verifyPin, hasSeenWelcome } from '../services/storage';
+import { setAuthenticated } from '../services/auth';
 import { PinKeypad } from '@/components/PinKeypad';
 
 export function LockScreen() {
@@ -8,12 +9,12 @@ export function LockScreen() {
     const [error, setError] = useState('');
     const [dots, setDots] = useState<number[]>([0, 1, 2, 3]);
 
-    // Check if PIN is set on mount
+    // On every mount: clear the session so navigating back here = logged out
     useEffect(() => {
+        setAuthenticated(false);
+
         const settings = getAuthSettings();
         if (!settings.isPinSet) {
-            // First ever launch → show welcome screen
-            // Returning user who cleared data → skip welcome, go straight to setup
             navigateTo(hasSeenWelcome() ? 'setup-pin' : 'welcome');
         }
     }, []);
@@ -23,6 +24,7 @@ export function LockScreen() {
         if (pin.length === 4) {
             const timer = setTimeout(() => {
                 if (verifyPin(pin)) {
+                    setAuthenticated(true);
                     navigateTo('privacy-check');
                 } else {
                     setError('Incorrect PIN. Try again.');
