@@ -24,7 +24,7 @@ export function ConfirmClearScreen() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[100dvh] p-6 bg-background text-foreground animate-in fade-in zoom-in-95 duration-300">
+        <div className="flex flex-col items-center justify-center h-full p-6 bg-background text-foreground animate-in fade-in zoom-in-95 duration-300">
 
             <div className="flex flex-col items-center max-w-sm text-center space-y-6">
                 <CheckCircle2 className="w-20 h-20 text-primary" />

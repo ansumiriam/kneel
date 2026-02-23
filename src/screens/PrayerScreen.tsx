@@ -28,7 +28,7 @@ export function PrayerScreen() {
     if (!content) return null;
 
     return (
-        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300">
+        <div className="flex flex-col h-full max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300">
 
             {/* Header */}
             <header className="flex items-center px-4 py-4 border-b border-border z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0">
@@ -39,7 +39,7 @@ export function PrayerScreen() {
             </header>
 
             {/* Scrollable Content */}
-            <main className="flex-1 overflow-y-auto p-6 scroll-smooth">
+            <main className="flex-1 min-h-0 overflow-y-auto p-6 scroll-smooth">
                 <div className="max-w-none pb-12">
                     <h1 className="text-2xl font-bold mb-8 text-center">{content.title}</h1>
                     <div

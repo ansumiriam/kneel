@@ -43,7 +43,7 @@ export function SettingsScreen() {
     };
 
     return (
-        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300">
+        <div className="flex flex-col h-full max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300">
 
             {/* Header */}
             <header className="flex items-center px-4 py-4 border-b border-border">
@@ -54,7 +54,7 @@ export function SettingsScreen() {
             </header>
 
             {/* Content */}
-            <main className="flex-1 p-4 space-y-8">
+            <main className="flex-1 min-h-0 p-4 space-y-8 overflow-y-auto">
 
                 {/* General Section */}
                 <section className="space-y-4">

@@ -4,6 +4,7 @@ import { initTheme } from './screens/SettingsScreen';
 
 // Screens
 import { LockScreen } from './screens/LockScreen';
+import { WelcomeScreen } from './screens/WelcomeScreen';
 import { PrivacyCheckScreen } from './screens/PrivacyCheckScreen';
 import { HomeScreen } from './screens/HomeScreen';
 import { SetupPinScreen } from './screens/SetupPinScreen';
@@ -27,9 +28,10 @@ export function App() {
     const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
 
     return (
-        <div className="h-[100dvh] overflow-hidden bg-background text-foreground antialiased font-sans select-none">
+        <div className="relative w-full h-[100dvh] overflow-hidden bg-background text-foreground antialiased font-sans select-none">
             <Router>
                 <Route path={`${base}/`} component={LockScreen} />
+                <Route path={`${base}/welcome`} component={WelcomeScreen} />
                 <Route path={`${base}/privacy-check`} component={PrivacyCheckScreen} />
                 <Route path={`${base}/home`} component={HomeScreen} />
                 <Route path={`${base}/setup-pin`} component={SetupPinScreen} />

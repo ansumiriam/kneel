@@ -6,6 +6,7 @@ let navigationState: any = null;
 // Map screen IDs to their route paths
 const screenPaths: Record<ScreenId, string> = {
     'lock': '/',
+    'welcome': '/welcome',
     'home': '/home',
     'privacy-check': '/privacy-check',
     'add-sin': '/add-sin',

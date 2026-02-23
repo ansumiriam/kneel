@@ -34,6 +34,7 @@ export interface SessionState {
  */
 export type ScreenId =
     | 'lock'
+    | 'welcome'
     | 'privacy-check'
     | 'home'
     | 'add-sin'

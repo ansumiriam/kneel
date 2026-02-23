@@ -51,7 +51,7 @@ export function PrepareScreen() {
     });
 
     return (
-        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300 relative">
+        <div className="flex flex-col h-full max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300 relative">
 
             {/* Header */}
             <header className="flex items-center px-4 py-4 border-b border-border">
@@ -62,7 +62,7 @@ export function PrepareScreen() {
             </header>
 
             {/* Content */}
-            <main className="flex-1 p-4 overflow-y-auto space-y-4">
+            <main className="flex-1 min-h-0 p-4 overflow-y-auto space-y-4">
                 {menuItems.map((item) => (
                     <div
                         key={item.id}

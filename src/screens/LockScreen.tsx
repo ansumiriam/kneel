@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { navigateTo } from '../utils/router';
-import { getAuthSettings, verifyPin } from '../services/storage';
+import { getAuthSettings, verifyPin, hasSeenWelcome } from '../services/storage';
 import { PinKeypad } from '@/components/PinKeypad';
 
 export function LockScreen() {
@@ -12,7 +12,9 @@ export function LockScreen() {
     useEffect(() => {
         const settings = getAuthSettings();
         if (!settings.isPinSet) {
-            navigateTo('setup-pin');
+            // First ever launch → show welcome screen
+            // Returning user who cleared data → skip welcome, go straight to setup
+            navigateTo(hasSeenWelcome() ? 'setup-pin' : 'welcome');
         }
     }, []);
 
@@ -46,7 +48,7 @@ export function LockScreen() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[100dvh] p-4 bg-background text-foreground animate-in fade-in duration-500">
+        <div className="flex flex-col items-center justify-center h-full p-4 bg-background text-foreground animate-in fade-in duration-500">
             <div className="w-full max-w-sm flex flex-col items-center space-y-8">
 
                 {/* Header */}

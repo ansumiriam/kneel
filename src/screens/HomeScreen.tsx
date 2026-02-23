@@ -111,7 +111,7 @@ export function HomeScreen() {
 
 
     return (
-        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in fade-in duration-300 overflow-hidden">
+        <div className="flex flex-col h-full max-w-md mx-auto bg-background text-foreground animate-in fade-in duration-300 overflow-hidden relative">
 
             {/* Header */}
             <header className="shrink-0 px-6 pt-6 pb-4 border-b border-border">
@@ -182,13 +182,13 @@ export function HomeScreen() {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto px-4 py-2 hide-scrollbar">
+            <main className="flex-1 min-h-0 overflow-y-auto px-4 py-2 hide-scrollbar">
                 {sins.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center space-y-4 opacity-50">
                         <p className="text-lg">No entries yet. Take your time.</p>
                     </div>
                 ) : (
-                    <div className="space-y-3 pb-4 mt-2">
+                    <ul className="space-y-3 pb-4 mt-2 list-none p-0">
                         {[...sins]
                             .sort((a, b) => (a.isRepeated === b.isRepeated ? 0 : a.isRepeated ? -1 : 1))
                             .map(sin => (
@@ -202,7 +202,8 @@ export function HomeScreen() {
                                 />
                             ))
                         }
-                    </div>
+                    </ul>
+
                 )}
             </main>
 

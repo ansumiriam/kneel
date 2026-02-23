@@ -38,7 +38,7 @@ export function GuideScreen() {
     };
 
     return (
-        <div className="flex flex-col h-[100dvh] max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300 relative">
+        <div className="flex flex-col h-full max-w-md mx-auto bg-background text-foreground animate-in slide-in-from-right-4 duration-300 relative">
 
             {/* Header */}
             <header className="flex items-center px-4 py-4 border-b border-border bg-background z-10">
@@ -51,8 +51,9 @@ export function GuideScreen() {
             {/* Scrollable Content */}
             <main
                 ref={mainRef}
-                className="flex-1 overflow-y-auto px-4 py-4 space-y-8 pb-24 text-lg"
+                className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-8 pb-24 text-lg"
             >
+
                 {sections.map((section, idx) => (
                     <section key={idx} className="space-y-4">
                         <h2 className="text-2xl font-bold text-primary">{section.title}</h2>
@@ -76,7 +77,7 @@ export function GuideScreen() {
                 </Button>
             </footer>
 
-        </div>
+        </div >
     );
 }
 

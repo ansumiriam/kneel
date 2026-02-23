@@ -270,3 +270,20 @@ export function getDaysSinceConfession(): number | null {
     return calculateDays(dateStr);
 }
 
+// === Welcome Screen ===
+
+const WELCOMED_KEY = 'kneel_welcomed';
+
+/**
+ * Has the user seen the welcome screen before?
+ */
+export function hasSeenWelcome(): boolean {
+    return localStorage.getItem(WELCOMED_KEY) === 'true';
+}
+
+/**
+ * Mark the welcome screen as seen (one-time flag)
+ */
+export function markWelcomeSeen(): void {
+    localStorage.setItem(WELCOMED_KEY, 'true');
+}
