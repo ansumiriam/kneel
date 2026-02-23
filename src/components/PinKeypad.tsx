@@ -18,15 +18,24 @@ export function PinKeypad({
     showForgot = false,
     maxLength = 4
 }: PinKeypadProps) {
+
+    // onPointerDown fires immediately on touch — no 300ms browser tap delay.
+    // preventDefault stops the subsequent click event from also calling onPress.
+    const handleKey = (e: PointerEvent, key: string | number) => {
+        e.preventDefault();
+        onPress(key);
+    };
+
     return (
         <div className="w-full max-w-sm flex flex-col items-center">
-            {/* PIN Display */}
+
+            {/* PIN Dots */}
             <div className="flex gap-4 my-8">
                 {Array.from({ length: maxLength }).map((_, index) => (
                     <div
                         key={index}
                         className={cn(
-                            "w-4 h-4 rounded-full border-2 border-primary transition-all duration-300",
+                            "w-4 h-4 rounded-full border-2 border-primary transition-all duration-100",
                             index < pin.length ? "bg-primary scale-110" : "bg-transparent scale-100",
                             error && "border-destructive"
                         )}
@@ -39,30 +48,36 @@ export function PinKeypad({
                 {error}
             </div>
 
-            {/* Keypad */}
+            {/* Keypad Grid */}
             <div className="grid grid-cols-3 gap-4 w-full px-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
                     <Button
                         key={num}
                         variant="outline"
                         className="h-16 text-2xl font-light rounded-full hover:bg-muted/50 transition-colors"
-                        onClick={() => onPress(num)}
+                        style={{ touchAction: 'manipulation' }}
+                        onPointerDown={(e) => handleKey(e as unknown as PointerEvent, num)}
                     >
                         {num}
                     </Button>
                 ))}
+
                 <div /> {/* Empty slot */}
+
                 <Button
                     variant="outline"
                     className="h-16 text-2xl font-light rounded-full hover:bg-muted/50 transition-colors"
-                    onClick={() => onPress(0)}
+                    style={{ touchAction: 'manipulation' }}
+                    onPointerDown={(e) => handleKey(e as unknown as PointerEvent, 0)}
                 >
                     0
                 </Button>
+
                 <Button
                     variant="ghost"
                     className="h-16 rounded-full hover:bg-muted/50 text-muted-foreground"
-                    onClick={() => onPress('backspace')}
+                    style={{ touchAction: 'manipulation' }}
+                    onPointerDown={(e) => handleKey(e as unknown as PointerEvent, 'backspace')}
                     disabled={pin.length === 0}
                 >
                     <Delete className="w-8 h-8" />
