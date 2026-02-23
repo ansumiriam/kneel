@@ -4,27 +4,50 @@ import { getAuthSettings, verifySecurityAnswer, setPin } from '../services/stora
 import { PinKeypad } from '@/components/PinKeypad';
 import { Button } from '@/components/ui/button';
 import { LockKeyhole } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
+const PRESET_QUESTIONS = [
+    'In what city were you born?',
+    "What is your mother's maiden name?",
+    'What was the name of your first pet?',
+    'What was your first car?',
+    'What is your favorite book?',
+];
 
 export function RecoverPinScreen() {
     const [step, setStep] = useState(1); // 1: verify, 2: new pin, 3: confirm pin
-    const [question, setQuestion] = useState('');
+    const [question, setQuestion] = useState('In what city were you born?');
+    const [customQuestion, setCustomQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [newPin, setNewPin] = useState('');
     const [confirmPin, setConfirmPin] = useState('');
     const [error, setError] = useState('');
 
+    // Pre-select the stored question if it matches a preset, otherwise fall back to custom
     useEffect(() => {
         const settings = getAuthSettings();
-        setQuestion(settings.question || 'Security Question');
+        const stored = settings.question || '';
+        if (stored && PRESET_QUESTIONS.includes(stored)) {
+            setQuestion(stored);
+        } else if (stored) {
+            setQuestion('custom');
+            setCustomQuestion(stored);
+        }
     }, []);
 
     const handleVerify = () => {
+        if (question === 'custom' && !customQuestion.trim()) {
+            setError('Please enter your custom question.');
+            return;
+        }
+        if (!answer.trim()) {
+            setError('Please enter your answer.');
+            return;
+        }
         if (verifySecurityAnswer(answer)) {
             setStep(2);
             setError('');
         } else {
-            setError('Incorrect answer');
+            setError('Incorrect answer. Try again.');
         }
     };
 
@@ -84,13 +107,41 @@ export function RecoverPinScreen() {
                     </div>
 
                     <div className="bg-card p-6 rounded-xl border border-border shadow-sm text-left space-y-4">
+
+                        {/* Question selector */}
                         <div className="space-y-2">
                             <label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                                 Question
                             </label>
-                            <p className="font-medium text-lg">{question}</p>
+                            <select
+                                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                value={question}
+                                onChange={(e) => {
+                                    const val = (e.target as HTMLSelectElement).value;
+                                    setQuestion(val);
+                                    if (val !== 'custom') setCustomQuestion('');
+                                    setError('');
+                                }}
+                            >
+                                {PRESET_QUESTIONS.map(q => (
+                                    <option key={q} value={q}>{q}</option>
+                                ))}
+                                <option value="custom">Add Custom Question...</option>
+                            </select>
+
+                            {question === 'custom' && (
+                                <input
+                                    type="text"
+                                    className="w-full h-10 px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring animate-in fade-in slide-in-from-top-2"
+                                    placeholder="Type your custom question"
+                                    value={customQuestion}
+                                    onInput={(e) => setCustomQuestion((e.target as HTMLInputElement).value)}
+                                    autoFocus
+                                />
+                            )}
                         </div>
 
+                        {/* Answer */}
                         <div className="space-y-2">
                             <label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                                 Your Answer
@@ -121,6 +172,9 @@ export function RecoverPinScreen() {
             </div>
         );
     }
+
+
+
 
     // Step 2 & 3: PIN Entry (Reused UI)
     const currentPin = step === 2 ? newPin : confirmPin;
