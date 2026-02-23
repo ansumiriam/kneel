@@ -9,7 +9,8 @@ import {
     Pencil,
     Trash2,
     CalendarIcon,
-    Info
+    Info,
+    Share2
 } from 'lucide-react';
 import {
     getSins,
@@ -39,6 +40,7 @@ export function HomeScreen() {
     const [showUndo, setShowUndo] = useState(false);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
     const [showAbout, setShowAbout] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     // Load data on mount and focus
     const loadData = () => {
@@ -111,6 +113,22 @@ export function HomeScreen() {
             setSins(getSins());
             setLastDeleted(null);
             setShowUndo(false);
+        }
+    };
+
+    const handleShare = async () => {
+        const appUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
+        const shareData = {
+            title: 'Kneel',
+            text: 'A private app to help prepare for confession.',
+            url: appUrl,
+        };
+        if (navigator.share) {
+            try { await navigator.share(shareData); } catch { /* user cancelled */ }
+        } else {
+            await navigator.clipboard.writeText(appUrl);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2500);
         }
     };
 
@@ -289,9 +307,19 @@ export function HomeScreen() {
                                 </p>
                             </div>
 
-                            <Button className="w-full mt-6 rounded-xl h-12 font-semibold" onClick={() => setShowAbout(false)}>
-                                Close
-                            </Button>
+                            <div className="flex flex-col gap-2 mt-6">
+                                <Button
+                                    variant="secondary"
+                                    className="w-full rounded-xl h-12 font-semibold"
+                                    onClick={handleShare}
+                                >
+                                    <Share2 className="mr-2 h-4 w-4" />
+                                    {copied ? 'Link Copied!' : 'Share this App'}
+                                </Button>
+                                <Button className="w-full rounded-xl h-12 font-semibold" onClick={() => setShowAbout(false)}>
+                                    Close
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 )
