@@ -15,30 +15,19 @@ const PRESET_QUESTIONS = [
 
 export function RecoverPinScreen() {
     const [step, setStep] = useState(1); // 1: verify, 2: new pin, 3: confirm pin
-    const [question, setQuestion] = useState('In what city were you born?');
-    const [customQuestion, setCustomQuestion] = useState('');
+    const [storedQuestion, setStoredQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [newPin, setNewPin] = useState('');
     const [confirmPin, setConfirmPin] = useState('');
     const [error, setError] = useState('');
 
-    // Pre-select the stored question if it matches a preset, otherwise fall back to custom
+    // Load the exact question the user set during setup
     useEffect(() => {
         const settings = getAuthSettings();
-        const stored = settings.question || '';
-        if (stored && PRESET_QUESTIONS.includes(stored)) {
-            setQuestion(stored);
-        } else if (stored) {
-            setQuestion('custom');
-            setCustomQuestion(stored);
-        }
+        setStoredQuestion(settings.question || '');
     }, []);
 
     const handleVerify = () => {
-        if (question === 'custom' && !customQuestion.trim()) {
-            setError('Please enter your custom question.');
-            return;
-        }
         if (!answer.trim()) {
             setError('Please enter your answer.');
             return;
@@ -108,37 +97,14 @@ export function RecoverPinScreen() {
 
                     <div className="bg-card p-6 rounded-xl border border-border shadow-sm text-left space-y-4">
 
-                        {/* Question selector */}
-                        <div className="space-y-2">
+                        {/* Stored question - shown as static text, not a dropdown */}
+                        <div className="space-y-1">
                             <label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
-                                Question
+                                Your Security Question
                             </label>
-                            <select
-                                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                                value={question}
-                                onChange={(e) => {
-                                    const val = (e.target as HTMLSelectElement).value;
-                                    setQuestion(val);
-                                    if (val !== 'custom') setCustomQuestion('');
-                                    setError('');
-                                }}
-                            >
-                                {PRESET_QUESTIONS.map(q => (
-                                    <option key={q} value={q}>{q}</option>
-                                ))}
-                                <option value="custom">Add Custom Question...</option>
-                            </select>
-
-                            {question === 'custom' && (
-                                <input
-                                    type="text"
-                                    className="w-full h-10 px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring animate-in fade-in slide-in-from-top-2"
-                                    placeholder="Type your custom question"
-                                    value={customQuestion}
-                                    onInput={(e) => setCustomQuestion((e.target as HTMLInputElement).value)}
-                                    autoFocus
-                                />
-                            )}
+                            <p className="font-medium text-base leading-snug">
+                                {storedQuestion || '—'}
+                            </p>
                         </div>
 
                         {/* Answer */}
@@ -149,10 +115,11 @@ export function RecoverPinScreen() {
                             <input
                                 type="text"
                                 className="w-full h-10 px-3 py-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                                placeholder="Enter answer"
+                                placeholder="Enter your answer"
                                 value={answer}
                                 onInput={(e) => setAnswer((e.target as HTMLInputElement).value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
+                                autoFocus
                             />
                         </div>
 
@@ -172,6 +139,7 @@ export function RecoverPinScreen() {
             </div>
         );
     }
+
 
 
 
